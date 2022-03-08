@@ -1,0 +1,38 @@
+
+Week 1
+Friday
+Formed group. Formed with yuhan, jiajun, anbang, haofu and me. During the lab, we selected to go for e-commerce, specifically in gaming. 
+We set up Github and Jira for coding. A group on Teams as well as Feishu was created for official and informal meetings. 
+This week, the problem we meeting is the Product determination of the e-commerce recommendation system. 
+After many discussions the final decision for the game and periphery
+Individual tasks: user story brainstorming
+We were to go through the assignment spec sheet to prepare for Tuesday's meeting for proposal writing.
+
+Week 2
+Tuesday
+A draft version of user case stories was developed that would be used as the base of the Jira backlog. 
+We record all the information in the Feishu online DOC platform, and Other members were to further investigate software similar 
+to Gaming e-commerce and begin the formation of storyboards. 
+We have decided that we will implement the backend app by python with flask. for fronted, we are going to use ReactJS and javascript. 
+
+Friday
+Continuation of discussion for the storyboard. Discussions about how sellers and admins were established in the meeting. 
+our team is going to establish gaming platforms. 
+Each member was to continue with the planning of storyboards for the next meeting. we discussed the platform 
+
+Individual tasks:  technical structure establish and writing,  design and discuss the front-end system and its user' story.
+
+But this week, we have not made a final decision about the novel functions during working days, we submit a discussion result 
+and email to the teacher on the weekend.
+next week we will focus on completed and submitted proposals in Jira
+
+
+
+Week 3
+Sprints were reorganized and the setting up of base files is to be made to prepare for our first sprint. Work was carried out to finish the report. 
+Current feedback from the lab demonstrator indicated the report was on track. discussed and start to establish the database. 
+discussed with members about conflict with the front-end design,  and modify according to the suggestions of all team members
+Individual tasks: modification part of user stories with the front-design interface, design the fronted interfaces, restructured user stories, 
+and epic stories. writing final proposal document and preparing for submission. 
+next week will focus on sprint 1 working (User account front-end and back-end, database establishment)
+
