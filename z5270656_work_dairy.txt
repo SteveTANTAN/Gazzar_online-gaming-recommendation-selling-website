@@ -1,0 +1,26 @@
+Week 1
+- The group formed and we named it 3900-w14b-three-days-to-see. This also means we will show our project via three milestone.
+- All teams planned for topic decision and user story brainstorming. Finally we decide to develop the ecommerce system with recommandation.
+    Individual tasks:  As the scrum master, I created the Jira & GitHub accounts. 
+- Question: Product determination of e-commerce recommendation system
+    After many discussions the final decision for the selling games and relavent peripherals as our products.
+- next week will focuse on proposal writing, and I have already atart to use Axure to make our prototype.
+
+
+Week 2
+- planned for proposal writing
+    Individual tasks: Finish the first version of the prototype in low fidelity of customer & admin without the novel features.
+- finished topic decision and part of user stories
+- Question: In terms of the design and decision of noval user stories, 
+    the final decision was made through email contact with the Professor Rachid. One is a lottery feature and another is a surprise store with recommanded products in discount.
+- next week will focuse on completed and submitted proposal with all the user stories and sprints finished in jira
+
+
+Week 3
+- planned for proposal integration, modification and submission
+    Individual tasks: adjust the design of prototype according to the suggestion prposed by team members,and modified the interface and flow description in the proposal.
+- finished prototype design, interfaces & flow descriptions
+- Question: Still need more modification to improve our logic ad design, 
+    modify according to the suggestions of all team members
+- next week will focuse on sprint 1 working
+    (User account front-end and back-end, database establishment)
