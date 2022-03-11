@@ -16,7 +16,13 @@ export default (props) => {
             <Link to="/">
               <span className={styles.logo}>GAZZAR</span>
             </Link>
-            <Input style={{ width: 180 }} suffix={<SearchOutlined />}></Input>
+            <Input
+              style={{ width: 180 }}
+              suffix={<SearchOutlined />}
+              onPressEnter={() => {
+                history.push('/search');
+              }}
+            ></Input>
           </Space>
           <div className="blank"></div>
           <Space>
@@ -35,7 +41,9 @@ export default (props) => {
           </Space>
         </div>
       </div>
-      <div className={styles.content}>{props.children}</div>
+      <div className={styles.content} style={{ paddingBottom: 24 }}>
+        {props.children}
+      </div>
     </div>
   );
 };
