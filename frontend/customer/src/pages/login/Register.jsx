@@ -45,15 +45,7 @@ export default function Register() {
           <h4 style={{ marginTop: 22 }}>Peripherals</h4>
           <Checkbox.Group style={{ width: '100%' }}>
             <Row>
-              {[
-                'Action',
-                'Casual',
-                'FPS',
-                'Sports',
-                'RPG',
-                'Strategy',
-                'Simulation',
-              ].map((item) => (
+              {['Costume', 'Game props'].map((item) => (
                 <Col span={8}>
                   <Checkbox value={item}>{item}</Checkbox>
                 </Col>
