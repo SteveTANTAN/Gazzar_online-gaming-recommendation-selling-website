@@ -1,0 +1,36 @@
+.wrap {
+  margin: 40px auto 0;
+  display: flex;
+
+  .left {
+    flex: 1;
+    margin-right: 24px;
+
+    & > div:first-child {
+      background-color: white;
+      border-radius: 6px;
+      padding: 24px;
+      min-height: 70vh;
+    }
+
+    .items {
+      & > div {
+        margin: 22px 0;
+        padding: 0 44px;
+      }
+    }
+  }
+
+  .right {
+    min-height: 70vh;
+    width: 300px;
+
+    h1 {
+      text-align: center;
+    }
+
+    & > div {
+      margin: 24px;
+    }
+  }
+}
