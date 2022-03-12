@@ -7,7 +7,7 @@ export default function Login() {
   const history = useHistory();
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
-    history.push('/admin/mangement');
+    history.push('/admin/manage');
   };
 
   return (
