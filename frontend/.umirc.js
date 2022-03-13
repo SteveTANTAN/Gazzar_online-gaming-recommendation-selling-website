@@ -2,31 +2,24 @@ import { defineConfig } from 'umi';
 
 export default defineConfig({
   routes: [
-    { path: '/admin', component: '@/admin/pages/login' },
+    { path: '/admin/login', component: '@/admin/pages/login' },
+    { path: '/admin', redirect: '/admin/login' },
+
     {
-      path: '/admin/mangement',
-      component: '@/user/layouts/index',
+      path: '/admin/manage',
+      component: '@/admin/layouts/index',
       routes: [
-        { path: '/', redirect: '/user/home' },
-        { path: '/user/home', component: '@/user/pages/home' },
-        { path: '/user/search', component: '@/user/pages/home/SearchResult' },
-        { path: '/user/detail', component: '@/user/pages/detail' },
-        { path: '/user/cart', component: '@/user/pages/cart' },
-        { path: '/user/order', component: '@/user/pages/order' },
-        { path: '/user/order-detail', component: '@/user/pages/order/detail' },
-        { path: '/user/payment', component: '@/user/pages/payment' },
-        { path: '/user/profile', component: '@/user/pages/profile' },
-        { path: '/user/lottery', component: '@/user/pages/lottery' },
+        { path: '/admin/manage/admins', component: '@/admin/pages/adminManage' }
       ],
     },
     { path: '/user/login', component: '@/user/pages/login' },
     { path: '/user/register', component: '@/user/pages/login/Register' },
     { path: '/user/password', component: '@/user/pages/login/Password' },
+    { path: '/', redirect: '/user/home' },
     {
-      path: '/',
+      path: '/user',
       component: '@/user/layouts/index',
       routes: [
-        { path: '/', redirect: '/user/home' },
         { path: '/user/home', component: '@/user/pages/home' },
         { path: '/user/search', component: '@/user/pages/home/SearchResult' },
         { path: '/user/detail', component: '@/user/pages/detail' },
