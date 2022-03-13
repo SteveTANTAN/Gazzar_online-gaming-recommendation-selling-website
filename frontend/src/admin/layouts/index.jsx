@@ -57,9 +57,10 @@ export default (props) => {
                 Games Management
                 </Link>
               </Menu.Item>
-              
               <Menu.Item key="3" icon={<CustomerServiceOutlined/>}>
+                <Link to="/admin/manage/Peripherals">
                 Peripherals Management
+                </Link>
               </Menu.Item>
               <Menu.Item key="4" icon={<OrderedListOutlined/>}>
                 order Management
