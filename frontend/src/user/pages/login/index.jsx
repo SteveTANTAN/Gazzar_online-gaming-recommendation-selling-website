@@ -1,6 +1,6 @@
 import styles from './index.less';
 import { Form, Input, Button, Checkbox } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { EyeInvisibleOutlined, EyeTwoTone, UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Link, useHistory } from 'umi';
 
 export default function Login() {
@@ -29,10 +29,11 @@ export default function Login() {
             name="password"
             rules={[{ required: true, message: 'Please input your Password!' }]}
           >
-            <Input
+            <Input.Password
               prefix={<LockOutlined className="site-form-item-icon" />}
               type="password"
               placeholder="Password"
+              iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
             />
           </Form.Item>
           <div style={{ height: 30, marginTop: -10 }}>

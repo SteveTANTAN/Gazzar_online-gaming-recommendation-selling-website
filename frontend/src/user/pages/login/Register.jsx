@@ -6,10 +6,11 @@ import {
   Button,
   Checkbox,
   InputNumber,
+  Space,
   Row,
   Col,
 } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import { EyeInvisibleOutlined, EyeTwoTone, UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { Link } from 'umi';
 
@@ -104,7 +105,12 @@ export default function Register() {
             name="password"
             rules={[{ required: true, message: 'Please input your Password!' }]}
           >
-            <Input type="password" placeholder="Password" />
+
+            <Input.Password
+              type="password"
+              placeholder="input password"
+              iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+            />
           </Form.Item>
           <Form.Item wrapperCol={{ span: 24 }}>
             <div className={styles.center}>
