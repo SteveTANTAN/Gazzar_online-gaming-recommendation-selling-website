@@ -51,20 +51,26 @@ export default (props) => {
               <Menu.Item key="1" icon={<PieChartOutlined />}>
                 overview
               </Menu.Item>
+             
               <Menu.Item key="2" icon={<CarOutlined/>}>
+              <Link to="/admin/manage/games">
                 Games Management
+                </Link>
               </Menu.Item>
+              
               <Menu.Item key="3" icon={<CustomerServiceOutlined/>}>
                 Peripherals Management
               </Menu.Item>
               <Menu.Item key="4" icon={<OrderedListOutlined/>}>
                 order Management
               </Menu.Item>
-              <Link className={styles.button} to="/admin/manage/admins">
+
               <Menu.Item key="5" icon={<UserOutlined/>}>
+                <Link to="/admin/manage/admins">
                 Admins Management
+                </Link>
               </Menu.Item>
-              </Link>
+
             </Menu>
           </Sider>
           <Layout>
