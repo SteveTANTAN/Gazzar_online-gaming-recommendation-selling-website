@@ -17,11 +17,11 @@ export default (props) => {
     <div className={styles.wrap}>
       <div className={styles.header}>
         <div className={styles.content + ' fr'}>
-          <Space>
+
             <Link to="/admin/manage">
               <img className={styles.logo} src={logoImg} alt="" />
             </Link>
-          </Space>
+
           <Space style={{ width: 20}}>   </Space>
           <div className="blank" style={{ fontSize:25, fontWeight: 600}}>  Admin </div>
           <Space>
