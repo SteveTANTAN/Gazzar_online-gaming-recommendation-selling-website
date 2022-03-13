@@ -9,7 +9,8 @@ export default defineConfig({
       path: '/admin/manage',
       component: '@/admin/layouts/index',
       routes: [
-        { path: '/admin/manage/admins', component: '@/admin/pages/adminManage' }
+        { path: '/admin/manage/admins', component: '@/admin/pages/adminManage' },
+        { path: '/admin/manage/games', component: '@/admin/pages/gameManage' },
       ],
     },
     { path: '/user/login', component: '@/user/pages/login' },
