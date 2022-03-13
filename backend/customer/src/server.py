@@ -2,9 +2,10 @@ from flask import Blueprint, request, jsonify
 from json import dumps
 from flask import Flask, request, send_from_directory
 from flask_cors import CORS
-import requests
+#import requests
 
-from auth import user_register
+#from auth import user_register
+from search_filter import search, filter
 
 def defaultHandler(err):
     """
@@ -38,6 +39,15 @@ def register_user():
     interest = info['interest']
 
     result = user_register(email, password, name, age, gender)
+    return dumps(result)
+
+
+@APP.route('/user/search', methods = ['POST'])
+def search():
+    """search product with given string (match in product name and detail)"""
+    info = request.get_json()
+    str = info['str']
+    result = search(str)
     return dumps(result)
 
 if __name__ == "__main__":
