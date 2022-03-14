@@ -1,4 +1,5 @@
 import styles from './index.less';
+import React from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone, UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Link, useHistory } from 'umi';
@@ -9,6 +10,9 @@ export default function Login() {
     console.log('Received values of form: ', values);
     history.push('/admin/manage/');
   };
+  const [username, setusername] = React.useState('');
+  const [password, setpassword] = React.useState('');
+
 
   return (
     <div className={styles.wrap}>
@@ -20,8 +24,11 @@ export default function Login() {
             name="username"
             rules={[{ required: true, message: 'Please input your Username!' }]}
           >
+
             <Input
+              onChange={e => setusername(e.target.value)}
               prefix={<UserOutlined className="site-form-item-icon" />}
+              value = {username} type = 'text'
               placeholder="Username"
             />
           </Form.Item>
@@ -31,8 +38,10 @@ export default function Login() {
           >
             <Input.Password
               prefix={<LockOutlined className="site-form-item-icon" />}
+              onChange={e => setpassword(e.target.value)}
               type="password"
               placeholder="Password"
+              value = {password}
               iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
             />
           </Form.Item>
