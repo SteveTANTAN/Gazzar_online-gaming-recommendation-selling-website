@@ -12,10 +12,8 @@ import { post } from '@/user/utils/request';
 export default function Login() {
   const history = useHistory();
   const onFinish = (values) => {
-    // console.log('Received values of form: ', values);
-    // history.push('/');
     post('/api/user/login', values).then(() => {
-      // history.push('/')
+      history.push('/')
     });
   };
 

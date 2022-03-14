@@ -84,7 +84,7 @@ def user_logout(token):
     # no user
     users = User.query.filter((User.user_id==cur_user_id)).all()
     if (len(users) == 0):
-        return {'error' : Error.query.filter(Error.error_id == 2).all()[0].error_name}
+        return {'error' : Error.query.filter(Error.error_id == 15).all()[0].error_name}
     target_user = users[0]
     target_user.token = create_token(0)
     db.session.commit()

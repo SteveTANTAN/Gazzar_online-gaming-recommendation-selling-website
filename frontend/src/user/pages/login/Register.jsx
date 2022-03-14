@@ -18,11 +18,12 @@ import {
   LockOutlined,
 } from '@ant-design/icons';
 import { useState } from 'react';
-import { Link } from 'umi';
+import { Link, useHistory } from 'umi';
 import { post } from '@/user/utils/request';
 export default function Register() {
   const [step, setStep] = useState(1);
   const [info, setInfo] = useState();
+  const history = useHistory()
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
     setInfo(values);
@@ -69,6 +70,7 @@ export default function Register() {
               onClick={() => {
                 post('/api/user/register', info).then(() => {
                   message.success('register success');
+                  history.push('/')
                 });
               }}
             >
