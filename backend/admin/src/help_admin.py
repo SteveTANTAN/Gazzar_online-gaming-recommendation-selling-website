@@ -43,6 +43,12 @@ def add_to_database(data):
     db.session.add(data)
     db.session.commit()
 
+def delete_to_database(data):
+    """
+    This function is used for adding data to database
+    """
+    db.session.delete(data)
+    db.session.commit()
 '''
 This code is copied from
 https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/

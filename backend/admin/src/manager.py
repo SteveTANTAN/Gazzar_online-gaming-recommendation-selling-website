@@ -18,7 +18,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
 
-from help_admin import create_admin_id, create_token, add_to_database, check_email, check_password, admin_status, token_to_id
+from help_admin import create_admin_id, create_token, add_to_database, check_email, check_password, admin_status, token_to_id, delete_to_database
 
 def add_admin(token, email, password):
     """
@@ -53,6 +53,24 @@ def add_admin(token, email, password):
     output = {'token': token}
     return output
 
+def delete_admin(token, email):
+    """
+    This function is used for add a new admin and store to the database->admin table
+    input: email, password, name, age, gender
+    return: token
+    """
+    # handle token (check super admin)
+    print(admin_status(token))
+    if (admin_status(token) == False):
+        return {'error' : Error.query.filter(Error.error_id == 14).all()[0].error_name}
+    # create a unique uid for the user
+    target_admin = Admin.query.filter(Admin.email == email).all()
+    if (len(target_admin) == 0): return {'error' : Error.query.filter(Error.error_id == 14).all()[0].error_name}
+    Admin.query.filter(Admin.email == email).delete()
+    #target_admin[0].delete()
+    db.session.commit()
+
+    return {'is_success': True}
 
 def admin_login(email, password):
     """
@@ -91,19 +109,6 @@ def admin_logout(token):
     return {'is_success': True}
 
 
-def edit_password(token, new_password):
-    """
-    """
-    cur_admin_id = token_to_id(token)
-    # password should be between 8-15
-    if (check_password(new_password) == False):
-        return {'error' : Error.query.filter(Error.error_id == 5).all()[0].error_name}
-
-    admin_info = Admin.query.filter(Admin.admin_id==cur_admin_id).all()[0]
-    admin_info.password = new_password
-    db.session.commit()
-    return {}
-
 def show_all_admins(token):
     """
     """
@@ -135,13 +140,8 @@ def show_all_admins(token):
 #     # output['all_users_profile'] = user_profile
 #     return all_user_interest
 
-#if __name__ == "__main__":
-    # email = "1807655499@qq.com"
-    # password = "Boss#12"
-    # target_admin = Admin.query.filter((Admin.email==email), (Admin.password==password)).all()
-    # #print(target_admin)
-    # if (len(target_admin) == 0): {
-    #     print("1111111111111111111111111")
-    # }
-    # print(target_admin[0])
-    print(Error.query.filter(Error.error_id == 6).all()[0].error_name)
+# if __name__ == "__main__":
+#     #admins_email = Admin.query.filter(Admin.email=="1807655499@qq.com").all()[0]
+#     print(create_token(1))
+#     print(token_to_id("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhZG1pbl9pZCI6MH0.llOH9A-61dCWPFT2ZVsvbvpKnI9qpH0xrY2WeogY4jw"))
+#     delete_admin("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhZG1pbl9pZCI6MX0.WvxG2haQJJIf2yZVZowIAPcwFLQRyWYe2Gt6-UgZlS4", "123@qq.com")
