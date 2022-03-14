@@ -1,21 +1,19 @@
 """
-...
+helper function for user
 """
 import sys
-
 sys.path.append('../../database/src')
 
 from database import db
 from product import Product
 from user import User
 from error import Error
-import string
-import random
 import jwt
 import re
 def create_uid():
     """
     This function is used to create a user id(uid)
+    return valid user id
     """
     # get all uid
     all_uid = db.session.query(User.user_id).all()
@@ -25,6 +23,8 @@ def create_uid():
 def create_token(uid):
     '''
     This function will generate token
+    input: user id
+    return: encoded token
     '''
     SECRET = 'THREEDAYSTOSEE'
 
@@ -33,6 +33,11 @@ def create_token(uid):
     return str(encoded_jwt)
 
 def get_error_info(error_id):
+    '''
+    This function will raise error from datebase
+    input: error_id
+    return: error name
+    '''
     errors = db.session.query(Error).all()
     for row in errors:
         if row.error_id == error_id: return row.error_name
@@ -40,24 +45,19 @@ def get_error_info(error_id):
 def add_to_database(data):
     """
     This function is used for adding data to database
+    input: data need to update
     """
     db.session.add(data)
     db.session.commit()
 
-'''
-This code is copied from
-https://www.geeksforgeeks.org/check-if-email-address-valid-or-not-in-python/
-for checking whether the email is valid
-'''
-# Python program to validate an Email
-
 def check_email(email):
     '''
-    Define a function for
-    for validating an Email
+    This function will check the email valid or not
+    input: email
+    return: check result
     '''
     regex = "^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$"
-    # pass the regualar expression
+    # pass the regular expression
     # and the string in search() method
     if(re.search(regex, email)):
         return True
@@ -65,25 +65,29 @@ def check_email(email):
 
 def check_password(password):
     '''
-    Define a function for
-    for validating an Email
+    This function will check the password valid or not
+    obey the next rules:
+        - The password must be 8-15 characters — Error 005
+        - The password must contain at least one character from each of the following groups:
+            lower case alphabet, uppercase alphabet, numeric, special characters
+    input: password
+    return: check result
     '''
     regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,15}"
-    # pass the regualar expression
+    # pass the regular expression
     # and the string in search() method
     if(re.search(regex, password)):
         return True
     return False
-# def get_all_user_info():
-# if __name__ == "__main__":
-#     create_uid()
 
 def token_to_id(token):
     '''
-    This function will convert token to u_id
+    This function will convert token to id
+    input: token
+    return: check result
     '''
     users = User.query.all()
     for i in users:
-        if i.token == create_token(i.user_id):
+        if i.token == token:
             return i.user_id
     return False

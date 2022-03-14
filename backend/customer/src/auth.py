@@ -1,6 +1,5 @@
 """
 auth.py is used for authentication
-This file will include the user_register
 """
 import sys
 sys.path.append('../../database/src')
@@ -51,6 +50,9 @@ def user_register(email, password, name, age, gender):
 
 def user_login(email, password):
     """
+    This function is used for user login
+    input: email, password, name
+    return: token
     """
     # error handler
     # all users email
@@ -72,6 +74,9 @@ def user_login(email, password):
 
 def user_logout(token):
     """
+    This function is used for user login
+    input: token
+    return: logout result
     """
     cur_user_id = token_to_id(token)
     # no user
@@ -85,6 +90,8 @@ def user_logout(token):
 
 def forget_password(token):
     """
+    This function is used for user forget password
+    input: token
     """
     user_id = token_to_id(token)
     user_email = User.query.filter(User.user_id==user_id).all()[0]
@@ -112,6 +119,8 @@ def forget_password(token):
 
 def edit_password(token, new_password):
     """
+    This function is used for user edit password
+    input: token, new passowrd
     """
     user_id = token_to_id(token)
     # password should be between 8-15
@@ -125,6 +134,9 @@ def edit_password(token, new_password):
 
 def show_user_profile(token):
     """
+    This function is used for show user profile
+    input: token
+    return: user profile
     """
     user_id = token_to_id(token)
     # user details

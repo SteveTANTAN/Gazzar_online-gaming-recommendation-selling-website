@@ -1,8 +1,4 @@
-from sqlalchemy.orm import relationship
-
 from database import db
-from product import Product
-from order import Order
 
 class Order_detail(db.Model):
     __tablename__ = 'order_detail'

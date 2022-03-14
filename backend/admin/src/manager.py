@@ -1,24 +1,14 @@
 """
-auth.py is used for authentication
-This file will include the user_register
+auth.py is admin for authentication
 """
-import email
-from pickle import NONE
 import sys
-
 sys.path.append('../../database/src')
 
 from database import db
-from product import Product
 from admin import Admin
-from user import User
 from error import Error
 from type import Type
-import smtplib
-from email.mime.text import MIMEText
-from email.header import Header
-
-from help_admin import create_admin_id, create_token, add_to_database, check_email, check_password, admin_status, token_to_id, delete_to_database
+from help_admin import create_admin_id, create_token, add_to_database, check_email, check_password, admin_status, token_to_id
 
 def add_admin(token, email, password):
     """
@@ -74,6 +64,9 @@ def delete_admin(token, email):
 
 def admin_login(email, password):
     """
+    This function is used for admin login
+    input: email, password
+    return: token, status
     """
     # error handler
     # all admin email
@@ -97,6 +90,9 @@ def admin_login(email, password):
 
 def admin_logout(token):
     """
+    This function is used for admin logout
+    input: token
+    return: logout result
     """
     cur_admin_id = token_to_id(token)
     # no admin
@@ -108,9 +104,26 @@ def admin_logout(token):
     db.session.commit()
     return {'is_success': True}
 
+def edit_password(token, new_password):
+    """
+    This function is used for admin edit account password
+    input: email, nwe_password
+    """
+    cur_admin_id = token_to_id(token)
+    # password should be between 8-15
+    if (check_password(new_password) == False):
+        return {'error' : Error.query.filter(Error.error_id == 5).all()[0].error_name}
+
+    admin_info = Admin.query.filter(Admin.admin_id==cur_admin_id).all()[0]
+    admin_info.password = new_password
+    db.session.commit()
+    return {}
 
 def show_all_admins(token):
     """
+    This function is used for show all admins
+    input: token
+    return: admins profile
     """
     # check token
     cur_admin_id = token_to_id(token)

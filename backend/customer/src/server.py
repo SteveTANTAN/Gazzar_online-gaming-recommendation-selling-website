@@ -1,19 +1,18 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request
 from json import dumps
-from flask import Flask, request, send_from_directory
+from flask import Flask, request
 from flask_cors import CORS
-import requests
+
 import sys
-sys.path.append('../../database/src') 
-from database import db 
+sys.path.append('../../database/src')
+from database import db
+
 from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile
 
 sys.path.append('../../admin/src')
 from manager import add_admin, admin_login, admin_logout, show_all_admins, delete_admin
 def defaultHandler(err):
-    """
-    server
-    """
+    """server"""
     response = err.get_response()
     print('response', err, err.get_response())
     response.data = dumps({
@@ -32,30 +31,28 @@ APP.register_error_handler(Exception, defaultHandler)
 
 @APP.route('/api/user/register', methods = ['POST'])
 def register_user():
-    """Registers a new user."""
+    """Registers a new user"""
     info = request.get_json()
     email = info['email']
     password = info['password']
     name = info['name']
     age = info['age']
     gender = info['gender']
-
     result = user_register(email, password, name, age, gender)
     return dumps(result)
 
 @APP.route('/api/user/login', methods = ['POST'])
 def login_user():
-    """Login a new user."""
+    """Login a new user"""
     info = request.get_json()
     email = info['email']
     password = info['password']
-
     result = user_login(email, password)
     return dumps(result)
 
 @APP.route('/api/user/logout', methods = ['POST'])
 def logout_user():
-    """Login a new user."""
+    """Logout a new user"""
     info = request.get_json()
     token = info['token']
     result = user_logout(token)
@@ -63,7 +60,7 @@ def logout_user():
 
 @APP.route('/api/user/forget/password', methods = ['POST'])
 def password_forget():
-    """Login a new user."""
+    """user forget password"""
     info = request.get_json()
     token = info['token']
     result = forget_password(token)
@@ -71,7 +68,7 @@ def password_forget():
 
 @APP.route('/api/user/edit/password', methods = ['PUT'])
 def password_edit():
-    """Login a new user."""
+    """user edit password"""
     info = request.get_json()
     token = info['token']
     password = info['password']
@@ -128,7 +125,7 @@ def show_admin_profile(token):
     # token = info['token']
     return dumps(show_all_admins(token))
 
-@APP.route('/api/delete/admin', methods=['DELETE'])
+@APP.route('/api/admin/delete', methods=['DELETE'])
 def target_admin_delete():
     '''
     Route for listing profile

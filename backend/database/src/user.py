@@ -1,5 +1,4 @@
 from database import db
-from type import Type
 
 user_type_connection = db.Table(
     'user_type_connection',
