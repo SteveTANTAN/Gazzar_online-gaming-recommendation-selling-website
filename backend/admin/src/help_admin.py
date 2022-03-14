@@ -2,6 +2,8 @@
 helper function for admin
 """
 import sys
+
+from pip import main
 sys.path.append('../../database/src')
 
 from database import db
@@ -18,7 +20,7 @@ def create_admin_id():
     # get all admin_id
     all_admin_id = db.session.query(Admin.admin_id).all()
     #generate len(admin_id) + 1
-    return len(all_admin_id) + 1
+    return ((all_admin_id[-1][0]) + 1 )
 
 def create_token(admin_id):
     '''
@@ -102,3 +104,7 @@ def admin_status(token):
     super_admin = Admin.query.filter(Admin.admin_id==admin_id).all()[0]
     if (super_admin.status == 1): return True
     return False
+
+
+if __name__ == "__main__":
+    create_admin_id()

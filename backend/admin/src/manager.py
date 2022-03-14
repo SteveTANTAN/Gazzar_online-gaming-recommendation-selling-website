@@ -40,7 +40,7 @@ def add_admin(token, email, password):
     # add data to database
     add_to_database(admin)
 
-    output = {'token': token}
+    output = {'token': new_token}
     return output
 
 def delete_admin(token, email):
@@ -50,7 +50,8 @@ def delete_admin(token, email):
     return: token
     """
     # handle token (check super admin)
-    print(admin_status(token))
+    #print(admin_status(token))
+    
     if (admin_status(token) == False):
         return {'error' : Error.query.filter(Error.error_id == 14).all()[0].error_name}
     # create a unique uid for the user
