@@ -8,6 +8,8 @@ from database import db
 from user import User
 from cart import Cart
 from order import Order
+from type import Type
+from product import Product
 from payment_detail import Payment_detail
 from error import Error
 import smtplib
@@ -80,7 +82,7 @@ def user_logout(token):
     """
     cur_user_id = token_to_id(token)
     # no user
-    users = User.query.filter((User.admin_id==cur_user_id)).all()
+    users = User.query.filter((User.user_id==cur_user_id)).all()
     if (len(users) == 0):
         return {'error' : Error.query.filter(Error.error_id == 2).all()[0].error_name}
     target_user = users[0]
@@ -167,8 +169,8 @@ def show_user_profile(token):
     }
     return user_profile
 
-#if __name__ == "__main__":
-    #print(show_user_profile("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjF9.zf40wtVW374ygpDOvfCMhBfnLrddY2Y9C6IlDmzwxy4"))
+if __name__ == "__main__":
+    print(show_user_profile("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjExfQ.wEK2KsrtjIsiDxkgWuKBxwIGhVB5CRrqL2RUJfAMuCc"))
     # payment_details = Payment_detail.query.join(User).filter(Payment_detail.user_id==1).all()
     # for i in payment_details:
     #     print(i.card_type)

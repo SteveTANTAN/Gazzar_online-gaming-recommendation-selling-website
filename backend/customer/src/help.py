@@ -7,6 +7,7 @@ sys.path.append('../../database/src')
 from database import db
 from product import Product
 from user import User
+from type import Type
 from error import Error
 import jwt
 import re

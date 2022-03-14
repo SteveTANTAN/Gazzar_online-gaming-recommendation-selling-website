@@ -75,14 +75,14 @@ def password_edit():
     result = edit_password(token, password)
     return dumps(result)
 
-@APP.route('/api/user/profile/', methods=['POST'])
+@APP.route('/api/user/profile/<token>', methods=['GET'])
 def show_profile(token):
     '''
     Route for listing profile
     '''
     # print(token)
-    info = request.get_json()
-    token = info['token']
+    # info = request.get_json()
+    # token = info['token']
     return dumps(show_user_profile(token))
 
 @APP.route('/api/admin/add', methods = ['POST'])
