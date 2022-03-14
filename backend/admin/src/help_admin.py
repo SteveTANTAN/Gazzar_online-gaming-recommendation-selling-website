@@ -7,28 +7,29 @@ sys.path.append('../../database/src')
 
 from database import db
 from product import Product
-from user import User
+from admin import Admin
 from error import Error
 import string
 import random
 import jwt
 import re
-def create_uid():
+
+def create_admin_id():
     """
     This function is used to create a user id(uid)
     """
-    # get all uid
-    all_uid = db.session.query(User.user_id).all()
-    #generate len(uid) + 1
-    return len(all_uid) + 1
+    # get all admin_id
+    all_admin_id = db.session.query(Admin.admin_id).all()
+    #generate len(admin_id) + 1
+    return len(all_admin_id) + 1
 
-def create_token(uid):
+def create_token(admin_id):
     '''
     This function will generate token
     '''
-    SECRET = 'THREEDAYSTOSEE'
+    SECRET = 'ADMINTHREEDAYSTOSEE'
 
-    encoded_jwt = jwt.encode({'uid': uid}, SECRET, algorithm='HS256')
+    encoded_jwt = jwt.encode({'admin_id': admin_id}, SECRET, algorithm='HS256')
 
     return str(encoded_jwt)
 
@@ -74,6 +75,11 @@ def check_password(password):
     if(re.search(regex, password)):
         return True
     return False
+
+def admin_is_superadmin(token):
+    admins_email = Admin.query.filter(Admin.token==token).all()[0]
+    if (admin_email.status == 1) return True
+    return False
 # def get_all_user_info():
 # if __name__ == "__main__":
-#     create_uid()
+#     print(check_password("fghajGgfg@1ahjkdf"))

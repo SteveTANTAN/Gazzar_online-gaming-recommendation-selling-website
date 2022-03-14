@@ -56,7 +56,7 @@ def logout_user():
     """Login a new user."""
     info = request.get_json()
     user_id = info['user_id']
-    result = user_logout(email, password)
+    result = user_logout(user_id)
     return dumps(result)
 
 @APP.route('/api/user/forget/password', methods = ['POST'])
