@@ -41,8 +41,8 @@ class Product(db.Model):
         self.comment = ""
         self.category = category
 
-if __name__ == "__main__":
-    # show_product()
-    all_product = Product.query.join(Type, Product.genre).filter(Type.type_id==1).all()
-    for p in all_product:
-        print(f'{p.product_id}')
+# if __name__ == "__main__":
+#     # show_product()
+#     all_product = Product.query.join(Type, Product.genre).filter(Type.type_id==1).all()
+#     for p in all_product:
+#         print(f'{p.product_id}')

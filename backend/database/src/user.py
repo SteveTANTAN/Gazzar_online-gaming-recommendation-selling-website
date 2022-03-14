@@ -1,7 +1,3 @@
-from sqlalchemy import Column, String, Integer, Boolean, ForeignKey
-from sqlalchemy.orm import relationship, backref
-
-
 from database import db
 from type import Type
 
@@ -31,9 +27,3 @@ class User(db.Model):
         self.gender = gender
         self.email = email
         self.password = password
-
-# if __name__ == "__main__":
-#     # show_product()
-#     all_admin = db.session().query(User).all()
-#     for p in all_admin:
-#         print(f'{p.user_id}')

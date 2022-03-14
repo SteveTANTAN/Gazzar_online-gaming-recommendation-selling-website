@@ -3,8 +3,9 @@ from json import dumps
 from flask import Flask, request, send_from_directory
 from flask_cors import CORS
 import requests
+import sys
 
-from auth import user_register
+from auth import user_register, user_login
 
 def defaultHandler(err):
     """
@@ -35,9 +36,18 @@ def register_user():
     name = info['name']
     age = info['age']
     gender = info['gender']
-    interest = info['interest']
 
     result = user_register(email, password, name, age, gender)
+    return dumps(result)
+
+@APP.route('/auth/login', methods = ['POST'])
+def login_user():
+    """Login a new user."""
+    info = request.get_json()
+    email = info['email']
+    password = info['password']
+
+    result = user_login(email, password)
     return dumps(result)
 
 if __name__ == "__main__":
