@@ -1,7 +1,4 @@
-from sqlalchemy.orm import relationship, backref
-
 from database import db
-
 
 class Error(db.Model):
     __tablename__ = 'error'
@@ -12,4 +9,3 @@ class Error(db.Model):
     def __init__(self, error_id, error_name):
         self.error_id = error_id
         self.error_name = error_name
-    

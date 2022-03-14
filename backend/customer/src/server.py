@@ -1,17 +1,16 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request
 from json import dumps
-from flask import Flask, request, send_from_directory
+from flask import Flask, request
 from flask_cors import CORS
-import requests
-import sys 
-sys.path.append('../../database/src') 
-from database import db 
+
+import sys
+sys.path.append('../../database/src')
+from database import db
+
 from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile
 
 def defaultHandler(err):
-    """
-    server
-    """
+    """server"""
     response = err.get_response()
     print('response', err, err.get_response())
     response.data = dumps({
@@ -30,30 +29,28 @@ APP.register_error_handler(Exception, defaultHandler)
 
 @APP.route('/api/user/register', methods = ['POST'])
 def register_user():
-    """Registers a new user."""
+    """Registers a new user"""
     info = request.get_json()
     email = info['email']
     password = info['password']
     name = info['name']
     age = info['age']
     gender = info['gender']
-
     result = user_register(email, password, name, age, gender)
     return dumps(result)
 
 @APP.route('/api/user/login', methods = ['POST'])
 def login_user():
-    """Login a new user."""
+    """Login a new user"""
     info = request.get_json()
     email = info['email']
     password = info['password']
-
     result = user_login(email, password)
     return dumps(result)
 
 @APP.route('/api/user/logout', methods = ['POST'])
 def logout_user():
-    """Login a new user."""
+    """Logout a new user"""
     info = request.get_json()
     user_id = info['user_id']
     result = user_logout(user_id)
@@ -61,7 +58,7 @@ def logout_user():
 
 @APP.route('/api/user/forget/password', methods = ['POST'])
 def password_forget():
-    """Login a new user."""
+    """user forget password"""
     info = request.get_json()
     user_id = info['user_id']
     result = forget_password(user_id)
@@ -69,7 +66,7 @@ def password_forget():
 
 @APP.route('/api/user/edit/password', methods = ['PUT'])
 def password_edit():
-    """Login a new user."""
+    """user edit password"""
     info = request.get_json()
     user_id = info['user_id']
     password = info['password']
@@ -78,9 +75,7 @@ def password_edit():
 
 @APP.route('/api/user/profile/<token>', methods=['GET'])
 def show_profile(token):
-    '''
-    Route for listing profile
-    '''
+    """show user profile"""
     print(token)
     return dumps(show_user_profile(token))
 

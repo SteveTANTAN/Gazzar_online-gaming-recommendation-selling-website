@@ -1,9 +1,4 @@
-from sqlalchemy import Column, String, Integer, Boolean, ForeignKey
-from sqlalchemy.orm import relationship, backref
-
 from database import db
-
-
 
 class Type(db.Model):
     __tablename__ = 'type'

@@ -1,9 +1,4 @@
-from sqlalchemy.orm import relationship
-
-
 from database import db
-from product import Product
-from user import User
 
 class Cart(db.Model):
     __tablename__ = 'cart'

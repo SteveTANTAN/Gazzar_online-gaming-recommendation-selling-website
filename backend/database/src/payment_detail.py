@@ -1,6 +1,4 @@
-from sqlalchemy.orm import relationship
 from database import db
-from user import User
 
 class Payment_detail(db.Model):
     __tablename__ = 'payment_detail'

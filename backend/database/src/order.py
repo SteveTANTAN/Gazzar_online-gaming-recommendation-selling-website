@@ -1,8 +1,4 @@
-from sqlalchemy.orm import relationship
-
 from database import db
-from user import User
-
 
 class Order(db.Model):
     __tablename__ = 'order'
@@ -16,6 +12,7 @@ class Order(db.Model):
     def __init__(self, order_id, user):
         self.order_id = order_id
         self.user = user
+
 # if __name__ == "__main__":
 #     # show_product()
 #     all_admin = db.session().query(Order).all()
