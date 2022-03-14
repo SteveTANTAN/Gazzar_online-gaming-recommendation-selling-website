@@ -7,7 +7,7 @@ import sys
 sys.path.append('../../database/src')
 from database import db
 
-from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile
+from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile, show_user_payment, show_user_cart, show_user_order
 
 sys.path.append('../../admin/src')
 from manager import add_admin, admin_login, admin_logout, show_all_admins, delete_admin
@@ -84,6 +84,36 @@ def show_profile(token):
     # info = request.get_json()
     # token = info['token']
     return dumps(show_user_profile(token))
+
+@APP.route('/api/user/payment/<token>', methods=['GET'])
+def show_payment(token):
+    '''
+    Route for listing profile
+    '''
+    # print(token)
+    # info = request.get_json()
+    # token = info['token']
+    return dumps(show_user_payment(token))
+
+@APP.route('/api/user/order/<token>', methods=['GET'])
+def show_order(token):
+    '''
+    Route for listing profile
+    '''
+    # print(token)
+    # info = request.get_json()
+    # token = info['token']
+    return dumps(show_user_order(token))
+
+@APP.route('/api/user/cart/<token>', methods=['GET'])
+def show_cart(token):
+    '''
+    Route for listing profile
+    '''
+    # print(token)
+    # info = request.get_json()
+    # token = info['token']
+    return dumps(show_user_cart(token))
 
 @APP.route('/api/admin/add', methods = ['POST'])
 def admin_add():

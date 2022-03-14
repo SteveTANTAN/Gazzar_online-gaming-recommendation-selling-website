@@ -5,7 +5,6 @@ import sys
 sys.path.append('../../database/src')
 
 from database import db
-from product import Product
 from user import User
 from type import Type
 from error import Error
@@ -92,3 +91,6 @@ def token_to_id(token):
         if i.token == token:
             return i.user_id
     return False
+
+# if __name__ == "__main__":
+#     print(token_to_id("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjF9.zf40wtVW374ygpDOvfCMhBfnLrddY2Y9C6IlDmzwxy4"))
