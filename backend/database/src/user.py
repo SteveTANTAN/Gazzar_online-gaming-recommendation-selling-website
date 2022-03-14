@@ -19,6 +19,7 @@ class User(db.Model):
     password = db.Column(db.String(100))
     interest = db.relationship('Type', secondary=user_type_connection, lazy='subquery', backref=db.backref('user', lazy=True))
 
+
     def __init__(self, token, user_id, name, age, gender, email, password):
         self.token = token
         self.user_id = user_id

@@ -63,7 +63,17 @@ def check_email(email):
         return True
     return False
 
-
+def check_password(password):
+    '''
+    Define a function for
+    for validating an Email
+    '''
+    regex = "[a-zA-Z0-9@#$%^&,*]"
+    # pass the regualar expression
+    # and the string in search() method
+    if(re.search(regex, password)):
+        return True
+    return False
 # def get_all_user_info():
 # if __name__ == "__main__":
 #     create_uid()
