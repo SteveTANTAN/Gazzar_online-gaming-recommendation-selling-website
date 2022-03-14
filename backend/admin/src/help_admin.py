@@ -3,14 +3,12 @@
 """
 import sys
 
+from sqlalchemy import false
 sys.path.append('../../database/src')
 
 from database import db
-from product import Product
 from admin import Admin
 from error import Error
-import string
-import random
 import jwt
 import re
 
@@ -76,9 +74,20 @@ def check_password(password):
         return True
     return False
 
-def admin_is_superadmin(token):
-    admins_email = Admin.query.filter(Admin.token==token).all()[0]
-    if (admin_email.status == 1): return True
+def token_to_id(token):
+    '''
+    This function will convert token to u_id
+    '''
+    admins = Admin.query.all()
+    for i in admins:
+        if i.token == create_token(i.admin_id):
+            return i.admin_id
+    return False
+
+def admin_status(token):
+    admin_id = token_to_id(token)
+    super_admin = Admin.query.filter(Admin.admin_id==admin_id).all()[0]
+    if (super_admin.status == 1): return True
     return False
 # def get_all_user_info():
 # if __name__ == "__main__":

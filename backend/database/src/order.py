@@ -8,8 +8,6 @@ class Order(db.Model):
     __tablename__ = 'order'
 
     order_id = db.Column(db.Integer, primary_key=True)
-    # count how many orders
-    count = db.Column(db.Integer)
     # one to many
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     user = db.relationship('User', lazy='select', backref=db.backref('order', lazy='joined'))
@@ -18,7 +16,6 @@ class Order(db.Model):
     def __init__(self, order_id, user):
         self.order_id = order_id
         self.user = user
-        self.count = 0
 # if __name__ == "__main__":
 #     # show_product()
 #     all_admin = db.session().query(Order).all()
