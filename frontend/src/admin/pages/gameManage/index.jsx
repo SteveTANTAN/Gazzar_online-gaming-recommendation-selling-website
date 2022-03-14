@@ -1,5 +1,19 @@
 import { Table } from 'antd';
+import React from 'react';
+import { Input, Button, Space, Layout, Menu,Tooltip  } from 'antd';
+import {
+  UserOutlined,
+  CustomerServiceOutlined,
+  PieChartOutlined,
+  CarOutlined,
+  OrderedListOutlined,
+  SearchOutlined,
+} from '@ant-design/icons';
+import { Link, Redirect, useHistory } from 'umi';
 export default (props) => {
+const [gamename, setGamename] = React.useState('');
+const history = useHistory();
+
 const columns = [
   {
     title: 'ID',
@@ -121,5 +135,16 @@ function onChange(pagination, filters, sorter, extra) {
   console.log('params', pagination, filters, sorter, extra);
 }
 
-return(<Table columns={columns} dataSource={data} onChange={onChange} />);
+return(<div>
+
+<center>
+<Input onChange={e => setGamename(e.target.value)}  style={{ width: 240, borderRadius: 12, marginLeft: 20 }}
+  value = {gamename} type = 'text' placeholder='Search Product Here' />
+<Tooltip title="search">
+<Button shape="circle" icon={<SearchOutlined />} onClick={() => {history.push('/user/search');}}/>
+</Tooltip>
+
+</center>
+<Table columns={columns} dataSource={data} onChange={onChange} />
+</div>);
 }
