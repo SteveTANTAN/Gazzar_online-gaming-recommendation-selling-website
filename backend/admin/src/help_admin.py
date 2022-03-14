@@ -3,7 +3,7 @@ helper function for admin
 """
 import sys
 
-from pip import main
+#from pip import main
 sys.path.append('../../database/src')
 
 from database import db
