@@ -3,18 +3,20 @@ auth.py is used for authentication
 This file will include the user_register
 """
 import sys
-
 sys.path.append('../../database/src')
 
 from database import db
-from product import Product
 from user import User
+from cart import Cart
+from order import Order
+from payment_detail import Payment_detail
 from error import Error
 import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
+import pprint
 
-from help import create_uid, create_token, add_to_database, check_email, check_password
+from help import create_uid, create_token, add_to_database, check_email, check_password, token_to_id
 
 def user_register(email, password, name, age, gender):
     """
@@ -26,67 +28,76 @@ def user_register(email, password, name, age, gender):
     # email is used by other users
     users_email = User.query.filter(User.email==email).all()
     if (len(users_email) > 0):
-        return Error.query.filter(Error.error_id == 3).all()[0].error_name
+        return {'error' : Error.query.filter(Error.error_id == 3).all()[0].error_name}
     # email is invalid
     if (check_email(email) == False):
-        return Error.query.filter(Error.error_id == 2).all()[0].error_name
+        return {'error' : Error.query.filter(Error.error_id == 2).all()[0].error_name}
     # password should be between 8-15
-    if (len(password) < 8 or len(password) > 15 or check_password(password) == False):
-        return Error.query.filter(Error.error_id == 5).all()[0].error_name
+    if (check_password(password) == False):
+        return {'error' : Error.query.filter(Error.error_id == 5).all()[0].error_name}
 
-    # creat a unique uid for the user
+    # create a unique uid for the user
     uid = create_uid()
     # create token for the users
     token = create_token(uid)
     # input User infomation
+    # ---------------------------------------------------------------------gender 0,1,2
     user = User(token, uid, name, age, gender, email, password)
-    # add data to databse
+    # add data to database
     add_to_database(user)
 
-    output = {}
-    output['token'] = token
+    output = {'token': token}
     return output
 
 def user_login(email, password):
     """
     """
-    # get email and password correctly
-    users = User.query.filter((User.email==email), (User.password==password)).all()
+    # error handler
     # all users email
     users_email = User.query.filter(User.email==email).all()
-    # error handler
     # no users
     if (len(users_email) == 0):
-        return Error.query.filter(Error.error_id == 2).all()[0].error_name
+        return {'error' : Error.query.filter(Error.error_id == 2).all()[0].error_name}
+    # get email and password correctly
+    users = User.query.filter((User.email==email), (User.password==password)).all()
     # password incorrect
-    if (len(users) == 0): 
-        return Error.query.filter(Error.error_id == 6).all()[0].error_name
+    if (len(users) == 0):
+        return {'error' : Error.query.filter(Error.error_id == 6).all()[0].error_name}
     # successful login
-    output = {}
-    output['token'] = users[0].token
+    target_user = users[0]
+    target_user.token = create_token(target_user.user_id)
+    db.session.commit()
+    output = {'token': target_user.token}
     return output
 
-def user_logout(user_id):
+def user_logout(token):
     """
     """
-    return True
+    cur_user_id = token_to_id(token)
+    # no user
+    users = User.query.filter((User.admin_id==cur_user_id)).all()
+    if (len(users) == 0):
+        return {'error' : Error.query.filter(Error.error_id == 2).all()[0].error_name}
+    target_user = users[0]
+    target_user.token = create_token(0)
+    db.session.commit()
+    return {'is_success': True}
 
-def forget_password(user_id):
+def forget_password(token):
     """
     """
+    user_id = token_to_id(token)
     user_email = User.query.filter(User.user_id==user_id).all()[0]
     sender = 'g368231@gmail.com'
     receivers = [user_email.email]
 
     MY_ADDRESS = 'g368231@gmail.com'
     PASSWORD = 'chf12345678'
-	
-	
-    message = MIMEText('Your Gazza password is ' + user_email.password, 'plain', 'utf-8')
+
+    message = MIMEText('Your Gazzar password is ' + user_email.password, 'plain', 'utf-8')
     message['From'] = Header("Gazzar", 'utf-8')
 
-
-    subject = 'Gazza password'
+    subject = 'Gazzar password'
     message['Subject'] = Header(subject, 'utf-8')
 
     s = smtplib.SMTP(host='smtp.gmail.com', port=587)
@@ -99,34 +110,53 @@ def forget_password(user_id):
     return {}
 
 
-def edit_password(user_id, new_password):
+def edit_password(token, new_password):
     """
     """
+    user_id = token_to_id(token)
     # password should be between 8-15
-    if (len(new_password) < 8 or len(new_password) > 15 or check_password(new_password) == False):
-        return Error.query.filter(Error.error_id == 5).all()[0].error_name
+    if (check_password(new_password) == False):
+        return {'error' : Error.query.filter(Error.error_id == 5).all()[0].error_name}
 
-    user_info = User.query.filter(User.user_id==user_id).all()[0]
-    user_info.password = new_password
+    target_user = User.query.filter(User.user_id==user_id).all()[0]
+    target_user.password = new_password
     db.session.commit()
     return {}
 
 def show_user_profile(token):
     """
     """
-    user_info = User.query.filter(User.token==token).all()[0]
-    user = {"token": user_info.token, "user_id": user_info.user_id, 
-            "name": user_info.name, "age": user_info.age, 
-            "gender": user_info.gender, "email": user_info.email, "password": user_info.password}
-    # user.append(user_info.address)
-    # user.append(user_info.payment)
-    user_profile = []
-    user_profile.append(user)
+    user_id = token_to_id(token)
+    # user details
+    target_user = User.query.filter(User.user_id==user_id).all()[0]
+    user_info = {"token": target_user.token, "user_id": target_user.user_id,
+            "name": target_user.name, "age": target_user.age,
+            "gender": target_user.gender, "email": target_user.email, "password": target_user.password}
 
-    output = {}
-    output['user_profile'] = user_profile
-    return output
+    # payment details
+    target_user_payment = Payment_detail.query.join(User).filter(Payment_detail.user_id==1).all()
+    payment_info = []
+    for i in target_user_payment:
+        payment_details = {'card_type': i.card_type, 'card_number': i.card_number,
+            'name_on_card': i.name_on_card, 'expration_date': i.expration_date}
+        payment_info.append(payment_details)
 
-if __name__ == "__main__":
-    print(show_user_profile("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjF9.zf40wtVW374ygpDOvfCMhBfnLrddY2Y9C6IlDmzwxy4"))
+    # cart details
+    target_user_cart = Cart.query.join(User).filter(Cart.user_id==user_id).all()
+    cart_info = {'card_count': len(target_user_cart)}
+    # order details
+    target_user_order = Order.query.join(User).filter(Order.user_id==user_id).all()
+    order_info = {'order_count': len(target_user_order)}
+    user_profile = {
+        'user_info': user_info,
+        'payment_info': payment_info,
+        'cart_info': cart_info,
+        'order_info': order_info,
+    }
+    return user_profile
 
+#if __name__ == "__main__":
+    #print(show_user_profile("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjF9.zf40wtVW374ygpDOvfCMhBfnLrddY2Y9C6IlDmzwxy4"))
+    # payment_details = Payment_detail.query.join(User).filter(Payment_detail.user_id==1).all()
+    # for i in payment_details:
+    #     print(i.card_type)

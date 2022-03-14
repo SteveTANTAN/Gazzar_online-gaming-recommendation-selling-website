@@ -77,3 +77,13 @@ def check_password(password):
 # def get_all_user_info():
 # if __name__ == "__main__":
 #     create_uid()
+
+def token_to_id(token):
+    '''
+    This function will convert token to u_id
+    '''
+    users = User.query.all()
+    for i in users:
+        if i.token == create_token(i.user_id):
+            return i.user_id
+    return False
