@@ -77,11 +77,10 @@ def password_edit():
     return dumps(result)
 
 @APP.route('/api/user/profile/<token>', methods=['GET'])
-def show_profile():
+def show_profile(token):
     '''
     Route for listing profile
     '''
-    token = request.args.get('token')
     print(token)
     return dumps(show_user_profile(token))
 
