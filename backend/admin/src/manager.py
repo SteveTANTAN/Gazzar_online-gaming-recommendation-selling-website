@@ -9,7 +9,9 @@ sys.path.append('../../database/src')
 from database import db
 from product import Product
 from admin import Admin
+from user import User
 from error import Error
+from type import Type
 import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
@@ -112,17 +114,31 @@ def edit_password(admin_id, new_password):
     db.session.commit()
     return {}
 
-def show_all_users_profile(token):
+def show_all_admins_profile(token):
     """
     """
     user_profile = []
-    user_info = User.query.all()[0]
-    for user in user_info:
-        user = {"token": user_info.token, "user_id": user_info.user_id, 
-                "name": user_info.name, "age": user_info.age, 
-                "gender": user_info.gender, "email": user_info.email, "password": user_info.password}
+    user_info = Admin.query.all()
+    for admin in user_info:
+        user = {"admin_id": admin.admin_id, "email": admin.email, "password": admin.password}
         user_profile.append(user)
 
     output = {}
-    output['all_users_profile'] = user_profile
+    output['all_admins_profile'] = user_profile
     return output
+
+def show_all_users_profile():
+    """
+    """
+    user_profile = []
+    all_user_interest = User.query.join(Type, User.interest).all()
+    # user_info = User.query.
+    # for users in all_user_interest:
+    #     user = {"user_id": users.admin_id, "email": users.email, "password": users.password}
+    #     user_profile.append(user)
+    # output = {}
+    # output['all_users_profile'] = user_profile
+    return all_user_interest
+# if __name__ == "__main__":
+#     # show_product()
+#     print(show_all_users_profile())

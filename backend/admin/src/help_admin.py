@@ -78,7 +78,7 @@ def check_password(password):
 
 def admin_is_superadmin(token):
     admins_email = Admin.query.filter(Admin.token==token).all()[0]
-    if (admin_email.status == 1) return True
+    if (admin_email.status == 1): return True
     return False
 # def get_all_user_info():
 # if __name__ == "__main__":
