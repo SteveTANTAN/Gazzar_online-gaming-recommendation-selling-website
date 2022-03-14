@@ -17,11 +17,11 @@ export default (props) => {
     <div className={styles.wrap}>
       <div className={styles.header}>
         <div className={styles.content + ' fr'}>
-          <Space>
+
             <Link to="/admin/manage">
               <img className={styles.logo} src={logoImg} alt="" />
             </Link>
-          </Space>
+
           <Space style={{ width: 20}}>   </Space>
           <div className="blank" style={{ fontSize:25, fontWeight: 600}}>  Admin </div>
           <Space>
@@ -51,20 +51,27 @@ export default (props) => {
               <Menu.Item key="1" icon={<PieChartOutlined />}>
                 overview
               </Menu.Item>
+             
               <Menu.Item key="2" icon={<CarOutlined/>}>
+              <Link to="/admin/manage/games">
                 Games Management
+                </Link>
               </Menu.Item>
               <Menu.Item key="3" icon={<CustomerServiceOutlined/>}>
+                <Link to="/admin/manage/Peripherals">
                 Peripherals Management
+                </Link>
               </Menu.Item>
               <Menu.Item key="4" icon={<OrderedListOutlined/>}>
                 order Management
               </Menu.Item>
-              <Link className={styles.button} to="/admin/manage/admins">
+
               <Menu.Item key="5" icon={<UserOutlined/>}>
+                <Link to="/admin/manage/admins">
                 Admins Management
+                </Link>
               </Menu.Item>
-              </Link>
+
             </Menu>
           </Sider>
           <Layout>

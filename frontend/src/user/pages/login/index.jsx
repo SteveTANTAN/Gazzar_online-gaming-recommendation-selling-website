@@ -1,5 +1,5 @@
 import styles from './index.less';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, Space, Row} from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone, UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Link, useHistory } from 'umi';
 
@@ -47,7 +47,12 @@ export default function Login() {
               Login
             </Button>
             <div className={styles.center}>
-              <Link to="/user/register">Register For Free</Link>
+            <Space style={{ height: 40}}><Link to="/user/register">Register For Free</Link></Space>
+              
+            </div>
+            <div className={styles.center}>
+            <Space style={{ height: 30}}> <Link to="/admin">Are you Admin? Log in here</Link></Space>
+              
             </div>
           </Form.Item>
         </Form>
