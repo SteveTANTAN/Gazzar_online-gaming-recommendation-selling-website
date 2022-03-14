@@ -8,6 +8,8 @@ from database import db
 from user import User
 from cart import Cart
 from order import Order
+from type import Type
+from product import Product
 from payment_detail import Payment_detail
 from error import Error
 import smtplib
@@ -80,7 +82,7 @@ def user_logout(token):
     """
     cur_user_id = token_to_id(token)
     # no user
-    users = User.query.filter((User.admin_id==cur_user_id)).all()
+    users = User.query.filter((User.user_id==cur_user_id)).all()
     if (len(users) == 0):
         return {'error' : Error.query.filter(Error.error_id == 2).all()[0].error_name}
     target_user = users[0]
@@ -139,36 +141,66 @@ def show_user_profile(token):
     return: user profile
     """
     user_id = token_to_id(token)
+    #print("-------------")
     # user details
     target_user = User.query.filter(User.user_id==user_id).all()[0]
     user_info = {"token": target_user.token, "user_id": target_user.user_id,
             "name": target_user.name, "age": target_user.age,
             "gender": target_user.gender, "email": target_user.email, "password": target_user.password}
 
-    # payment details
-    target_user_payment = Payment_detail.query.join(User).filter(Payment_detail.user_id==1).all()
+    info_user = []
+    info_user.append(user_info)
+
+    output = {}
+    output['user_info'] = info_user
+
+    return output
+
+def show_user_payment(token):
+    user_id = token_to_id(token)
+    # # payment details
+    target_user_payment = Payment_detail.query.join(User).filter(Payment_detail.user_id==user_id).all()
     payment_info = []
     for i in target_user_payment:
         payment_details = {'card_type': i.card_type, 'card_number': i.card_number,
             'name_on_card': i.name_on_card, 'expration_date': i.expration_date}
         payment_info.append(payment_details)
 
-    # cart details
+    output = {}
+    output['payment_info'] = payment_info
+    return output
+
+def show_user_cart(token):
+    user_id = token_to_id(token)
+    # # cart details
     target_user_cart = Cart.query.join(User).filter(Cart.user_id==user_id).all()
     cart_info = {'card_count': len(target_user_cart)}
+    info_cart = []
+    info_cart.append(cart_info)
+
+    output = {}
+    output['cart_info'] = info_cart
+    return output
+
+def show_user_order(token):
+    user_id = token_to_id(token)
     # order details
     target_user_order = Order.query.join(User).filter(Order.user_id==user_id).all()
     order_info = {'order_count': len(target_user_order)}
-    user_profile = {
-        'user_info': user_info,
-        'payment_info': payment_info,
-        'cart_info': cart_info,
-        'order_info': order_info,
-    }
-    return user_profile
 
-#if __name__ == "__main__":
-    #print(show_user_profile("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjF9.zf40wtVW374ygpDOvfCMhBfnLrddY2Y9C6IlDmzwxy4"))
+    info_order = []
+    info_order.append(order_info)
+
+    output = {}
+    output['order_info'] = info_order
+    return output
+
+# if __name__ == "__main__":
+#     token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjF9.zf40wtVW374ygpDOvfCMhBfnLrddY2Y9C6IlDmzwxy4"
+#     print(show_user_profile(token))
+#     print(show_user_payment(token))
+#     print(show_user_cart(token))
+#     print(show_user_order(token))
     # payment_details = Payment_detail.query.join(User).filter(Payment_detail.user_id==1).all()
     # for i in payment_details:
     #     print(i.card_type)
