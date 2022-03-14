@@ -1,0 +1,53 @@
+.top {
+  height: 160px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+
+  img {
+    height: 160px;
+    width: 100%;
+    cursor: pointer;
+  }
+
+  .left {
+    flex: 1;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+
+  .right {
+    width: 380px;
+    margin-left: 24px;
+    background-color: white;
+    border-radius: 8px;
+    height: 100%;
+    padding: 20px;
+
+    img {
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      margin-right: 20px;
+    }
+
+    .info {
+      margin-top: 12px;
+
+      h2 {
+        color: rgba(22, 155, 213, 1);
+        font-size: 18px;
+      }
+
+      font-size: 20px;
+
+      & > div {
+        flex: 1;
+        text-align: center;
+      }
+
+      & > div:not(:first-child) {
+        border-left: 1px solid #999;
+      }
+    }
+  }
+}

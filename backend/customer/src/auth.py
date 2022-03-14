@@ -127,6 +127,6 @@ def show_user_profile(token):
     output['user_profile'] = user_profile
     return output
 
-# if __name__ == "__main__":
-#     print(show_user_profile(1))
+if __name__ == "__main__":
+    print(show_user_profile("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjF9.zf40wtVW374ygpDOvfCMhBfnLrddY2Y9C6IlDmzwxy4"))
 

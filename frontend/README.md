@@ -1,14 +1,10 @@
-# capstone-project-3900-w14b-three-days-to-see
+# umi project
 
-
-
-
-## Getting Start for front-end
+## Getting Started
 
 Install dependencies,
 
 ```bash
-$ cd frontend
 $ yarn install
 ```
 

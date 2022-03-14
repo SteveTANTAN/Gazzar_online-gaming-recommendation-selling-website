@@ -76,12 +76,13 @@ def password_edit():
     result = edit_password(user_id, password)
     return dumps(result)
 
-@APP.route('/api/user/profile', methods=['GET'])
+@APP.route('/api/user/profile/<token>', methods=['GET'])
 def show_profile():
     '''
     Route for listing profile
     '''
     token = request.args.get('token')
+    print(token)
     return dumps(show_user_profile(token))
 
 if __name__ == "__main__":
