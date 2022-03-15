@@ -65,7 +65,6 @@ export default function Login() {
           >
 
             <Input
-              onChange={e => setusername(e.target.value)}
               prefix={<UserOutlined className="site-form-item-icon" />}
               placeholder="Email"
               onChange={e => setemail(e.target.value)}
@@ -78,7 +77,6 @@ export default function Login() {
           >
             <Input.Password
               prefix={<LockOutlined className="site-form-item-icon" />}
-              onChange={e => setpassword(e.target.value)}
               type="password"
               placeholder="Password"
               onChange={e => setpassword(e.target.value)}
