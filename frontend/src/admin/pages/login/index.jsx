@@ -3,16 +3,55 @@ import React from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone, UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Link, useHistory } from 'umi';
+const BASE_URL = 'http://localhost:55467';
 
 export default function Login() {
   const history = useHistory();
-  const onFinish = (values) => {
-    console.log('Received values of form: ', values);
-    history.push('/admin/manage/');
-  };
-  const [username, setusername] = React.useState('');
+  const [email, setemail] = React.useState('');
   const [password, setpassword] = React.useState('');
+  const [login, setlogin] = React.useState(false);
 
+  if (document.cookie || login) {
+    history.push('/admin/manage/');
+  }
+  // some fetching used here
+  function submit () {
+    const loginPeople = {
+      email: email,
+      password: password,
+    };
+    fetch(`${BASE_URL}/api/admin/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(loginPeople),
+    }).then((data) => {
+      if (data.status === 200) {
+        console.log('Success1:');
+
+        data.json().then(result => {
+          console.log('Success:', result);
+
+          document.cookie = 'Token=' + result.token + '';
+          localStorage.setItem('token', result.token);
+          setlogin(true);
+        });
+      } else if (data.status === 400) {
+        data.json().then(result => {
+          console.log('Success:', result);
+
+          // setErrorout(result.error)
+        });
+      }
+    });
+  }
+
+
+  const onFinish = (values) => {
+    submit();
+    console.log('Received values of form: ', values);
+  };
 
   return (
     <div className={styles.wrap}>
@@ -21,15 +60,16 @@ export default function Login() {
         <h3 style={{ marginBottom: 10 }}>Managing your GAZZAR</h3>
         <Form name="normal_login" onFinish={onFinish}>
           <Form.Item
-            name="username"
-            rules={[{ required: true, message: 'Please input your Username!' }]}
+            name="email"
+            rules={[{ required: true, message: 'Please input your email!' }]}
           >
 
             <Input
               onChange={e => setusername(e.target.value)}
               prefix={<UserOutlined className="site-form-item-icon" />}
-              value = {username} type = 'text'
-              placeholder="Username"
+              placeholder="Email"
+              onChange={e => setemail(e.target.value)}
+              value = {email}
             />
           </Form.Item>
           <Form.Item
@@ -41,6 +81,7 @@ export default function Login() {
               onChange={e => setpassword(e.target.value)}
               type="password"
               placeholder="Password"
+              onChange={e => setpassword(e.target.value)}
               value = {password}
               iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
             />

@@ -10,9 +10,33 @@ import {
 } from '@ant-design/icons';
 import { Link, useHistory } from 'umi';
 import logoImg from '@/assets/logo.png';
+const BASE_URL = 'http://localhost:55467';
+
 export default (props) => {
   const history = useHistory();
   const { Header, Content, Footer, Sider } = Layout;
+  if (!document.cookie) {
+    history.push("/admin/login");
+    //return <Redirect to="/login" />;
+  }
+  function logout () {
+    document.cookie = 'Token=; expires = Thu, 01 Jan 2020 00:00:00 UTC';
+    console.log(localStorage.getItem('token'));
+    console.log(document.cookie);
+    history.push("/admin/login");
+    const logPeople = {
+      token: localStorage.getItem('token'),
+    };
+    fetch(`${BASE_URL}/api/admin/logout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(logPeople),
+    })
+  }
+
+
   return (
     <div className={styles.wrap}>
       <div className={styles.header}>
@@ -25,8 +49,8 @@ export default (props) => {
           <Space style={{ width: 20}}>   </Space>
           <div className="blank" style={{ fontSize:25, fontWeight: 600}}>  Admin </div>
           <Space>
-            <Link className={styles.button} to="/admin/login">
-              <Button type="primary" style={{ borderRadius: 16 }}>
+            <Link className={styles.button} onClick={() => {logout();}} to="/admin/login" >
+              <Button type="primary" style={{ borderRadius: 16 }} >
                 Logout
               </Button>
             </Link>
