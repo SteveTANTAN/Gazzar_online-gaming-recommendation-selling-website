@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Button, Space, Layout, Menu  } from 'antd';
+import { Input, Button, Space, Layout, Menu, message  } from 'antd';
 import { Alert } from 'antd';
 import {
   Form,
@@ -81,18 +81,13 @@ function submit () {
 
       data.json().then(result => {
         console.log('Success:', result);
+        message.success("New admin adding successful 😊!!!")
 
       });
     } else if (data.status === 400) {
       data.json().then(result => {
-        console.log('error 400', result);
-        return (
-        <Alert
-          message="Error"
-          description = {result.error}
-          type="error"
-          showIcon
-        />)
+        console.log('error 400', result.message);
+        message.error(result.message)
       });
     }
   });
