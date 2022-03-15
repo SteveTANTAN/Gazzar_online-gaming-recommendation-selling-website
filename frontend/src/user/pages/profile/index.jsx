@@ -1,13 +1,22 @@
 import styles from './index.less';
-import { Button, Space, Modal, Input, Form, DatePicker } from 'antd';
+import { Button, Space, Modal, Input, Form, DatePicker, message } from 'antd';
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { useSetState } from 'ahooks';
-import Payment from '@/user/components//Payment';
-
+import Payment from '@/user/components/Payment';
+import { get,put } from '@/user/utils/request';
+import {useSelector,useDispatch} from 'dva'
+import { useEffect } from 'react';
 export default function Profile() {
   const [password, setPassword] = useSetState({ visible: false });
   const [info, setInfo] = useSetState({ visible: false });
   const [card, setCard] = useSetState({ visible: false });
+  const [data, setData] = useSetState({  });
+  const {token} = useSelector(state=>state.app)
+  useEffect(()=>{
+    get(`/api/user/profile/${token}`).then(res=>{
+      setData(res.user_info||{})
+    })
+  },[])
   return (
     <div className="bg">
       <div className={styles.wrap}>
@@ -16,16 +25,16 @@ export default function Profile() {
           <div>
             <Space>
               {info?.visible ? (
-                <Input defaultValue={'Nickname'} />
+                <Input defaultValue={data.name} />
               ) : (
-                <h3>Nickname</h3>
+                <h3>{data.name}</h3>
               )}
               <EditOutlined
                 className={styles.icon}
                 onClick={() => setInfo({ visible: true })}
               ></EditOutlined>
             </Space>
-            <div className={styles.desc}>useremail@gmail.com</div>
+            <div className={styles.desc}>{data.email}</div>
           </div>
           <div className="blank"></div>
           <Button type="primary" onClick={() => setPassword({ visible: true })}>
@@ -54,7 +63,12 @@ export default function Profile() {
           onCancel={() => setPassword({ visible: false })}
         >
           <div className="pt">
-            <Form labelCol={{ span: 7 }} wrapperCol={{ span: 16 }}>
+            <Form labelCol={{ span: 7 }} wrapperCol={{ span: 16 }} onFinish={values=>{
+              put('/api/user/edit/password',{pasword:values.pasword,token}).then(()=>{
+                message.success('success')
+                setPassword({visible:false})
+              })
+            }}>
               <Form.Item
                 name={'pasword'}
                 label="New Pasword"

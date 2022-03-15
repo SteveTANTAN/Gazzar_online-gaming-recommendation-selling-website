@@ -1,11 +1,14 @@
 import styles from './index.less';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Link } from 'umi';
-
+import { post } from '@/user/utils/request';
 export default function Password() {
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
+    post('/api/user/forget/password',values).then(()=>{
+      message.success('success')
+    })
   };
 
   return (

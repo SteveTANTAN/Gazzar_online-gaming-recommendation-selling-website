@@ -20,10 +20,12 @@ import {
 import { useState } from 'react';
 import { Link, useHistory } from 'umi';
 import { post } from '@/user/utils/request';
+import { useDispatch } from 'dva';
 export default function Register() {
   const [step, setStep] = useState(1);
   const [info, setInfo] = useState();
   const history = useHistory()
+  const dispatch = useDispatch();
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
     setInfo(values);
@@ -68,7 +70,8 @@ export default function Register() {
               style={{ width: 140 }}
               type="primary"
               onClick={() => {
-                post('/api/user/register', info).then(() => {
+                post('/api/user/register', info).then((res) => {
+                  dispatch({type:'app/setState',payload:{token:res.token}})
                   message.success('register success');
                   history.push('/')
                 });

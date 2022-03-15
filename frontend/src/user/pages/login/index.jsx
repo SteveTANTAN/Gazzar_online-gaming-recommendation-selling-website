@@ -7,12 +7,15 @@ import {
   LockOutlined,
 } from '@ant-design/icons';
 import { Link, useHistory } from 'umi';
+import { useDispatch } from 'dva';
 import { post } from '@/user/utils/request';
 
 export default function Login() {
   const history = useHistory();
+  const dispatch = useDispatch();
   const onFinish = (values) => {
-    post('/api/user/login', values).then(() => {
+    post('/api/user/login', values).then((res) => {
+      dispatch({type:'app/setState',payload:{token:res.token}})
       history.push('/')
     });
   };
