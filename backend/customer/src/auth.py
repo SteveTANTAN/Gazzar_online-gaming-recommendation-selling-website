@@ -90,12 +90,12 @@ def user_logout(token):
     db.session.commit()
     return {'is_success': True}
 
-def forget_password(user_email):
+def forget_password(email_user):
     """
     This function is used for user forget password
     input: token
     """
-    user_email = User.query.filter(User.user_email==user_email).all()[0]
+    user_email = User.query.filter(User.email==email_user).all()[0]
     sender = 'g368231@gmail.com'
     receivers = [user_email.email]
 
