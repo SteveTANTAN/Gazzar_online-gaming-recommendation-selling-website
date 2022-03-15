@@ -6,9 +6,13 @@ import {
   SearchOutlined,
 } from '@ant-design/icons';
 import { Link, useHistory } from 'umi';
+import {useSelector,useDispatch} from 'dva'
 import logoImg from '@/assets/logo.png';
+import { post } from '@/user/utils/request';
 export default (props) => {
   const history = useHistory();
+  const dispatch = useDispatch();
+  const {token} = useSelector(state=>state.app)
   return (
     <div className={styles.wrap}>
       <div className={styles.header}>
@@ -27,7 +31,7 @@ export default (props) => {
           </Space>
           <div className="blank"></div>
           <Space>
-            <ShoppingCartOutlined
+            {token&&<><ShoppingCartOutlined
               className={styles.icon}
               onClick={() => {
                 history.push('/user/cart');
@@ -38,12 +42,20 @@ export default (props) => {
               onClick={() => {
                 history.push('/user/profile');
               }}
-            ></UserOutlined>
-            <Link className={styles.button} to="/user/login">
+            ></UserOutlined></>}
+            {token?<Link className={styles.button} onClick={()=>{
+            post('/api/user/logout',{token}).then(()=>{
+              dispatch({type:'app/setState',payload:{token:''}})
+            })
+            }}>
+              <Button type="primary" style={{ borderRadius: 16 }}>
+                Logout
+              </Button>
+            </Link>:<Link className={styles.button} to="/user/login">
               <Button type="primary" style={{ borderRadius: 16 }}>
                 Login
               </Button>
-            </Link>
+            </Link>}
           </Space>
         </div>
       </div>
