@@ -11,7 +11,7 @@ export default function Login() {
   const [password, setpassword] = React.useState('');
   const [login, setlogin] = React.useState(false);
 
-  if (document.cookie || login) {
+  if (localStorage.getItem('token') != null || login) {
     history.push('/admin/manage/');
   }
   // some fetching used here
