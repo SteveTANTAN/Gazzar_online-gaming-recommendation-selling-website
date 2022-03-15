@@ -17,7 +17,7 @@ from email.mime.text import MIMEText
 from email.header import Header
 import pprint
 
-from help import create_uid, create_token, add_to_database, check_email, check_password, token_to_id
+from help import create_uid, create_token, add_to_database, check_email, check_password, token_to_id, ErrorMessage
 
 def user_register(email, password, name, age, gender):
     """
@@ -29,13 +29,13 @@ def user_register(email, password, name, age, gender):
     # email is used by other users
     users_email = User.query.filter(User.email==email).all()
     if (len(users_email) > 0):
-        return {'error' : Error.query.filter(Error.error_id == 3).all()[0].error_name}
+        raise ErrorMessage(Error.query.filter(Error.error_id == 3).all()[0].error_name)
     # email is invalid
     if (check_email(email) == False):
-        return {'error' : Error.query.filter(Error.error_id == 2).all()[0].error_name}
+        raise ErrorMessage(Error.query.filter(Error.error_id == 2).all()[0].error_name)
     # password should be between 8-15
     if (check_password(password) == False):
-        return {'error' : Error.query.filter(Error.error_id == 5).all()[0].error_name}
+        raise ErrorMessage(Error.query.filter(Error.error_id == 5).all()[0].error_name)
 
     # create a unique uid for the user
     uid = create_uid()
@@ -61,12 +61,12 @@ def user_login(email, password):
     users_email = User.query.filter(User.email==email).all()
     # no users
     if (len(users_email) == 0):
-        return {'error' : Error.query.filter(Error.error_id == 2).all()[0].error_name}
+        raise ErrorMessage(Error.query.filter(Error.error_id == 2).all()[0].error_name)
     # get email and password correctly
     users = User.query.filter((User.email==email), (User.password==password)).all()
     # password incorrect
     if (len(users) == 0):
-        return {'error' : Error.query.filter(Error.error_id == 6).all()[0].error_name}
+        raise ErrorMessage(Error.query.filter(Error.error_id == 6).all()[0].error_name)
     # successful login
     target_user = users[0]
     target_user.token = create_token(target_user.user_id)
@@ -84,19 +84,18 @@ def user_logout(token):
     # no user
     users = User.query.filter((User.user_id==cur_user_id)).all()
     if (len(users) == 0):
-        return {'error' : Error.query.filter(Error.error_id == 2).all()[0].error_name}
+        raise ErrorMessage(Error.query.filter(Error.error_id == 2).all()[0].error_name)
     target_user = users[0]
     target_user.token = create_token(0)
     db.session.commit()
     return {'is_success': True}
 
-def forget_password(token):
+def forget_password(user_email):
     """
     This function is used for user forget password
     input: token
     """
-    user_id = token_to_id(token)
-    user_email = User.query.filter(User.user_id==user_id).all()[0]
+    user_email = User.query.filter(User.user_email==user_email).all()[0]
     sender = 'g368231@gmail.com'
     receivers = [user_email.email]
 
@@ -116,7 +115,7 @@ def forget_password(token):
     s.sendmail(sender, receivers, message.as_string())
     s.quit()
 
-    return {}
+    return {'is_success': True}
 
 
 def edit_password(token, new_password):
@@ -127,12 +126,12 @@ def edit_password(token, new_password):
     user_id = token_to_id(token)
     # password should be between 8-15
     if (check_password(new_password) == False):
-        return {'error' : Error.query.filter(Error.error_id == 5).all()[0].error_name}
+        raise ErrorMessage(Error.query.filter(Error.error_id == 5).all()[0].error_name)
 
     target_user = User.query.filter(User.user_id==user_id).all()[0]
     target_user.password = new_password
     db.session.commit()
-    return {}
+    return {'is_success': True}
 
 def show_user_profile(token):
     """

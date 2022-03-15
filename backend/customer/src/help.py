@@ -10,6 +10,8 @@ from type import Type
 from error import Error
 import jwt
 import re
+from werkzeug.exceptions import HTTPException
+
 def create_uid():
     """
     This function is used to create a user id(uid)
@@ -91,6 +93,11 @@ def token_to_id(token):
         if i.token == token:
             return i.user_id
     return False
+
+class ErrorMessage(HTTPException):
+    """Input/Access Error"""
+    code = 400
+    message = 'No message specified'
 
 # if __name__ == "__main__":
 #     print(token_to_id("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjF9.zf40wtVW374ygpDOvfCMhBfnLrddY2Y9C6IlDmzwxy4"))
