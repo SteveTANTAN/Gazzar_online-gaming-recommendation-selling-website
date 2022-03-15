@@ -14,7 +14,7 @@ export default function Profile() {
   const {token} = useSelector(state=>state.app)
   useEffect(()=>{
     get(`/api/user/profile/${token}`).then(res=>{
-      setData(res.user_info||{})
+      setData(res.user_info[0]||{})
     })
   },[])
   return (
