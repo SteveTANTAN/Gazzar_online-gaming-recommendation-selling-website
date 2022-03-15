@@ -2,13 +2,18 @@ import { message } from "antd";
 
 export const get = (url, data={}) => {
   return new Promise((resolve)=>{
-    fetch(`${url}?${Object.keys(data).map(k=>`${k}=${data[k]}`).join('&')}`).then((response) => response.json()).then(res=>{
-      // if(res.code!==0){
-      //   message.error(res.error||'error')
-      // }else{
-        resolve(res)
-      // }
-    });
+    fetch(`${url}?${Object.keys(data).map(k=>`${k}=${data[k]}`).join('&')}`)
+    .then((response) => {
+      if(response.status===200){
+        response.json().then(res=>{
+          resolve(res)
+        })
+      }else{
+        response.json().then(res=>{
+          message.error(res.error||'error')
+        })
+      }
+    })
   })
 };
 
@@ -21,13 +26,17 @@ export const post = (url, data) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
-    }).then((response) => response.json()).then(res=>{
-      // if(res.code!==0){
-      //   message.error(res.error||'error')
-      // }else{
-        resolve(res)
-      // }
-    });
+    }).then((response) => {
+      if(response.status===200){
+        response.json().then(res=>{
+          resolve(res)
+        })
+      }else{
+        response.json().then(res=>{
+          message.error(res.error||'error')
+        })
+      }
+    })
   })
 };
 
@@ -40,12 +49,16 @@ export const put = (url, data) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
-    }).then((response) => response.json()).then(res=>{
-      // if(res.code!==0){
-      //   message.error(res.error||'error')
-      // }else{
-        resolve(res)
-      // }
-    });
+    }).then((response) => {
+      if(response.status===200){
+        response.json().then(res=>{
+          resolve(res)
+        })
+      }else{
+        response.json().then(res=>{
+          message.error(res.error||'error')
+        })
+      }
+    })
   })
 };

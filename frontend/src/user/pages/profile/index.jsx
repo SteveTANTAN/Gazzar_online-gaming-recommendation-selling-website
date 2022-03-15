@@ -6,6 +6,9 @@ import Payment from '@/user/components/Payment';
 import { get,put } from '@/user/utils/request';
 import {useSelector,useDispatch} from 'dva'
 import { useEffect } from 'react';
+import maleImg from '@/assets/Male.png'
+import femaleImg from '@/assets/Female.png'
+import mysteriousImg from '@/assets/Mysterious.png'
 export default function Profile() {
   const [password, setPassword] = useSetState({ visible: false });
   const [info, setInfo] = useSetState({ visible: false });
@@ -21,7 +24,7 @@ export default function Profile() {
     <div className="bg">
       <div className={styles.wrap}>
         <div className={styles.info + ' fr'}>
-          <img src="" alt="" />
+        <img src={[maleImg,femaleImg,mysteriousImg][data.gender]} alt="" />
           <div>
             <Space>
               {info?.visible ? (
