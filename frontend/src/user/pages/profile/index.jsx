@@ -64,14 +64,14 @@ export default function Profile() {
         >
           <div className="pt">
             <Form labelCol={{ span: 7 }} wrapperCol={{ span: 16 }} onFinish={values=>{
-              put('/api/user/edit/password',{pasword:values.pasword,token}).then(()=>{
+              put('/api/user/edit/password',{password:values.password,token}).then(()=>{
                 message.success('success')
                 setPassword({visible:false})
               })
             }}>
               <Form.Item
-                name={'pasword'}
-                label="New Pasword"
+                name={'password'}
+                label="New Password"
                 rules={[{ required: true }]}
               >
                 <Input />
