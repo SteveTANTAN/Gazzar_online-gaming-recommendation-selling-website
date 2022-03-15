@@ -87,7 +87,7 @@ function submit () {
     } else if (data.status === 400) {
       data.json().then(result => {
         console.log('error 400', result.message);
-        message.error(result.message)
+        message.error((result.message.replace("<p>","")).replace("</p>",""))
       });
     }
   });

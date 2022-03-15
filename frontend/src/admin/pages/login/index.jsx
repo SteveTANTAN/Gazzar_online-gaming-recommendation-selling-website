@@ -40,7 +40,7 @@ export default function Login() {
         });
       } else if (data.status === 400) {
         data.json().then(result => {
-          message.error(result.message)
+          message.error((result.message.replace("<p>","")).replace("</p>",""))
           console.log('Success:', result);
 
           // setErrorout(result.error)
