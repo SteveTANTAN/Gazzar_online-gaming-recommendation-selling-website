@@ -11,6 +11,7 @@ from admin import Admin
 from error import Error
 import jwt
 import re
+from werkzeug.exceptions import HTTPException
 
 def create_admin_id():
     """
@@ -105,6 +106,10 @@ def admin_status(token):
     if (super_admin.status == 1): return True
     return False
 
+class ErrorMessage(HTTPException):
+    """Input/Access Error"""
+    code = 400
+    message = 'No message specified'
 
 if __name__ == "__main__":
     create_admin_id()
