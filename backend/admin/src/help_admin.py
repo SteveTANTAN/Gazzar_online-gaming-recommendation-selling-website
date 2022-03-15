@@ -3,7 +3,7 @@ helper function for admin
 """
 import sys
 
-from pip import main
+#from pip import main
 sys.path.append('../../database/src')
 
 from database import db
@@ -11,7 +11,7 @@ from admin import Admin
 from error import Error
 import jwt
 import re
-
+from werkzeug.exceptions import HTTPException
 def create_admin_id():
     """
     This function is used to create a user id(uid)
@@ -105,6 +105,10 @@ def admin_status(token):
     if (super_admin.status == 1): return True
     return False
 
+class ErrorMessage(HTTPException):
+    """Input/Access Error"""
+    code = 400
+    message = 'No message specified'
 
-if __name__ == "__main__":
-    create_admin_id()
+# if __name__ == "__main__":
+#     create_admin_id()
