@@ -18,18 +18,18 @@ def add_admin(token, email, password):
     """
     # handle token (check super admin)
     if (admin_status(token) == False):
-        return {'error' : Error.query.filter(Error.error_id == 14).all()[0].error_name}
+        raise ErrorMessage(Error.query.filter(Error.error_id == 14).all()[0].error_name)
     # error handler
     # email is used by other users
     admins_email = Admin.query.filter(Admin.email==email).all()
     if (len(admins_email) > 0):
-        return {'error' : Error.query.filter(Error.error_id == 3).all()[0].error_name}
+        raise ErrorMessage(Error.query.filter(Error.error_id == 3).all()[0].error_name)
     # email is invalid
     if (check_email(email) == False):
-        return {'error' : Error.query.filter(Error.error_id == 2).all()[0].error_name}
+        raise ErrorMessage(Error.query.filter(Error.error_id == 2).all()[0].error_name)
     # password should be between 8-15
     if (check_password(password) == False):
-        return {'error' : Error.query.filter(Error.error_id == 5).all()[0].error_name}
+        raise ErrorMessage(Error.query.filter(Error.error_id == 5).all()[0].error_name)
 
     # create a unique uid for the user
     admin_id = create_admin_id()
@@ -53,10 +53,11 @@ def delete_admin(token, email):
     #print(admin_status(token))
 
     if (admin_status(token) == False):
-        return {'error' : Error.query.filter(Error.error_id == 14).all()[0].error_name}
+        raise ErrorMessage(Error.query.filter(Error.error_id == 14).all()[0].error_name)
     # create a unique uid for the user
     target_admin = Admin.query.filter(Admin.email == email).all()
-    if (len(target_admin) == 0): return {'error' : Error.query.filter(Error.error_id == 14).all()[0].error_name}
+    if (len(target_admin) == 0):
+        raise ErrorMessage(Error.query.filter(Error.error_id == 14).all()[0].error_name)
     Admin.query.filter(Admin.email == email).delete()
     #target_admin[0].delete()
     db.session.commit()
@@ -99,7 +100,7 @@ def admin_logout(token):
     # no admin
     admins = Admin.query.filter((Admin.admin_id==cur_admin_id)).all()
     if (len(admins) == 0):
-        return {'error' : Error.query.filter(Error.error_id == 2).all()[0].error_name}
+        raise ErrorMessage(Error.query.filter(Error.error_id == 2).all()[0].error_name)
     target_admin = admins[0]
     target_admin.token = create_token(0)
     db.session.commit()
@@ -113,7 +114,7 @@ def edit_password(token, new_password):
     cur_admin_id = token_to_id(token)
     # password should be between 8-15
     if (check_password(new_password) == False):
-        return {'error' : Error.query.filter(Error.error_id == 5).all()[0].error_name}
+        raise ErrorMessage(Error.query.filter(Error.error_id == 5).all()[0].error_name)
 
     admin_info = Admin.query.filter(Admin.admin_id==cur_admin_id).all()[0]
     admin_info.password = new_password
@@ -130,7 +131,7 @@ def show_all_admins(token):
     cur_admin_id = token_to_id(token)
     admins = Admin.query.filter((Admin.admin_id==cur_admin_id)).all()
     if (len(admins) == 0):
-        return {'error' : Error.query.filter(Error.error_id == 2).all()[0].error_name}
+        raise ErrorMessage(Error.query.filter(Error.error_id == 2).all()[0].error_name)
     # add info
     admins = Admin.query.all()
     admin_info = []
@@ -155,6 +156,9 @@ def show_all_admins(token):
 #     return all_user_interest
 
 # if __name__ == "__main__":
+#     print(ErrorMessage(Error.query.filter(Error.error_id == 2).all()[0].error_name))
+#     print(type(Error.query.filter(Error.error_id == 2).all()[0].error_name))
+#     print(type('xxxxx'))
 #     #admins_email = Admin.query.filter(Admin.email=="1807655499@qq.com").all()[0]
 #     print(create_token(1))
 #     print(token_to_id("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhZG1pbl9pZCI6MH0.llOH9A-61dCWPFT2ZVsvbvpKnI9qpH0xrY2WeogY4jw"))
