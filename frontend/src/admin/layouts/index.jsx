@@ -34,9 +34,9 @@ export default (props) => {
       },
       body: JSON.stringify(logPeople),
     })
+    message.success("Log out successful 😊!!!")
+
   }
-
-
   return (
     <div className={styles.wrap}>
       <div className={styles.header}>

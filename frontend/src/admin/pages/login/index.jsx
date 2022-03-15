@@ -31,7 +31,8 @@ export default function Login() {
         console.log('Success1:');
 
         data.json().then(result => {
-          console.log('Success:', result);
+        message.success("User log in successful 😊!!!")
+        console.log('Success:', result);
 
           document.cookie = 'Token=' + result.token + '';
           localStorage.setItem('token', result.token);
@@ -39,6 +40,7 @@ export default function Login() {
         });
       } else if (data.status === 400) {
         data.json().then(result => {
+          message.error(result.message)
           console.log('Success:', result);
 
           // setErrorout(result.error)
