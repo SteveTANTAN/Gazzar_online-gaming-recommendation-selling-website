@@ -62,8 +62,8 @@ def logout_user():
 def password_forget():
     """user forget password"""
     info = request.get_json()
-    token = info['token']
-    result = forget_password(token)
+    email = info['email']
+    result = forget_password(email)
     return dumps(result)
 
 @APP.route('/api/user/edit/password', methods = ['PUT'])
