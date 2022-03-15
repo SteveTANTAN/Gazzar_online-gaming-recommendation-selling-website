@@ -1,6 +1,6 @@
 import styles from './index.less';
 import React from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, message } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone, UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Link, useHistory } from 'umi';
 const BASE_URL = 'http://localhost:55467';
@@ -31,7 +31,7 @@ export default function Login() {
         console.log('Success1:');
 
         data.json().then(result => {
-        message.success("User log in successful 😊!!!")
+        message.success("Log in successful 😊!!!")
         console.log('Success:', result);
 
           document.cookie = 'Token=' + result.token + '';
