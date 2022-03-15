@@ -15,18 +15,21 @@ const BASE_URL = 'http://localhost:55467';
 export default (props) => {
   const history = useHistory();
   const { Header, Content, Footer, Sider } = Layout;
-  if (!document.cookie) {
+  if (localStorage.getItem('token') == null) {
+    // localStorage.getItem('token')
+    console.log("aaaaaaaaaaaaaaaaa");
     history.push("/admin/login");
-    //return <Redirect to="/login" />;
   }
   function logout () {
     document.cookie = 'Token=; expires = Thu, 01 Jan 2020 00:00:00 UTC';
-    console.log(localStorage.getItem('token'));
-    console.log(document.cookie);
-    history.push("/admin/login");
+    console.log("local", localStorage.getItem('token'));
+    console.log("cookie", document.cookie);
+    const token = localStorage.getItem('token')
     const logPeople = {
-      token: localStorage.getItem('token'),
+      token: token,
     };
+    localStorage.removeItem('token');
+
     fetch(`${BASE_URL}/api/admin/logout`, {
       method: 'POST',
       headers: {
@@ -35,6 +38,8 @@ export default (props) => {
       body: JSON.stringify(logPeople),
     })
     message.success("Log out successful 😊!!!")
+    history.push("/admin/login");
+
 
   }
   return (
