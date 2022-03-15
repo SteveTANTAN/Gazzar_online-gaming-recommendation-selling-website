@@ -5,6 +5,9 @@ import { useHistory } from 'umi';
 import { useSelector } from 'dva';
 import { get } from '@/user/utils/request';
 import { useState,useEffect } from 'react';
+import maleImg from '@/assets/Male.png'
+import femaleImg from '@/assets/Female.png'
+import mysteriousImg from '@/assets/Mysterious.png'
 export default function Home() {
   const history = useHistory();
   const [data, setData] = useState({  });
@@ -34,9 +37,9 @@ export default function Home() {
             </div>
           </Carousel>
         </div>
-        <div className={styles.right + ' shadow'}>
+        {!!token&&<div className={styles.right + ' shadow'}>
           <div className="fr">
-            <img src="" alt="" />
+            <img src={[maleImg,femaleImg,mysteriousImg][data.gender]} alt="" />
             <div>
               <h4>{data.name}</h4>
               <div className="desc">{data.email}</div>
@@ -55,7 +58,7 @@ export default function Home() {
               <div>0</div>
             </div>
           </div>
-        </div>
+        </div>}
       </div>
       <br />
       <Tabs type="card">
@@ -72,4 +75,3 @@ export default function Home() {
     </>
   );
 }
-

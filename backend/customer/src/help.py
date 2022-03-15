@@ -19,7 +19,7 @@ def create_uid():
     # get all uid
     all_uid = db.session.query(User.user_id).all()
     #generate len(uid) + 1
-    return len(all_uid) + 1
+    return ((all_uid[-1][0]) + 1 )
 
 def create_token(uid):
     '''
