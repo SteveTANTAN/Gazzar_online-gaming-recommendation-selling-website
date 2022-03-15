@@ -1,5 +1,6 @@
 import React from 'react';
 import { Input, Button, Space, Layout, Menu  } from 'antd';
+import { Alert } from 'antd';
 import {
   Form,
   Checkbox,
@@ -84,9 +85,14 @@ function submit () {
       });
     } else if (data.status === 400) {
       data.json().then(result => {
-        console.log('Success:', result);
-
-        // setErrorout(result.error)
+        console.log('error 400', result);
+        return (
+        <Alert
+          message="Error"
+          description = {result.error}
+          type="error"
+          showIcon
+        />)
       });
     }
   });
@@ -103,22 +109,19 @@ return (
     name="normal_login"
     onFinish={onFinish}
     labelAlign="left"
-    labelCol={{ span: 8 }}
     wrapperCol={{ span: 16 }}>
     <Row>
-    <Form.Item
-      name="email"
-      rules={[{ required: true, message: 'Please input your email!' }]}
-    >
+    <Col span={8}>
+    <Form.Item name={'email'} label="Email" rules={[{ type: 'email' }]}>
       <Input
         prefix={<UserOutlined className="site-form-item-icon" />}
-        placeholder="Email"
+        placeholder="New admin Email"
         onChange={e => setemail(e.target.value)}
         value = {email}
       />
     </Form.Item>
-    </Row>
-    <Row>
+    </Col>
+    <Col span={8}>
     <Form.Item
       name="password"
       rules={[{ required: true, message: 'Please input your Password!' }]}
@@ -132,14 +135,15 @@ return (
         iconRender={visible => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
       />
     </Form.Item>
-    </Row>
-    <Row> 
+    </Col>
+    <Col span={4}>
     <Form.Item>
       <div></div>
       <Button block type="primary" htmlType="submit">
-        Login
+        Register
       </Button>
     </Form.Item>
+    </Col>
     </Row>
   </Form>
 
