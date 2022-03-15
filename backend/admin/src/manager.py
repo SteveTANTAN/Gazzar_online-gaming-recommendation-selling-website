@@ -8,7 +8,7 @@ from database import db
 from admin import Admin
 from error import Error
 from type import Type
-from help_admin import create_admin_id, create_token, add_to_database, check_email, check_password, admin_status, token_to_id
+from help_admin import create_admin_id, create_token, add_to_database, check_email, check_password, admin_status, token_to_id, ErrorMessage
 
 def add_admin(token, email, password):
     """
@@ -51,7 +51,7 @@ def delete_admin(token, email):
     """
     # handle token (check super admin)
     #print(admin_status(token))
-    
+
     if (admin_status(token) == False):
         return {'error' : Error.query.filter(Error.error_id == 14).all()[0].error_name}
     # create a unique uid for the user
@@ -74,12 +74,12 @@ def admin_login(email, password):
     admins_email = Admin.query.filter(Admin.email==email).all()
     # no admin
     if (len(admins_email) == 0):
-        return {'error' : Error.query.filter(Error.error_id == 2).all()[0].error_name}
+        raise ErrorMessage(Error.query.filter(Error.error_id == 2).all()[0].error_name)
     # match email and password to find target admin
     admins = Admin.query.filter((Admin.email==email), (Admin.password==password)).all()
     # password incorrect
     if (len(admins) == 0):
-        return {'error' : Error.query.filter(Error.error_id == 6).all()[0].error_name}
+        raise ErrorMessage(Error.query.filter(Error.error_id == 6).all()[0].error_name)
     # successful login
     target_admin = admins[0]
     target_admin.token = create_token(target_admin.admin_id)

@@ -17,7 +17,7 @@ from email.mime.text import MIMEText
 from email.header import Header
 import pprint
 
-from help import create_uid, create_token, add_to_database, check_email, check_password, token_to_id
+from help import create_uid, create_token, add_to_database, check_email, check_password, token_to_id, ErrorMessage
 
 def user_register(email, password, name, age, gender):
     """
