@@ -1,0 +1,18 @@
+week1
+discuss which topics we choose and plans for next few weeks
+
+week2
+discuss the users story and which technique we will use
+write the user story.
+
+week3
+still write more user stories and epic stories and seperate the task with three sprints.
+finish the proposal
+
+week4
+finish the auth.py and help.py in sprint 1
+The two files is about the user_register, login, logout, and edit profile.
+finish the manager.py and help_admin.py in sprint 1
+The two files is about the admin_register, login, logout, and show all admins for super-admin.
+
+fix the error about the token with jeffery, know more about the AWS and set the database to AWS.
