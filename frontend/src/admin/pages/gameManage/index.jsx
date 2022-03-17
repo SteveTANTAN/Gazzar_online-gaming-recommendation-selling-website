@@ -144,6 +144,12 @@ return(<div>
 <Button shape="circle" icon={<SearchOutlined />} onClick={() => {history.push('/user/search');}}/>
 </Tooltip>
 
+<Link onClick={() => {}} to="/admin/manage/addgame" >
+  <Button  type="primary" shape="round" >
+  Add new Game
+  </Button>
+</Link>
+
 </center>
 <Table columns={columns} dataSource={data} onChange={onChange} />
 </div>);
