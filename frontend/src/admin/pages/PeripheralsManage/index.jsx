@@ -1,6 +1,6 @@
 import { Table, Popconfirm } from 'antd';
 import React from 'react';
-import { Input, Button, Space, Layout, Menu,Tooltip  } from 'antd';
+import { Input, Button, Space, Layout, Menu, Tooltip, Row, Col } from 'antd';
 import {
   UserOutlined,
   CustomerServiceOutlined,
@@ -155,16 +155,21 @@ function onChange(pagination, filters, sorter, extra) {
 return(<div>
 
   <center>
+  <Row>
+  <Col span={20}>
   <Input onChange={e => setGamename(e.target.value)}  style={{ width: 240, borderRadius: 12, marginLeft: 20 }}
-    value = {gamename} type = 'text' placeholder='Search Product Here' />
+    value = {gamename} type = 'text' placeholder='Search Peripherals Here' />
   <Tooltip title="search">
   <Button shape="circle" icon={<SearchOutlined />} onClick={() => {history.push('/user/search');}}/>
   </Tooltip>
+  </Col>
+
   <Link onClick={() => {}} to="/admin/manage/Peripherals/add" >
   <Button  type="primary" shape="round" >
   Add new Perpherals
   </Button>
-</Link>
+  </Link>
+  </Row>
 
   </center>
   <Table columns={columns} dataSource={data} onChange={onChange} />
