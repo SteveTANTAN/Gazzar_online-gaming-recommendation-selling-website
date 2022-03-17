@@ -27,7 +27,7 @@ const columns = [
   { title: 'Password', dataIndex: 'password', key: 'password' },
   {
     title: 'operation',
-    key: 'password',
+    key: 'delete',
     render: (text, record) =>
       <Popconfirm title="Sure to delete?" onConfirm={() => {admindelete(record.email)}}>
         <a>Delete</a>

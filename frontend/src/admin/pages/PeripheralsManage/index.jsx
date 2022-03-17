@@ -1,4 +1,4 @@
-import { Table } from 'antd';
+import { Table, Popconfirm } from 'antd';
 import React from 'react';
 import { Input, Button, Space, Layout, Menu,Tooltip  } from 'antd';
 import {
@@ -82,6 +82,20 @@ const columns = [
     title: 'Stock',
     dataIndex: 'stock',
     sorter: (a, b) => a.stock - b.stock,
+  },
+  {
+    title: 'operation',
+    key: 'delete',
+    render: (text, record) =>
+    <div>
+      <Popconfirm title="Sure to delete?" onConfirm={() => {admindelete(record.email)}}>
+        <a>Delete</a>
+      </Popconfirm>
+      <p></p>
+        <Popconfirm title="Sure to Edit?" style={{}} onConfirm={() => {admindelete(record.email)}}>
+        <a>Edit</a>
+      </Popconfirm>
+    </div>
   },
 
 ];
