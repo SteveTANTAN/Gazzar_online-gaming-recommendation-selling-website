@@ -12,8 +12,10 @@ export default defineConfig({
         { path: '/admin/manage/admins', component: '@/admin/pages/adminManage' },
         { path: '/admin/manage/games', component: '@/admin/pages/gameManage' },
         { path: '/admin/manage/Peripherals', component: '@/admin/pages/PeripheralsManage' },
-        { path: '/admin/manage/addgame', component: '@/admin/pages/addGame' },
+        { path: '/admin/manage/games/add', component: '@/admin/pages/addGame' },
         { path: '/admin/manage/gameedit', component: '@/admin/pages/gameEdit' },
+        { path: '/admin/manage/Peripherals/add', component: '@/admin/pages/addPeripherals' },
+
 
       ],
     },

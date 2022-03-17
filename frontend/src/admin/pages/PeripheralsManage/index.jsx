@@ -146,6 +146,11 @@ return(<div>
   <Tooltip title="search">
   <Button shape="circle" icon={<SearchOutlined />} onClick={() => {history.push('/user/search');}}/>
   </Tooltip>
+  <Link onClick={() => {}} to="/admin/manage/Peripherals/add" >
+  <Button  type="primary" shape="round" >
+  Add new Perpherals
+  </Button>
+</Link>
 
   </center>
   <Table columns={columns} dataSource={data} onChange={onChange} />

@@ -84,7 +84,7 @@ return (
 
     }}
   >
-    <center><Title level={3}>Add new Game</Title></center>
+    <center><Title level={3}>Add new Perpheral</Title></center>
 
       <Form.Item name="Product Name" label="Product Name" rules={[{ required: true }]}>
         <Input />
@@ -129,12 +129,11 @@ return (
       ]}
     >
       <Select mode="multiple" placeholder="Please select the Product Type!">
-        <Option value="Action&Adventure">Action & Adventure</Option>
-        <Option value="FPS">FPS</Option>
-        <Option value="Sports&Racing">Sports & Racing</Option>
-        <Option value="RPG">RPG</Option>
-        <Option value="Strategy">Strategy</Option>
-        <Option value="Simulation">Simulation</Option>
+        <Option value="Crafts">Crafts</Option>
+        <Option value="Clothes">Clothes</Option>
+        <Option value="Daily necessities">Daily necessities</Option>
+        <Option value="GK">GK</Option>
+
       </Select>
     </Form.Item>
     <Form.Item name="Product description" label="Product description" rules={[{ required: true }]}>
