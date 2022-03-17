@@ -1,6 +1,6 @@
-import { Table } from 'antd';
+import { Table, Popconfirm } from 'antd';
 import React from 'react';
-import { Input, Button, Space, Layout, Menu,Tooltip  } from 'antd';
+import { Input, Button, Space, Layout, Menu,Tooltip, Row, Col} from 'antd';
 import {
   UserOutlined,
   CustomerServiceOutlined,
@@ -91,6 +91,20 @@ const columns = [
     dataIndex: 'stock',
     sorter: (a, b) => a.stock - b.stock,
   },
+  {
+    title: 'operation',
+    key: 'delete',
+    render: (text, record) =>
+    <div>
+      <Popconfirm title="Sure to delete?" onConfirm={() => {admindelete(record.email)}}>
+        <a>Delete</a>
+      </Popconfirm>
+      <p></p>
+        <Popconfirm title="Sure to Edit?" style={{}} onConfirm={() => {admindelete(record.email)}}>
+        <a>Edit</a>
+      </Popconfirm>
+    </div>
+  },
 
 ];
 
@@ -138,11 +152,21 @@ function onChange(pagination, filters, sorter, extra) {
 return(<div>
 
 <center>
+<Row>
+<Col span={21}>
 <Input onChange={e => setGamename(e.target.value)}  style={{ width: 240, borderRadius: 12, marginLeft: 20 }}
-  value = {gamename} type = 'text' placeholder='Search Product Here' />
+  value = {gamename} type = 'text' placeholder='Search Game Here' />
 <Tooltip title="search">
 <Button shape="circle" icon={<SearchOutlined />} onClick={() => {history.push('/user/search');}}/>
 </Tooltip>
+</Col>
+
+<Link onClick={() => {}} to="/admin/manage/games/add" >
+  <Button  type="primary" shape="round" >
+  Add new Game
+  </Button>
+</Link>
+</Row>
 
 </center>
 <Table columns={columns} dataSource={data} onChange={onChange} />
