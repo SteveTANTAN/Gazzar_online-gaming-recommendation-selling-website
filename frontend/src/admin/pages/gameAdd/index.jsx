@@ -93,7 +93,9 @@ return (
       <Form.Item name="Unit Price" label="Unit Price" rules={[{ required: true }]}>
         <InputNumber min={1}/>
       </Form.Item>
-
+      <Form.Item name="Discount" label="Discount"  rules={[{ required: true }]}>
+        <InputNumber min={1} defaultValue={100}/>%
+      </Form.Item>
 
     <Form.Item
       name="State"
@@ -108,8 +110,8 @@ return (
       ]}
     >
       <Select placeholder="Please select a State" >
-        <Option value="On Promotion">On Promotion</Option>
-        <Option value="On Sales">On Sales</Option>
+        <Option value="1">On Promotion</Option>
+        <Option value="0">On Sales</Option>
       </Select>
     </Form.Item>
     <Form.Item name="Stock" label="Stock" rules={[{ required: true }]}>
@@ -129,9 +131,9 @@ return (
       ]}
     >
       <Select mode="multiple" placeholder="Please select the Product Type!">
-        <Option value="Action&Adventure">Action & Adventure</Option>
+        <Option value="Action & Adventure">Action & Adventure</Option>
         <Option value="FPS">FPS</Option>
-        <Option value="Sports&Racing">Sports & Racing</Option>
+        <Option value="Sports & Racing">Sports & Racing</Option>
         <Option value="RPG">RPG</Option>
         <Option value="Strategy">Strategy</Option>
         <Option value="Simulation">Simulation</Option>

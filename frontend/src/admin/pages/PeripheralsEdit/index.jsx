@@ -108,8 +108,8 @@ return (
       ]}
     >
       <Select placeholder="Please select a State" >
-        <Option value="On Promotion">On Promotion</Option>
-        <Option value="On Sales">On Sales</Option>
+        <Option value="1">On Promotion</Option>
+        <Option value="0">On Sales</Option>
       </Select>
     </Form.Item>
     <Form.Item name="Stock" label="Stock" rules={[{ required: true }]}>
