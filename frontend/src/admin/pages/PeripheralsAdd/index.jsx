@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Input,  Space, Layout, Menu, message  } from 'antd';
+import ImgCrop from 'antd-img-crop';
 import { Alert } from 'antd';
 import {
   Form,
@@ -19,7 +20,6 @@ import {
 import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
 import { Table, Popconfirm } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone, UserOutlined, LockOutlined } from '@ant-design/icons';
-import { useState } from 'react';
 import { Link, useHistory } from 'umi';
 const BASE_URL = 'http://localhost:55467';
 const { Paragraph, Title} = Typography;
@@ -45,33 +45,66 @@ const formItemLayout = {
   },
 };
 
-const normFile = (e) => {
-  console.log('Upload event:', e);
 
-  if (Array.isArray(e)) {
-    return e;
-  }
-
-  return e && e.fileList;
-};
-const validateMessages = {
-  required: '${label} is required!',
-  types: {
-    email: '${label} is not a valid email!',
-    number: '${label} is not a valid number!',
-  },
-  number: {
-    range: '${label} must be between ${min} and ${max}',
-  },
-};
 
 const onFinish = (values) => {
+  values['Photo'] = fileList;
+  values['Cover'] = cover;
   console.log('Received values of form: ', values);
-  history.push('/admin/manage/games')
+  console.log('Received values of form: ', values);
+  const delte = {
+    token:localStorage.getItem('token'),
+    product_dict: values,
+  };
+  fetch(`${BASE_URL}/api/add/product`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(delte),
+  }).then((data) => {
+    if (data.status === 200) {
+      console.log('Success1:');
+      data.json().then(result => {
+        console.log('Success:', result);
+        // setprofileUpdate(true);
+        message.success("Game adding successful 😊!!!")
+        history.push('/admin/manage/Peripherals')
+
+      });
+    } else if (data.status === 400) {
+      data.json().then(result => {
+        console.log('error 400', result.message);
+        message.error((result.message.replace("<p>","")).replace("</p>",""))
+      });
+    }
+  });
+
 };
 
+  const [fileList, setFileList] = useState([]);
 
-
+  const ChangefileList = ({ fileList: newFileList }) => {
+    setFileList(newFileList);
+  };
+  const [cover, setcover] = useState([]);
+  const ChangecoverList =({ fileList: newFileList }) => {
+    setcover(newFileList);
+  };
+  const onPreview = async file => {
+    let src = file.url;
+    if (!src) {
+      src = await new Promise(resolve => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj);
+        reader.onload = () => resolve(reader.result);
+      });
+    }
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow.document.write(image.outerHTML);
+  };
 
 
 
@@ -93,8 +126,8 @@ return (
       <Form.Item name="Unit Price" label="Unit Price" rules={[{ required: true }]}>
         <InputNumber min={1}/>
       </Form.Item>
-      <Form.Item name="Discount" label="Discount"  rules={[{ required: true }]}>
-        <InputNumber min={1} defaultValue={100}/>%
+      <Form.Item name="Discount" label="Discount(%)" rules={[{ required: true }]}>
+        <InputNumber min={0} Max={100} />
       </Form.Item>
 
     <Form.Item
@@ -105,7 +138,7 @@ return (
       rules={[
         {
           required: true,
-          message: 'Please select your country!',
+          message: 'Please select a State!',
         },
       ]}
     >
@@ -142,19 +175,44 @@ return (
         <Input.TextArea style={{height: '4cm'}}/>
       </Form.Item>
 
+
+
     <Form.Item
-      name="Photo"
-      label="Photo"
-      valuePropName="fileList"
-      getValueFromEvent={normFile}
-      extra="Upload the photo here"
+    name="Photo"
+    label="Photo"
+    extra="Upload the photo here"
     >
-      <Upload name="Photo" action="/upload.do" listType="picture">
-        <Button icon={<UploadOutlined />}>Click to upload</Button>
+    <ImgCrop rotate>
+      <Upload
+        //name="Photo"
+        //listType="picture"
+        listType="picture-card"
+        fileList={fileList}
+        onChange={ChangefileList}
+        onPreview={onPreview}
+      >
+        {fileList.length < 5 && '+ Upload'}
       </Upload>
+    </ImgCrop>
     </Form.Item>
 
-
+    <Form.Item
+    name="Cover"
+    label="Cover"
+    extra="Upload the Cover here (only One)"
+    >
+    <ImgCrop rotate>
+      <Upload
+        //listType="picture"
+        listType="picture-card"
+        fileList={cover}
+        onChange={ChangecoverList}
+        onPreview={onPreview}
+      >
+        {cover.length < 1 && '+ Upload'}
+      </Upload>
+    </ImgCrop>
+    </Form.Item>
     <Form.Item
       wrapperCol={{
         span: 12,
@@ -167,4 +225,4 @@ return (
     </Form.Item>
   </Form>
 );
-};
+}
