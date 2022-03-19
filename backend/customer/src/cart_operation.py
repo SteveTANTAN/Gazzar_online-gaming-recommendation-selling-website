@@ -32,7 +32,12 @@ def add_to_cart(token, product_id, quantity):
     target_cart = Cart.query.filter(Cart.user_id==u_id, Cart.product_id==target_product.product_id).all()
     if len(target_cart) == 0:
         # create new cart and add to database
-        cart_id = len(Cart.query.all()) + 1
+        all_cart_id = Cart.query.all()
+        if len(all_cart_id) != 0:
+            cart_id = (all_cart_id[-1].cart_id) + 1
+        else:
+            cart_id = 1
+        #cart_id = len(Cart.query.all()) + 1
         new_cart = Cart(cart_id, 0, quantity, target_user, target_product)
         add_to_database(new_cart)
         return
@@ -107,13 +112,13 @@ def re_checked_product(token, product_id):
     return
 
 if __name__ == "__main__":
-    # add_to_cart('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 123, 6)
-    # add_to_cart('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 120, 5)
-    # add_to_cart('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 121, 3)
-    # add_to_cart('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 122, 4)
+    add_to_cart('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 123, 6)
+    add_to_cart('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 120, 5)
+    add_to_cart('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 121, 3)
+    add_to_cart('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 122, 4)
 
-    # pprint.pprint(Cart.query.filter(Cart.user_id == 15).all())
-    checked_product('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 123)
-    checked_product('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 120)
+    #print(Cart.query.filter(Cart.user_id == 15).all())
+    # checked_product('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 123)
+    # checked_product('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 120)
     res = show_cart_products('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf')
     pprint.pprint(res)
