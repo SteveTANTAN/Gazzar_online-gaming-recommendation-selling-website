@@ -3,6 +3,8 @@ from json import dumps
 from flask import Flask, request
 from flask_cors import CORS
 import json
+import ast
+
 import sys
 sys.path.append('../../database/src')
 from database import db
@@ -167,16 +169,28 @@ def target_admin_delete():
     email = info['email']
     return dumps(delete_admin(token, email))
 
-@APP.route('/api/add/product', methods=['POST'])
-def product_add():
+@APP.route('/api/add/games', methods=['PUT'])
+def games_add():
     '''
     Route for listing profile
     '''
     # print(token)
     info = request.get_json()
     token = info['token']
-    product_dict = json.loads(info['product_dict'])
-    return dumps(add_product(token, product_dict))
+    product_dict = info['product_dict']
+    #print(json.loads(product_dict))
+    return dumps(add_product(token, product_dict, 0))
+
+@APP.route('/api/add/peripherals', methods=['PUT'])
+def peripherals_add():
+    '''
+    Route for listing profile
+    '''
+    # print(token)
+    info = request.get_json()
+    token = info['token']
+    product_dict = info['product_dict']
+    return dumps(add_product(token, product_dict, 1))
 
 if __name__ == "__main__":
     db.create_all()
