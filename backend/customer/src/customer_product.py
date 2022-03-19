@@ -13,6 +13,7 @@ from product import Product
 from type import Type
 from user import User
 from json import dumps
+from error import Error
 
 from sqlalchemy import or_,and_
 from help import token_to_id, ErrorMessage
@@ -22,12 +23,7 @@ import pprint
 def search(str):
     '''search product with given str, match in product name and description'''
     #print(str)
-    task_filter = {
-        or_(
-            Product.name.contains(str),
-            Product.description.contains(str)
-        )
-    }
+    task_filter = {or_(Product.name.contains(str),Product.description.contains(str))}
     search_result = Product.query.filter(*task_filter).all()
     result = []
     for i in search_result:
@@ -43,11 +39,14 @@ def show_product_details(token, product_id):
     if (len(users) == 0):
         raise ErrorMessage(Error.query.filter(Error.error_id == 2).all()[0].error_name)
     # check valid product
-    target_product = Product.query.filter(Product.product_id==product_id).all()[0]
+    products = Product.query.filter(Product.product_id==product_id).all()
+    if len(products) == 0:
+        raise ErrorMessage(Error.query.filter(Error.error_id==16).all()[0].error_name)
+    target_product = products[0]
 
     # convert main_image and sub_image string to list
     cover = ast.literal_eval(target_product.main_image)
-    cover_image = {'image': cover[0]['thumbUrl']}
+    cover_image = [{'image': cover[0]['thumbUrl']}]
     photo = ast.literal_eval(target_product.sub_image)
     photo_images = []
     for i in photo:
@@ -60,8 +59,8 @@ def show_product_details(token, product_id):
         tags.append(a.type_name)
 
     product_details = {'product_id': target_product.product_id, 'name': target_product.name, 'description': target_product.description,
-                    'price': target_product.price, 'discount': target_product.discount, 'stock': target_product.stock,
-                    'main_image': cover_image, 'sub_image': photo_images, 'rate': target_product.rate, 'comment': target_product.comment, 'type': tags}
+                    'price': float(target_product.price), 'discount': target_product.discount, 'stock': target_product.stock,
+                    'main_image': cover_image, 'sub_image': photo_images, 'rate': float(target_product.rate), 'comment': target_product.comment, 'type': tags}
 
     return product_details
 

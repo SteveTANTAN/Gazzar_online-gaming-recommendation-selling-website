@@ -8,10 +8,12 @@ sys.path.append('../../database/src')
 from database import db
 
 from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile, show_user_payment, show_user_cart, show_user_order
+from customer_product import search, show_product_details
 
 sys.path.append('../../admin/src')
 from manager import add_admin, admin_login, admin_logout, show_all_admins, delete_admin
 from product_manage import add_product
+
 def defaultHandler(err):
     """server"""
     response = err.get_response()
@@ -177,6 +179,21 @@ def product_add():
     token = info['token']
     product_dict = json.loads(info['product_dict'])
     return dumps(add_product(token, product_dict))
+
+@APP.route('/api/user/show/productdetails/<product_id>/<token>', methods=['GET'])
+def product_details_show(token, product_id):
+    '''
+    Route for show product details
+    '''
+    return dumps(show_product_details(token, product_id))
+
+@APP.route('/api/user/search/<str>', methods=['GET'])
+def search_product(str):
+    '''
+    Route for search product with given string
+    '''
+    return dumps(search(str))
+
 
 if __name__ == "__main__":
     db.create_all()
