@@ -53,6 +53,7 @@ const formItemLayout = {
 const onFinish = (values) => {
   values['Photo'] = fileList;
   values['Cover'] = cover;
+  values['Product Id'] = params.peripheralsid;
 
   console.log('Received values of form: ', values);
   const delte = {
@@ -122,9 +123,11 @@ return (
 
     }}
   >
-    <center><Title level={3}>Edit Peripherals:  No.{params.peripheralsid}</Title></center>
-
-      <Form.Item name="Product Name" label="Product Name" rules={[{ required: true }]}>
+    <center><Title level={3}>Edit Peripherals</Title></center>
+      <Form.Item name="Product Id" label="Peripherals ID" >
+      {params.peripheralsid}
+      </Form.Item>
+      <Form.Item name="Product Name" label="Peripherals Name" rules={[{ required: true }]}>
         <Input />
       </Form.Item>
 
@@ -159,16 +162,16 @@ return (
 
     <Form.Item
       name="Product Type"
-      label="Product Type"
+      label="Peripherals Type"
       rules={[
         {
           required: true,
-          message: 'Please select the Product Type!',
+          message: 'Please select the Peripherals Type!',
           type: 'array',
         },
       ]}
     >
-      <Select mode="multiple" placeholder="Please select the Product Type!">
+      <Select mode="multiple" placeholder="Please select the Peripherals Type!">
         <Option value="Action & Adventure">Action & Adventure</Option>
         <Option value="FPS">FPS</Option>
         <Option value="Sports & Racing">Sports & Racing</Option>
@@ -177,7 +180,7 @@ return (
         <Option value="Simulation">Simulation</Option>
       </Select>
     </Form.Item>
-    <Form.Item name="Product description" label="Product description" rules={[{ required: true }]}>
+    <Form.Item name="Product description" label="Peripherals Description" rules={[{ required: true }]}>
         <Input.TextArea style={{height: '4cm'}}/>
       </Form.Item>
       <Form.Item

@@ -53,6 +53,7 @@ const formItemLayout = {
 const onFinish = (values) => {
   values['Photo'] = fileList;
   values['Cover'] = cover;
+  values['Product Id'] = params.gameid;
 
   console.log('Received values of form: ', values);
   const delte = {
@@ -71,7 +72,7 @@ const onFinish = (values) => {
       data.json().then(result => {
         console.log('Success:', result);
         // setprofileUpdate(true);
-        message.success("Game adding successful 😊!!!")
+        message.success("Game editing successful 😊!!!")
         history.push('/admin/manage/games')
 
       });
@@ -123,8 +124,10 @@ return (
     }}
   >
     <center><Title level={3}>Edit Game</Title></center>
-
-      <Form.Item name="Product Name" label="Product Name" rules={[{ required: true }]}>
+      <Form.Item name="Product Id" label="Game ID" >
+      {params.gameid}
+      </Form.Item>
+      <Form.Item name="Product Name" label="Game Name" rules={[{ required: true }]}>
         <Input />
       </Form.Item>
 
@@ -159,11 +162,11 @@ return (
 
     <Form.Item
       name="Product Type"
-      label="Product Type"
+      label="Game Type"
       rules={[
         {
           required: true,
-          message: 'Please select the Product Type!',
+          message: 'Please select the Game Type!',
           type: 'array',
         },
       ]}
@@ -177,7 +180,7 @@ return (
         <Option value="Simulation">Simulation</Option>
       </Select>
     </Form.Item>
-    <Form.Item name="Product description" label="Product description" rules={[{ required: true }]}>
+    <Form.Item name="Product description" label="Game Description" rules={[{ required: true }]}>
         <Input.TextArea style={{height: '4cm'}}/>
       </Form.Item>
       <Form.Item
