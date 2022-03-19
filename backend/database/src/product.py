@@ -26,16 +26,16 @@ class Product(db.Model):
 
     genre = db.relationship("Type", secondary=product_type_connection, lazy='subquery', backref=db.backref('product', lazy=True))
 
-    def __init__(self, product_id, name, description, price, status, stock, main_image, category):
+    def __init__(self, product_id, name, description, price, discount, status, stock, main_image, sub_image, category):
         self.product_id = product_id
         self.name = name
         self.description = description
         self.price = price
-        self.discount = 100
+        self.discount = discount
         self.status = status
         self.stock = stock
         self.main_image = main_image
-        self.sub_image = ""
+        self.sub_image = sub_image
         self.rate = 5.0
         self.comment = ""
         self.category = category
