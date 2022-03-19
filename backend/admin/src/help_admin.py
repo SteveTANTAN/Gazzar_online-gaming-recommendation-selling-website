@@ -28,10 +28,12 @@ def create_product_id():
     This function is used to create a user id(uid)
     return valid admin id
     """
-    # get all admin_id
-    all_id = db.session.query(Product.product_id).all()
-    #generate len(admin_id) + 1
-    return ((all_id[-1][0]) + 1)
+    all_product_id = Product.query.all()
+    if len(all_product_id) != 0:
+        product_id = (all_product_id[-1].product_id) + 1
+    else:
+        product_id = 1
+    return product_id
 
 def create_token(admin_id):
     '''

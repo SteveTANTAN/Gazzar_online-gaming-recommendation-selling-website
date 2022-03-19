@@ -23,6 +23,7 @@ class Product(db.Model):
     comment = db.Column(db.String(500))
     # 0-game 1-peripheral
     category = db.Column(db.Integer)
+    last_modified = db.Column(db.String(500))
 
     genre = db.relationship("Type", secondary=product_type_connection, lazy='subquery', backref=db.backref('product', lazy=True))
 
@@ -39,6 +40,7 @@ class Product(db.Model):
         self.rate = 5.0
         self.comment = ""
         self.category = category
+        self.last_modified = ""
 
 # if __name__ == "__main__":
 #     # show_product()
