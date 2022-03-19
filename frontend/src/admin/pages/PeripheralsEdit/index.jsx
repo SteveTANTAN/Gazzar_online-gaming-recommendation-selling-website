@@ -1,5 +1,6 @@
 import React from 'react';
 import { Input,  Space, Layout, Menu, message  } from 'antd';
+import ImgCrop from 'antd-img-crop';
 import { Alert } from 'antd';
 import {
   Form,
@@ -20,10 +21,11 @@ import { UploadOutlined, InboxOutlined } from '@ant-design/icons';
 import { Table, Popconfirm } from 'antd';
 import { EyeInvisibleOutlined, EyeTwoTone, UserOutlined, LockOutlined } from '@ant-design/icons';
 import { useState } from 'react';
-import { Link, useHistory } from 'umi';
+import { Link, useHistory, useParams} from 'umi';
 const BASE_URL = 'http://localhost:55467';
 const { Paragraph, Title} = Typography;
 export default (props) => {
+const params = useParams();
 const { Option } = Select;
 const { Header, Content, Footer, Sider } = Layout;
 const history = useHistory();
@@ -35,6 +37,9 @@ const [Stock, setStock] = React.useState(0);
 const [type, settype] = React.useState([]);
 const [photo, setphoto] = React.useState([]);
 
+console.log('Received values of peripheralsid:', params.peripheralsid);
+
+
 
 const formItemLayout = {
   labelCol: {
@@ -45,29 +50,62 @@ const formItemLayout = {
   },
 };
 
-const normFile = (e) => {
-  console.log('Upload event:', e);
-
-  if (Array.isArray(e)) {
-    return e;
-  }
-
-  return e && e.fileList;
-};
-const validateMessages = {
-  required: '${label} is required!',
-  types: {
-    email: '${label} is not a valid email!',
-    number: '${label} is not a valid number!',
-  },
-  number: {
-    range: '${label} must be between ${min} and ${max}',
-  },
-};
-
 const onFinish = (values) => {
+  values['Photo'] = fileList;
+  values['Cover'] = cover;
+
   console.log('Received values of form: ', values);
-  history.push('/admin/manage/games')
+  const delte = {
+    token:localStorage.getItem('token'),
+    product_dict: values,
+  };
+  fetch(`${BASE_URL}/api/edit/peripherals/`+params.peripheralsid, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(delte),
+  }).then((data) => {
+    if (data.status === 200) {
+      console.log('Success1:');
+      data.json().then(result => {
+        console.log('Success:', result);
+        // setprofileUpdate(true);
+        message.success("Peripherals editing successful 😊!!!")
+        history.push('/admin/manage/Peripherals')
+
+      });
+    } else if (data.status === 400) {
+      data.json().then(result => {
+        console.log('error 400', result.message);
+        message.error((result.message.replace("<p>","")).replace("</p>",""))
+      });
+    }
+  });
+};
+
+const [fileList, setFileList] = useState([]);
+
+const ChangefileList = ({ fileList: newFileList }) => {
+  setFileList(newFileList);
+};
+const [cover, setcover] = useState([]);
+const ChangecoverList =({ fileList: newFileList }) => {
+  setcover(newFileList);
+};
+const onPreview = async file => {
+  let src = file.url;
+  if (!src) {
+    src = await new Promise(resolve => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file.originFileObj);
+      reader.onload = () => resolve(reader.result);
+    });
+  }
+  const image = new Image();
+  image.src = src;
+  const imgWindow = window.open(src);
+  imgWindow.document.write(image.outerHTML);
 };
 
 
@@ -84,7 +122,7 @@ return (
 
     }}
   >
-    <center><Title level={3}>Add new Perpheral</Title></center>
+    <center><Title level={3}>Edit Peripherals:  No.{params.peripheralsid}</Title></center>
 
       <Form.Item name="Product Name" label="Product Name" rules={[{ required: true }]}>
         <Input />
@@ -93,7 +131,9 @@ return (
       <Form.Item name="Unit Price" label="Unit Price" rules={[{ required: true }]}>
         <InputNumber min={1}/>
       </Form.Item>
-
+      <Form.Item name="Discount" label="Discount(%)" rules={[{ required: true }]}>
+        <InputNumber min={0} Max={100} />
+      </Form.Item>
 
     <Form.Item
       name="State"
@@ -129,27 +169,52 @@ return (
       ]}
     >
       <Select mode="multiple" placeholder="Please select the Product Type!">
-        <Option value="Crafts">Crafts</Option>
-        <Option value="Clothes">Clothes</Option>
-        <Option value="Daily necessities">Daily necessities</Option>
-        <Option value="GK">GK</Option>
-
+        <Option value="Action & Adventure">Action & Adventure</Option>
+        <Option value="FPS">FPS</Option>
+        <Option value="Sports & Racing">Sports & Racing</Option>
+        <Option value="RPG">RPG</Option>
+        <Option value="Strategy">Strategy</Option>
+        <Option value="Simulation">Simulation</Option>
       </Select>
     </Form.Item>
     <Form.Item name="Product description" label="Product description" rules={[{ required: true }]}>
         <Input.TextArea style={{height: '4cm'}}/>
       </Form.Item>
+      <Form.Item
+    name="Photo"
+    label="Photo"
+    extra="Upload the photo here"
+    >
+    <ImgCrop rotate>
+      <Upload
+        //name="Photo"
+        //listType="picture"
+        listType="picture-card"
+        fileList={fileList}
+        onChange={ChangefileList}
+        onPreview={onPreview}
+      >
+        {fileList.length < 5 && '+ Upload'}
+      </Upload>
+    </ImgCrop>
+    </Form.Item>
 
     <Form.Item
-      name="Photo"
-      label="Photo"
-      valuePropName="fileList"
-      getValueFromEvent={normFile}
-      extra="Upload the photo here"
+    name="Cover"
+    label="Cover"
+    extra="Upload the Cover here (only One)"
     >
-      <Upload name="Photo" action="/upload.do" listType="picture">
-        <Button icon={<UploadOutlined />}>Click to upload</Button>
+    <ImgCrop rotate>
+      <Upload
+        //listType="picture"
+        listType="picture-card"
+        fileList={cover}
+        onChange={ChangecoverList}
+        onPreview={onPreview}
+      >
+        {cover.length < 1 && '+ Upload'}
       </Upload>
+    </ImgCrop>
     </Form.Item>
 
 

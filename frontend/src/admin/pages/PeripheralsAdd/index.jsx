@@ -56,7 +56,7 @@ const onFinish = (values) => {
     token:localStorage.getItem('token'),
     product_dict: values,
   };
-  fetch(`${BASE_URL}/api/add/product`, {
+  fetch(`${BASE_URL}/api/add/peripherals`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
