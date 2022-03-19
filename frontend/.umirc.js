@@ -10,8 +10,14 @@ export default defineConfig({
       component: '@/admin/layouts/index',
       routes: [
         { path: '/admin/manage/admins', component: '@/admin/pages/adminManage' },
+        { path: '/admin/manage/orders', component: '@/admin/pages/orderManage' },
         { path: '/admin/manage/games', component: '@/admin/pages/gameManage' },
+        { path: '/admin/manage/games/add', component: '@/admin/pages/gameAdd' },
+        { path: '/admin/manage/games/edit', component: '@/admin/pages/gameEdit' },
         { path: '/admin/manage/Peripherals', component: '@/admin/pages/PeripheralsManage' },
+        { path: '/admin/manage/Peripherals/add', component: '@/admin/pages/PeripheralsAdd' },
+        { path: '/admin/manage/Peripherals/edit', component: '@/admin/pages/PeripheralsEdit' },
+
 
       ],
     },

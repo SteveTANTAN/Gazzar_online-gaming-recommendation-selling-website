@@ -19,50 +19,84 @@ const { Header, Content, Footer, Sider } = Layout;
 const history = useHistory();
 const [email, setemail] = React.useState('');
 const [password, setpassword] = React.useState('');
+const [admin_data, setadmin_data] = React.useState([]);
+const [profileUpdate, setprofileUpdate] = React.useState(true);
 const columns = [
   
   { title: 'Email', dataIndex: 'email', key: 'email' },
   { title: 'Password', dataIndex: 'password', key: 'password' },
   {
-    title: 'Action',
-    dataIndex: '',
-    key: 'x',
-    render: ( ) => (
-      <Popconfirm title="Sure to delete?" >
+    title: 'operation',
+    key: 'delete',
+    render: (text, record) =>
+      <Popconfirm title="Sure to delete?" onConfirm={() => {admindelete(record.email)}}>
         <a>Delete</a>
       </Popconfirm>
-    ),
   },
 ];
 
-const data = [
-  {
-    key: 1,
-    email: 'xxxxxxxx@xxxxx.com',
-    password: 'asdasdasdasd',
-    description: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-  },
-  {
-    key: 2,
-    email: 'xxxxxxxx@xxxxx.com',
-    password: 'asdasdasdasd',
-    description: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-  },
-  {
-    key: 3,
-    email: 'xxxxxxxx@xxxxx.com',
-    password: 'asdasdasdasd',
-    description: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-    description: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-  },
-  {
-    key: 4,
-    email: 'xxxxxxxx@xxxxx.com',
-    password: 'asdasdasdasd',
-    description: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-    description: 'xxxxxxxxxxxxxxxxxxxxxxxxxxxxx',
-  },
-];
+console.log('Success1:');
+function admindelete (email) {
+
+
+  console.log('record ddddddddddddddddd:', email);
+  
+  const delte = {
+    email: email,
+    token:localStorage.getItem('token'),
+  };
+  fetch(`${BASE_URL}/api/admin/delete`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(delte),
+  }).then((data) => {
+    if (data.status === 200) {
+      console.log('Success1:');
+      data.json().then(result => {
+        console.log('Success:', result);
+        setprofileUpdate(true);
+        message.success("Admin deleting successful 😊!!!")
+      });
+    } else if (data.status === 400) {
+      data.json().then(result => {
+        console.log('error 400', result.message);
+        message.error((result.message.replace("<p>","")).replace("</p>",""))
+      });
+    }
+  });
+}
+
+function admindata () {
+  fetch(`${BASE_URL}/api/admin/profile/${localStorage.getItem('token')}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    // body: JSON.stringify(loginPeople),
+  }).then((data) => {
+    if (data.status === 200) {
+      console.log('Success1:');
+
+      data.json().then(result => {
+        console.log('Success:', result);
+
+        message.success("admin profile updating successful 😊!!!")
+        setadmin_data(result.admins_profile);
+      });
+    } else if (data.status === 400) {
+      data.json().then(result => {
+        console.log('error 400', result.message);
+        message.error((result.message.replace("<p>","")).replace("</p>",""))
+      });
+    }
+  })
+}
+if (profileUpdate) {
+  admindata();
+  setprofileUpdate(false);
+}
 function submit () {
   const loginPeople = {
     email: email,
@@ -80,7 +114,8 @@ function submit () {
       console.log('Success1:');
 
       data.json().then(result => {
-        console.log('Success:', result);
+        console.log('Success:', result.admins_profile);
+        setprofileUpdate(true);
         message.success("New admin adding successful 😊!!!")
 
       });
@@ -96,6 +131,7 @@ const onFinish = (values) => {
   submit();
   console.log('Received values of form: ', values);
 };
+console.log('Received values of form: ', admin_data);
 
 return (
   <div>
@@ -145,7 +181,7 @@ return (
   </Header>
   <Table
     columns={columns}
-    dataSource={data}
+    dataSource={admin_data}
   />
   </div>);
 };

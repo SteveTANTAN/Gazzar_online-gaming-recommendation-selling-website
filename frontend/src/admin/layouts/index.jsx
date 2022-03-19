@@ -80,7 +80,7 @@ export default (props) => {
               <Menu.Item key="1" icon={<PieChartOutlined />}>
                 overview
               </Menu.Item>
-             
+
               <Menu.Item key="2" icon={<CarOutlined/>}>
               <Link to="/admin/manage/games">
                 Games Management
@@ -92,7 +92,9 @@ export default (props) => {
                 </Link>
               </Menu.Item>
               <Menu.Item key="4" icon={<OrderedListOutlined/>}>
+              <Link to="/admin/manage/orders">
                 order Management
+              </Link>
               </Menu.Item>
 
               <Menu.Item key="5" icon={<UserOutlined/>}>

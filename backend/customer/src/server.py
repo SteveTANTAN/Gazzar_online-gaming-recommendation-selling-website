@@ -2,7 +2,7 @@ from flask import Blueprint, request
 from json import dumps
 from flask import Flask, request
 from flask_cors import CORS
-
+import json
 import sys
 sys.path.append('../../database/src')
 from database import db
@@ -11,6 +11,7 @@ from auth import user_register, user_login, user_logout, forget_password, edit_p
 
 sys.path.append('../../admin/src')
 from manager import add_admin, admin_login, admin_logout, show_all_admins, delete_admin
+from product_manage import add_product
 def defaultHandler(err):
     """server"""
     response = err.get_response()
@@ -165,6 +166,17 @@ def target_admin_delete():
     token = info['token']
     email = info['email']
     return dumps(delete_admin(token, email))
+
+@APP.route('/api/add/product', methods=['POST'])
+def product_add():
+    '''
+    Route for listing profile
+    '''
+    # print(token)
+    info = request.get_json()
+    token = info['token']
+    product_dict = json.loads(info['product_dict'])
+    return dumps(add_product(token, product_dict))
 
 if __name__ == "__main__":
     db.create_all()
