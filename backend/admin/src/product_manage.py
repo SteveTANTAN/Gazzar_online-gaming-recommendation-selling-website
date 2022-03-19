@@ -15,8 +15,8 @@ import ast
 from help_admin import ErrorMessage, create_product_id, token_to_id, add_to_database
 
 
-def add_product(token, input_product_dict, product_category):
-    product_dict = json.loads(input_product_dict)
+def add_product(token, product_dict, product_category):
+    #product_dict = json.loads(input_product_dict)
 
     # handle token valid
     cur_admin_id = token_to_id(token)
@@ -73,8 +73,8 @@ def get_product(token, product_id):
     #print(output)
     return output
 
-def edit_product(token, input_product_dict):
-    product_dict = json.loads(input_product_dict)
+def edit_product(token, product_dict):
+    #product_dict = json.loads(input_product_dict)
     # handle token valid
     cur_admin_id = token_to_id(token)
     admins = Admin.query.filter((Admin.admin_id==cur_admin_id)).all()

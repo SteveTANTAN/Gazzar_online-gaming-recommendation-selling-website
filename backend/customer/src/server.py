@@ -13,7 +13,7 @@ from auth import user_register, user_login, user_logout, forget_password, edit_p
 
 sys.path.append('../../admin/src')
 from manager import add_admin, admin_login, admin_logout, show_all_admins, delete_admin
-from product_manage import add_product, edit_product
+from product_manage import add_product, edit_product, get_product
 def defaultHandler(err):
     """server"""
     response = err.get_response()
@@ -202,6 +202,14 @@ def games_edit():
     token = info['token']
     product_dict = info['product_dict']
     return dumps(edit_product(token, product_dict))
+
+@APP.route('/api/get/product/<token>/<product_id>', methods=['GET'])
+def product_get(token, product_id):
+    '''
+    Route for listing profile
+    '''
+    # print(token)
+    return dumps(get_product(token, product_id))
 
 if __name__ == "__main__":
     db.create_all()
