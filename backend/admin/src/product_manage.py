@@ -59,9 +59,9 @@ def get_product(token, product_id):
     target_product = Product.query.filter(Product.product_id == product_id).all()[0]
     output["Product Name"] = target_product.name
     output["Product description"] = target_product.description
-    output["State"] = target_product.status
+    output["State"] = str(target_product.status)
     output["Stock"] = target_product.stock
-    output["Unit Price"] = target_product.price
+    output["Unit Price"] = float(target_product.price)
     output["Discount"] = target_product.discount
     output["Cover"] = target_product.main_image
     #print(type(output['Cover']))
