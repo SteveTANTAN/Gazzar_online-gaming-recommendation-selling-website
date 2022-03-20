@@ -2,8 +2,8 @@ from database import db
 
 product_type_connection = db.Table(
         'product_type_connection',
-        db.Column('product_id', db.Integer, db.ForeignKey('product.product_id'), primary_key=True),
-        db.Column('type_id', db.Integer, db.ForeignKey('type.type_id'), primary_key=True)
+        db.Column('product_id', db.Integer, db.ForeignKey('product.product_id', onupdate="cascade"), primary_key=True),
+        db.Column('type_id', db.Integer, db.ForeignKey('type.type_id', onupdate="cascade"), primary_key=True)
     )
 
 class Product(db.Model):
@@ -17,8 +17,8 @@ class Product(db.Model):
     # 0-default 1-on promotion
     status = db.Column(db.Integer)
     stock = db.Column(db.Integer)
-    main_image = db.Column(db.String(500))
-    sub_image = db.Column(db.String(500))
+    main_image = db.Column(db.String(32672))
+    sub_image = db.Column(db.String(32672))
     rate = db.Column(db.Float(2,1))
     comment = db.Column(db.String(500))
     # 0-game 1-peripheral
