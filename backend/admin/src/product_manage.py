@@ -46,35 +46,8 @@ def add_product(token, product_dict, product_category):
         add_to_database(new_product)
 
     return {'is_success': True}
-
-def get_product(token, product_id):
-    # handle token valid
-    cur_admin_id = token_to_id(token)
-    admins = Admin.query.filter((Admin.admin_id==cur_admin_id)).all()
-    if (len(admins) == 0):
-        raise ErrorMessage(Error.query.filter(Error.error_id == 2).all()[0].error_name)
-
-    # get product
-    output = {}
-    target_product = Product.query.filter(Product.product_id == product_id).all()[0]
-    output["Product Name"] = target_product.name
-    output["Product description"] = target_product.description
-    output["State"] = str(target_product.status)
-    output["Stock"] = target_product.stock
-    output["Unit Price"] = float(target_product.price)
-    output["Discount"] = target_product.discount
-    output["Cover"] = target_product.main_image
-    #print(type(output['Cover']))
-    output["Photo"] = target_product.sub_image
-    output_type = []
-    for product_type_name in target_product.genre:
-        output_type.append(product_type_name.type_name)
-    output["Product Type"] = output_type
-    #print(output)
-    return output
-
-def edit_product(token, input_product_dict):
-    product_dict = json.loads(input_product_dict)
+def edit_product(token, product_dict):
+    # product_dict = json.loads(input_product_dict)
     # handle token valid
     cur_admin_id = token_to_id(token)
     admins = Admin.query.filter((Admin.admin_id==cur_admin_id)).all()
@@ -102,6 +75,33 @@ def edit_product(token, input_product_dict):
 
     #print(target_product.genre)
     return {'is_success': True}
+def get_product(token, product_id):
+    # handle token valid
+    cur_admin_id = token_to_id(token)
+    admins = Admin.query.filter((Admin.admin_id==cur_admin_id)).all()
+    if (len(admins) == 0):
+        raise ErrorMessage(Error.query.filter(Error.error_id == 2).all()[0].error_name)
+
+    # get product
+    output = {}
+    target_product = Product.query.filter(Product.product_id == product_id).all()[0]
+    output["Product Name"] = target_product.name
+    output["Product description"] = target_product.description
+    output["State"] = str(target_product.status)
+    output["Stock"] = target_product.stock
+    output["Unit Price"] = float(target_product.price)
+    output["Discount"] = target_product.discount
+    output["Cover"] = ast.literal_eval(target_product.main_image)
+    #print(type(output['Cover']))
+    output["Photo"] = ast.literal_eval(target_product.sub_image)
+    output_type = []
+    for product_type_name in target_product.genre:
+        output_type.append(product_type_name.type_name)
+    output["Product Type"] = output_type
+    #print(output)
+    return output
+
+
 
 # def delete_product(token, product_id):
 #     #product_dict = json.loads(input_product_dict)

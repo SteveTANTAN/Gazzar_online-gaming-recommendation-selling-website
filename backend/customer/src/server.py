@@ -192,7 +192,7 @@ def peripherals_add():
     product_dict = info['product_dict']
     return dumps(add_product(token, product_dict, 1))
 
-@APP.route('/api/edit/products', methods=['POST'])
+@APP.route('/api/edit/products', methods=['PUT'])
 def games_edit():
     '''
     Route for listing profile
