@@ -2,8 +2,8 @@ from database import db
 
 product_type_connection = db.Table(
         'product_type_connection',
-        db.Column('product_id', db.Integer, db.ForeignKey('product.product_id', onupdate="cascade"), primary_key=True),
-        db.Column('type_id', db.Integer, db.ForeignKey('type.type_id', onupdate="cascade"), primary_key=True)
+        db.Column('product_id', db.Integer, db.ForeignKey('product.product_id', ondelete="CASCADE", onupdate="cascade"), primary_key=True),
+        db.Column('type_id', db.Integer, db.ForeignKey('type.type_id', ondelete="CASCADE", onupdate="cascade"), primary_key=True)
     )
 
 class Product(db.Model):
@@ -25,7 +25,7 @@ class Product(db.Model):
     category = db.Column(db.Integer)
     last_modified = db.Column(db.String(500))
 
-    genre = db.relationship("Type", secondary=product_type_connection, lazy='subquery', backref=db.backref('product', lazy=True))
+    genre = db.relationship("Type", secondary=product_type_connection, lazy='subquery', backref=db.backref('product', lazy=True), cascade="all, delete")
 
     def __init__(self, product_id, name, description, price, discount, status, stock, main_image, sub_image, category):
         self.product_id = product_id
