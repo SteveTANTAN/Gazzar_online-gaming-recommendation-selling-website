@@ -52,23 +52,23 @@ const onFinish = (values) => {
   values['Cover'] = cover;
   console.log('Received values of form: ', values);
   console.log('Received values of form: ', values);
-  const delte = {
+  const add = {
     token:localStorage.getItem('token'),
     product_dict: values,
   };
-  fetch(`${BASE_URL}/api/add/product`, {
+  fetch(`${BASE_URL}/api/add/peripherals`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(delte),
+    body: JSON.stringify(add),
   }).then((data) => {
     if (data.status === 200) {
       console.log('Success1:');
       data.json().then(result => {
         console.log('Success:', result);
         // setprofileUpdate(true);
-        message.success("Game adding successful 😊!!!")
+        message.success("Peripherals adding successful 😊!!!")
         history.push('/admin/manage/Peripherals')
 
       });
@@ -167,7 +167,7 @@ return (
         <Option value="Crafts">Crafts</Option>
         <Option value="Clothes">Clothes</Option>
         <Option value="Daily necessities">Daily necessities</Option>
-        <Option value="GK">GK</Option>
+        <Option value="Garage Kit">Garage Kit</Option>
 
       </Select>
     </Form.Item>

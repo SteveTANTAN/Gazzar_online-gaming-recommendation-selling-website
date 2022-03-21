@@ -194,6 +194,14 @@ def show_user_order(token):
     output['order_info'] = info_order
     return output
 
+def edit_username(token, newname):
+    user_id =  token_to_id(token)
+    target_user = User.query.filter(User.user_id==user_id).all()[0]
+    target_user.name = newname
+    db.session.commit()
+    return {}
+
+
 # if __name__ == "__main__":
 #     token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjF9.zf40wtVW374ygpDOvfCMhBfnLrddY2Y9C6IlDmzwxy4"
 #     print(show_user_profile(token))
