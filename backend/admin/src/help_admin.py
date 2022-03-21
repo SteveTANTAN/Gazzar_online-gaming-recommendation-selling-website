@@ -9,6 +9,7 @@ sys.path.append('../../database/src')
 from database import db
 from admin import Admin
 from error import Error
+from product import Product
 import jwt
 import re
 from werkzeug.exceptions import HTTPException
@@ -20,7 +21,19 @@ def create_admin_id():
     # get all admin_id
     all_admin_id = db.session.query(Admin.admin_id).all()
     #generate len(admin_id) + 1
-    return ((all_admin_id[-1][0]) + 1 )
+    return ((all_admin_id[-1][0]) + 1)
+
+def create_product_id():
+    """
+    This function is used to create a user id(uid)
+    return valid admin id
+    """
+    all_product_id = Product.query.all()
+    if len(all_product_id) != 0:
+        product_id = (all_product_id[-1].product_id) + 1
+    else:
+        product_id = 1
+    return product_id
 
 def create_token(admin_id):
     '''

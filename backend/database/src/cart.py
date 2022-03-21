@@ -11,7 +11,7 @@ class Cart(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     user = db.relationship('User', lazy='select', backref=db.backref('cart', lazy='joined'))
     # one to many
-    product_id = db.Column(db.Integer, db.ForeignKey('product.product_id'))
+    product_id = db.Column(db.Integer, db.ForeignKey('product.product_id', onupdate="cascade"))
     product = db.relationship('Product', lazy='select', backref=db.backref('cart', lazy='joined'))
 
     def __init__(self, cart_id, checked, quantity, user, product):

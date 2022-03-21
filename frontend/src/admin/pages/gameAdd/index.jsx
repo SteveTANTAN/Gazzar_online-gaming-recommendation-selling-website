@@ -50,16 +50,16 @@ const onFinish = (values) => {
   values['Cover'] = cover;
 
   console.log('Received values of form: ', values);
-  const delte = {
+  const add = {
     token:localStorage.getItem('token'),
     product_dict: values,
   };
-  fetch(`${BASE_URL}/api/add/product`, {
+  fetch(`${BASE_URL}/api/add/games`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify(delte),
+    body: JSON.stringify(add),
   }).then((data) => {
     if (data.status === 200) {
       console.log('Success1:');
