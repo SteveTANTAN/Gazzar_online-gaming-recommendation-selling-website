@@ -108,6 +108,69 @@ const columns = [
 
 ];
 
+console.log('Success1:');
+function admindelete (email) {
+
+
+  console.log('record ddddddddddddddddd:', email);
+  
+  const delte = {
+    email: email,
+    token:localStorage.getItem('token'),
+  };
+  fetch(`${BASE_URL}/api/admin/delete`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(delte),
+  }).then((data) => {
+    if (data.status === 200) {
+      console.log('Success1:');
+      data.json().then(result => {
+        console.log('Success:', result);
+        setprofileUpdate(true);
+        message.success("Admin deleting successful 😊!!!")
+      });
+    } else if (data.status === 400) {
+      data.json().then(result => {
+        console.log('error 400', result.message);
+        message.error((result.message.replace("<p>","")).replace("</p>",""))
+      });
+    }
+  });
+}
+
+function gamedata () {
+  fetch(`${BASE_URL}/api/admin/profile/${localStorage.getItem('token')}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    // body: JSON.stringify(loginPeople),
+  }).then((data) => {
+    if (data.status === 200) {
+      console.log('Success1:');
+
+      data.json().then(result => {
+        console.log('Success:', result);
+
+        message.success("admin profile updating successful 😊!!!")
+        setadmin_data(result.admins_profile);
+      });
+    } else if (data.status === 400) {
+      data.json().then(result => {
+        console.log('error 400', result.message);
+        message.error((result.message.replace("<p>","")).replace("</p>",""))
+      });
+    }
+  })
+}
+if (profileUpdate) {
+  admindata();
+  setprofileUpdate(false);
+}
+
 const data = [
   {
     'id': '1',
