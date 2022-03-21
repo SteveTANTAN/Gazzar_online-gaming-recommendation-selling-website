@@ -13,7 +13,7 @@ from auth import user_register, user_login, user_logout, forget_password, edit_p
 
 sys.path.append('../../admin/src')
 from manager import add_admin, admin_login, admin_logout, show_all_admins, delete_admin
-from product_manage import add_product, edit_product, get_product
+from product_manage import add_product, edit_product, get_product, get_product_all, delete_product
 def defaultHandler(err):
     """server"""
     response = err.get_response()
@@ -192,7 +192,7 @@ def peripherals_add():
     product_dict = info['product_dict']
     return dumps(add_product(token, product_dict, 1))
 
-@APP.route('/api/edit/products', methods=['POST'])
+@APP.route('/api/edit/products', methods=['PUT'])
 def games_edit():
     '''
     Route for listing profile
@@ -210,6 +210,25 @@ def product_get(token, product_id):
     '''
     # print(token)
     return dumps(get_product(token, product_id))
+
+@APP.route('/api/get/product/all/<token>', methods=['GET'])
+def product_get_all(token):
+    '''
+    Route for listing profile
+    '''
+    # print(token)
+    return dumps(get_product_all(token))
+
+@APP.route('/api/delete/product', methods=['DELETE'])
+def target_product_delete():
+    '''
+    Route for listing profile
+    '''
+    # print(token)
+    info = request.get_json()
+    token = info['token']
+    product_id = info['product_id']
+    return dumps(delete_product(token, product_id))
 
 if __name__ == "__main__":
     db.create_all()
