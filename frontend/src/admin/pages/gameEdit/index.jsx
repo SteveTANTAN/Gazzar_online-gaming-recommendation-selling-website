@@ -117,6 +117,9 @@ const validateMessages = {
 };
 
 const onFinish = (values) => {
+  if (cover.length < 1){
+    return(message.error("Cover can not be None!!!"))
+  }
   values['Photo'] = fileList;
   values['Cover'] = cover;
   values['Product Id'] = params.gameid;
@@ -138,6 +141,7 @@ const onFinish = (values) => {
       data.json().then(result => {
         console.log('Success:', result);
         // setprofileUpdate(true);
+        message.success("Game editing successful 😊!!!")
         history.push('/admin/manage/games')
 
       });
@@ -173,11 +177,6 @@ const onPreview = async file => {
   imgWindow.document.write(image.outerHTML);
 };
 
-if (!fileList) {
-  message.success("Game editing successful 😊!!!")
-
-
-} 
 
 return (
 
