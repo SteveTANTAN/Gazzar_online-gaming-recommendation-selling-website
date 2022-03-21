@@ -43,7 +43,7 @@ def add_to_cart(token, product_id, quantity):
         return
     cur_item = target_cart[0]
     # if product has been exist in current user's cart, add up the quantity of the product
-    cur_item.quantity = cur_item.quantity + quantity
+    cur_item.quantity = cur_item.quantity + int(quantity)
     db.session.commit()
     return
 
@@ -86,7 +86,8 @@ def edit_checked_product(token, cart_id, checked):
 
     # access target cart item
     target_cart_item = Cart.query.filter(Cart.user_id==u_id, Cart.cart_id==cart_id).all()[0]
-    target_cart_item.checked = checked
+    target_cart_item.checked = int(checked)
+    db.session.commit()
     return
 
 def delete_cart_product(token, cart_id):
@@ -129,7 +130,7 @@ def checkout(token):
                 'current_price': float(target_product.price) * float(target_product.discount) * (0.01),
                 'quantity': item.quantity,
             }
-            original_price = original_price + float(target_product.price * item.quantity)
+            original_price = original_price + float(target_product.price) * float(item.quantity)
             total_discount = total_discount + float((100 - target_product.discount) * (0.01) * original_price)
             checkout_products.append(target_product_info)
 
@@ -151,7 +152,8 @@ def notify_quantity(token, cart_id, new_quantity):
         raise ErrorMessage(Error.query.filter(Error.error_id == 17).all()[0].error_name)
 
     target_user_cart = Cart.query.filter(Cart.user_id==u_id, Cart.cart_id==cart_id).all()[0]
-    target_user_cart.quantity = new_quantity
+    target_user_cart.quantity = int(new_quantity)
+    db.session.commit()
     return
 
 # if __name__ == "__main__":
