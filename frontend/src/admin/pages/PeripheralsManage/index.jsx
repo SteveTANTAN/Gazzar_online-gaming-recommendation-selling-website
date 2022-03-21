@@ -114,7 +114,7 @@ function productdelete (id) {
     product_id: id,
     token:localStorage.getItem('token'),
   };
-  fetch(`${BASE_URL}/api/delete/product`, {
+  fetch(`/api/delete/product`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
@@ -142,7 +142,7 @@ function productsearch (text) {
     return
   }
 
-  fetch(`${BASE_URL}/api/admin/search/${localStorage.getItem('token')}/${text}/0`, {
+  fetch(`/api/admin/search/${localStorage.getItem('token')}/${text}/1`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -169,7 +169,7 @@ function productsearch (text) {
 }
 
 function setgamedata () {
-  fetch(`${BASE_URL}/api/get/product/all/1/${localStorage.getItem('token')}`, {
+  fetch(`/api/get/product/all/1/${localStorage.getItem('token')}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'

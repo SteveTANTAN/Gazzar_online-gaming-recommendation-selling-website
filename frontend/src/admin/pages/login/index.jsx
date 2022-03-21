@@ -20,7 +20,7 @@ export default function Login() {
       email: email,
       password: password,
     };
-    fetch(`${BASE_URL}/api/admin/login`, {
+    fetch(`/api/admin/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
