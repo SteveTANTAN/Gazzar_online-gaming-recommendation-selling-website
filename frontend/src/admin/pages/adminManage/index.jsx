@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Button, Space, Layout, Menu, message  } from 'antd';
+import { Input, Button, Space, Layout, Menu, message,PageHeader} from 'antd';
 import { Alert } from 'antd';
 import {
   Form,
@@ -135,6 +135,11 @@ console.log('Received values of form: ', admin_data);
 
 return (
   <div>
+  <PageHeader
+    className="site-page-header"
+    title="Admins Management Page"
+    subTitle=""
+  />
   <Header className="site-layout-sub-header-background" style={{ padding: 0 }} >
   <Form
     name="normal_login"
