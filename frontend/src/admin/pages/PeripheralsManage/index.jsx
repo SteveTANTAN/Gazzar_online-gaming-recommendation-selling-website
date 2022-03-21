@@ -41,8 +41,8 @@ const columns = [
         value: 'Daily necessities',
       },
       {
-        text: 'GK',
-        value: 'GK',
+        text: 'Garage Kit',
+        value: 'Garage Kit',
       },
     ],
     filterMode: 'tree',
@@ -140,7 +140,7 @@ const data = [
   {
     'id': '5',
     'product name': 'bwwwbbb',
-    'type': 'GK',
+    'type': 'Garage Kit',
     'rate': 4.0,
     'state': 'On Promotion',
     'last modified by': 'xxxxx@xxx.com',

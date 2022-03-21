@@ -29,16 +29,16 @@ const columns = [
     dataIndex: 'type',
     filters: [
       {
-        text: 'Action&Adventure',
-        value: 'Action&Adventure',
+        text: 'Action & Adventure',
+        value: 'Action & Adventure',
       },
       {
         text: 'FPS',
         value: 'FPS',
       },
       {
-        text: 'Sports&Racing',
-        value: 'Sports&Racing',
+        text: 'Sports & Racing',
+        value: 'Sports & Racing',
       },
       {
         text: 'RPG',
@@ -112,7 +112,7 @@ const data = [
   {
     'id': '1',
     'product name': 'aaa',
-    'type': 'FPS',
+    'type': 'FPS, RPG',
     'rate': 4.3,
     'state': 'On Sale',
     'last modified by': 'xxxxx@xxx.com',
@@ -129,7 +129,7 @@ const data = [
   },  {
     'id': '3',
     'product name': 'aaa',
-    'type': 'RPG',
+    'type': 'RPG, Sports & Racing',
     'rate': 3.3,
     'state': 'On Sale',
     'last modified by': 'xxxxx@xxx.com',
