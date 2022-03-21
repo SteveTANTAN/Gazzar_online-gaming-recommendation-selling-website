@@ -15,6 +15,8 @@ from customer_product import search, show_product_details, buy_now
 sys.path.append('../../admin/src')
 from manager import add_admin, admin_login, admin_logout, show_all_admins, delete_admin
 from product_manage import add_product, edit_product, get_product, get_product_all, delete_product
+from admin_search import admin_search
+
 def defaultHandler(err):
     """server"""
     response = err.get_response()
@@ -264,6 +266,14 @@ def target_product_delete():
     token = info['token']
     product_id = info['product_id']
     return dumps(delete_product(token, product_id))
+
+@APP.route('/api/admin/search/<token>/<search_text>/<category>', methods=['GET'])
+def target_product_search(token, search_text, category):
+    '''
+    Route for listing profile
+    '''
+    # print(token)
+    return dumps(admin_search(token, search_text, category))
 
 if __name__ == "__main__":
     db.create_all()

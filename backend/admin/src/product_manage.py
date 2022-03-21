@@ -103,7 +103,7 @@ def get_product(token, product_id):
     return output
 
 def get_product_all(token, product_category):
-     # handle token valid
+    # handle token valid
     cur_admin_id = token_to_id(token)
     admins = Admin.query.filter((Admin.admin_id==cur_admin_id)).all()
     if (len(admins) == 0):
