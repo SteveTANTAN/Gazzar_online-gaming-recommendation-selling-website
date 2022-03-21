@@ -82,7 +82,7 @@ def user_logout(token):
     """
     cur_user_id = token_to_id(token)
     # no user
-    users = User.query.filter((User.user_id==cur_user_id)).all()
+    users = User.query.filter(User.user_id==cur_user_id).all()
     if (len(users) == 0):
         raise ErrorMessage(Error.query.filter(Error.error_id == 2).all()[0].error_name)
     target_user = users[0]
@@ -193,6 +193,14 @@ def show_user_order(token):
     output = {}
     output['order_info'] = info_order
     return output
+
+def edit_username(token, newname):
+    user_id =  token_to_id(token)
+    target_user = User.query.filter(User.user_id==user_id).all()[0]
+    target_user.name = newname
+    db.session.commit()
+    return {}
+
 
 # if __name__ == "__main__":
 #     token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjF9.zf40wtVW374ygpDOvfCMhBfnLrddY2Y9C6IlDmzwxy4"
