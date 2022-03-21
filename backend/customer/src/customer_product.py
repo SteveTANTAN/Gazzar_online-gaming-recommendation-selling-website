@@ -69,7 +69,7 @@ def buy_now(token, product_id, quantity):
     if len(users) == 0:
         raise ErrorMessage(Error.query.filter(Error.error_id == 17).all()[0].error_name)
 
-    target_product = Product.query.filter(Product.product_id==product_id, Product.user_id==u_id).all()[0]
+    target_product = Product.query.filter(Product.product_id==product_id).all()[0]
     cover = ast.literal_eval(target_product.main_image)
     target_product_info = {
         'product_id': target_product.product_id,
@@ -79,7 +79,7 @@ def buy_now(token, product_id, quantity):
         'current_price': float(target_product.price) * float(target_product.discount) * (0.01),
         'quantity': quantity,
     }
-    original_price = float(target_product.price * quantity)
+    original_price = float(target_product.price) * float(quantity)
     total_discount = float((100 - target_product.discount) * (0.01) * original_price)
     actual_transaction = float(original_price - total_discount)
     output = {

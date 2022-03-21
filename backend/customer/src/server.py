@@ -8,7 +8,7 @@ sys.path.append('../../database/src')
 from database import db
 
 from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile, show_user_payment, show_user_cart, show_user_order
-from customer_product import search, show_product_details
+from customer_product import search, show_product_details, buy_now
 
 sys.path.append('../../admin/src')
 from manager import add_admin, admin_login, admin_logout, show_all_admins, delete_admin
@@ -180,7 +180,7 @@ def product_add():
     product_dict = json.loads(info['product_dict'])
     return dumps(add_product(token, product_dict))
 
-@APP.route('/api/user/show/productdetails/<product_id>/<token>', methods=['GET'])
+@APP.route('/api/user/show/<product_id>/<token>', methods=['GET'])
 def product_details_show(token, product_id):
     '''
     Route for show product details
@@ -194,6 +194,12 @@ def search_product(str):
     '''
     return dumps(search(str))
 
+@APP.route('/api/user/buynow/<product_id>/<quantity>/<token>', methods=['GET'])
+def buy_product_now(token, product_id, quantity):
+    '''
+    Route for buy product now
+    '''
+    return dumps(buy_now(token, product_id, quantity))
 
 if __name__ == "__main__":
     db.create_all()
