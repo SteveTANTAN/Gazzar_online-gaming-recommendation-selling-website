@@ -1,6 +1,5 @@
 """
 cart_opeartion.py is used for customer cart-relevant operation
-This file will include the add_to_cart, 
 """
 import sys
 sys.path.append('../../database/src')
@@ -155,6 +154,11 @@ def notify_quantity(token, cart_id, new_quantity):
     target_user_cart.quantity = int(new_quantity)
     db.session.commit()
     return
+
+def show_user_cart(token):
+    user_id = token_to_id(token)
+    target_user_carts = Cart.query.filter(Cart.user_id==user_id).all()
+    return len(target_user_carts)
 
 # if __name__ == "__main__":
 #     add_to_cart('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 20, 1)
