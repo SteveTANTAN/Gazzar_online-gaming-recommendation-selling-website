@@ -46,6 +46,9 @@ const formItemLayout = {
 };
 
 const onFinish = (values) => {
+  if (cover.length < 1){
+    return(message.error("Cover can not be None!!!"))
+  }
   values['Photo'] = fileList;
   values['Cover'] = cover;
 

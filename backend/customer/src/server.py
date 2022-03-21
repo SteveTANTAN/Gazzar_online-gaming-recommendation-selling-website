@@ -10,6 +10,7 @@ sys.path.append('../../database/src')
 from database import db
 
 from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile, show_user_payment, show_user_cart, show_user_order
+from customer_product import search, show_product_details, buy_now
 
 sys.path.append('../../admin/src')
 from manager import add_admin, admin_login, admin_logout, show_all_admins, delete_admin
@@ -31,7 +32,13 @@ CORS(APP)
 APP.config['TRAP_HTTP_EXCEPTIONS'] = True
 APP.register_error_handler(Exception, defaultHandler)
 
-
+#############################################################################################
+#############################################################################################
+######
+######          USER FLASK
+######
+#############################################################################################
+#############################################################################################
 @APP.route('/api/user/register', methods = ['POST'])
 def register_user():
     """Registers a new user"""
@@ -118,6 +125,34 @@ def show_cart(token):
     # token = info['token']
     return dumps(show_user_cart(token))
 
+@APP.route('/api/user/show/<product_id>/<token>', methods=['GET'])
+def product_details_show(token, product_id):
+    '''
+    Route for show product details
+    '''
+    return dumps(show_product_details(token, product_id))
+
+@APP.route('/api/user/search/<str>', methods=['GET'])
+def search_product(str):
+    '''
+    Route for search product with given string
+    '''
+    return dumps(search(str))
+
+@APP.route('/api/user/buynow/<product_id>/<quantity>/<token>', methods=['GET'])
+def buy_product_now(token, product_id, quantity):
+    '''
+    Route for buy product now
+    '''
+    return dumps(buy_now(token, product_id, quantity))
+
+#############################################################################################
+#############################################################################################
+######
+######          ADMIN FLASK
+######
+#############################################################################################
+#############################################################################################
 @APP.route('/api/admin/add', methods = ['POST'])
 def admin_add():
     """Registers a new user."""

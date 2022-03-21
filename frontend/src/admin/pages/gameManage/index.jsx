@@ -1,6 +1,6 @@
 import { Table, Popconfirm } from 'antd';
 import React from 'react';
-import { Input, Button, Space, Layout, Menu,Tooltip, Row, Col} from 'antd';
+import { Input, Button, Space, Layout, Menu,Tooltip, Row, Col, message} from 'antd';
 import {
   UserOutlined,
   CustomerServiceOutlined,
@@ -10,8 +10,13 @@ import {
   SearchOutlined,
 } from '@ant-design/icons';
 import { Link, Redirect, useHistory } from 'umi';
+const BASE_URL = 'http://localhost:55467';
+
 export default (props) => {
 const [gamename, setGamename] = React.useState('');
+const [gamedata, setGamedata] = React.useState([]);
+const [profileUpdate, setprofileUpdate] = React.useState(true);
+
 const history = useHistory();
 
 const columns = [
@@ -29,16 +34,16 @@ const columns = [
     dataIndex: 'type',
     filters: [
       {
-        text: 'Action&Adventure',
-        value: 'Action&Adventure',
+        text: 'Action & Adventure',
+        value: 'Action & Adventure',
       },
       {
         text: 'FPS',
         value: 'FPS',
       },
       {
-        text: 'Sports&Racing',
-        value: 'Sports&Racing',
+        text: 'Sports & Racing',
+        value: 'Sports & Racing',
       },
       {
         text: 'RPG',
@@ -96,11 +101,11 @@ const columns = [
     key: 'delete',
     render: (text, record) =>
     <div>
-      <Popconfirm title="Sure to delete?" onConfirm={() => {admindelete(record.email)}}>
+      <Popconfirm title="Sure to delete?" onConfirm={() => {productdelete(record.id)}}>
         <a>Delete</a>
       </Popconfirm>
       <p></p>
-        <Popconfirm title="Sure to Edit?" style={{}} onConfirm={() => {admindelete(record.email)}}>
+        <Popconfirm title="Sure to Edit?" style={{}} onConfirm={() => {{history.push(`/admin/manage/games/edit/${record.id}`);}}}>
         <a>Edit</a>
       </Popconfirm>
     </div>
@@ -108,11 +113,74 @@ const columns = [
 
 ];
 
+console.log('Success1:');
+function productdelete (id) {
+
+
+  console.log('record ddddddddddddddddd:', id);
+  
+  const delte = {
+    product_id: id,
+    token:localStorage.getItem('token'),
+  };
+  fetch(`${BASE_URL}/api/delete/product`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(delte),
+  }).then((data) => {
+    if (data.status === 200) {
+      console.log('Success1:');
+      data.json().then(result => {
+        console.log('Success:', result);
+        setprofileUpdate(true);
+        message.success("game deleting successful 😊!!!")
+      });
+    } else if (data.status === 400) {
+      data.json().then(result => {
+        console.log('error 400', result.message);
+        message.error((result.message.replace("<p>","")).replace("</p>",""))
+      });
+    }
+  });
+}
+
+function setgamedata () {
+  fetch(`${BASE_URL}/api/get/product/all/0/${localStorage.getItem('token')}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    // body: JSON.stringify(loginPeople),
+  }).then((data) => {
+    if (data.status === 200) {
+      console.log('Success1:');
+
+      data.json().then(result => {
+        console.log('Success:', result);
+
+        message.success("Games details updating successful 😊!!!")
+        setGamedata(result);
+      });
+    } else if (data.status === 400) {
+      data.json().then(result => {
+        console.log('error 400', result.message);
+        message.error((result.message.replace("<p>","")).replace("</p>",""))
+      });
+    }
+  })
+}
+if (profileUpdate) {
+  setgamedata();
+  setprofileUpdate(false);
+}
+
 const data = [
   {
     'id': '1',
     'product name': 'aaa',
-    'type': 'FPS',
+    'type': 'FPS, RPG',
     'rate': 4.3,
     'state': 'On Sale',
     'last modified by': 'xxxxx@xxx.com',
@@ -129,7 +197,7 @@ const data = [
   },  {
     'id': '3',
     'product name': 'aaa',
-    'type': 'RPG',
+    'type': 'RPG, Sports & Racing',
     'rate': 3.3,
     'state': 'On Sale',
     'last modified by': 'xxxxx@xxx.com',
@@ -169,6 +237,6 @@ return(<div>
 </Row>
 
 </center>
-<Table columns={columns} dataSource={data} onChange={onChange} />
+<Table columns={columns} dataSource={gamedata} onChange={onChange} />
 </div>);
 }
