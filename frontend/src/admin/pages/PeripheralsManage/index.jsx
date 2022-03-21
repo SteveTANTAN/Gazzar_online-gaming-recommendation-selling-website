@@ -142,7 +142,7 @@ function productsearch (text) {
     return
   }
 
-  fetch(`/api/admin/search/${localStorage.getItem('token')}/${text}/0`, {
+  fetch(`/api/admin/search/${localStorage.getItem('token')}/${text}/1`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
