@@ -120,7 +120,7 @@ def get_product_all(token, product_category):
         output_type = []
         for product_type_name in target_product.genre:
             output_type.append(product_type_name.type_name)
-        temp["type"] = ','.join(output_type)
+        temp["type"] = ', '.join(output_type)
         temp['rate'] = float(target_product.rate)
         if target_product.status == 0: temp['state'] = 'On Sale'
         temp['state'] = 'On Promotion'
