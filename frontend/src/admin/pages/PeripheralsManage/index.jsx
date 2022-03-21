@@ -1,6 +1,6 @@
 import { Table, Popconfirm } from 'antd';
 import React from 'react';
-import { Input, Button, Space, Layout, Menu,Tooltip, Row, Col, message} from 'antd';
+import { Input, Button, Space, Layout, Menu,Tooltip, Row, Col, message,PageHeader} from 'antd';
 import {
   UserOutlined,
   CustomerServiceOutlined,
@@ -54,7 +54,7 @@ const columns = [
     filterMode: 'tree',
     filterSearch: true,
     onFilter: (value, record) => record.type.includes(value),
-    width: '10%',
+    width: '20%',
   },
   {
     title: 'Rate',
@@ -108,8 +108,6 @@ const columns = [
 
 console.log('Success1:');
 function productdelete (id) {
-
-
   console.log('record ddddddddddddddddd:', id);
   
   const delte = {
@@ -138,7 +136,37 @@ function productdelete (id) {
     }
   });
 }
+function productsearch (text) {
+  if (!text) {
+    setgamedata();
+    return
+  }
 
+  fetch(`${BASE_URL}/api/admin/search/${localStorage.getItem('token')}/${text}/0`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    // body: JSON.stringify(loginPeople),
+  }).then((data) => {
+    if (data.status === 200) {
+      console.log('Success1:');
+
+      data.json().then(result => {
+        console.log('Success:', result);
+
+        message.success("Games search results updating successful 😊!!!")
+        setGamedata(result);
+
+      });
+    } else if (data.status === 400) {
+      data.json().then(result => {
+        console.log('error 400', result.message);
+        message.error((result.message.replace("<p>","")).replace("</p>",""))
+      });
+    }
+  })
+}
 
 function setgamedata () {
   fetch(`${BASE_URL}/api/get/product/all/1/${localStorage.getItem('token')}`, {
@@ -212,14 +240,18 @@ function onChange(pagination, filters, sorter, extra) {
 }
 
 return(<div>
-
+  <PageHeader
+    className="site-page-header"
+    title="Peripherals Management Page"
+    subTitle=""
+  />
 <center>
 <Row>
 <Col span={21}>
 <Input onChange={e => setGamename(e.target.value)}  style={{ width: 240, borderRadius: 12, marginLeft: 20 }}
   value = {gamename} type = 'text' placeholder='Search Peripherals Here' />
 <Tooltip title="search">
-<Button shape="circle" icon={<SearchOutlined />} onClick={() => {history.push('/user/search');}}/>
+<Button shape="circle" icon={<SearchOutlined />} onClick={() => {productsearch(gamename)}}/>
 </Tooltip>
 </Col>
 

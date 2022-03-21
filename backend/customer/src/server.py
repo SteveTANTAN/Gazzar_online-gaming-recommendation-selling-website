@@ -16,6 +16,8 @@ from cart_operation import add_to_cart, show_cart_products, edit_checked_product
 sys.path.append('../../admin/src')
 from manager import add_admin, admin_login, admin_logout, show_all_admins, delete_admin
 from product_manage import add_product, edit_product, get_product, get_product_all, delete_product
+from admin_search import admin_search
+
 def defaultHandler(err):
     """server"""
     response = err.get_response()
@@ -147,6 +149,64 @@ def buy_product_now(token, product_id, quantity):
     '''
     return dumps(buy_now(token, product_id, quantity))
 
+
+@APP.route('/api/user/add/cart', methods=['POST'])
+def add_product_to_cart():
+    '''
+    Route for add prodcut to cart
+    '''
+    info = request.get_json()
+    token = info['token']
+    product_id = info['product_id']
+    quantity = info['quantity']
+    return dumps(add_to_cart(token, product_id, quantity))
+
+@APP.route('/api/user/show/cart/<token>', methods=['GET'])
+def show_cart_product_info(token):
+    '''
+    Route for show cart products info
+    '''
+    return dumps(show_cart_products(token))
+
+@APP.route('/api/user/edit/checked', methods=['PUT'])
+def edit_cart_checked_status():
+    '''
+    Route for edit cart checked status
+    '''
+    info = request.get_json()
+    token = info['token']
+    cart_id = info['cart_id']
+    checked = info['checked']
+    return dumps(edit_checked_product(token, cart_id, checked))
+
+@APP.route('/api/user/checkout/cart/<token>', methods=['GET'])
+def checkout_cart(token):
+    '''
+    Route for checkout all cart checked products
+    '''
+    return dumps(checkout(token))
+
+@APP.route('/api/user/notify/quantity', methods=['PUT'])
+def notify_cart_quantity():
+    '''
+    Route for notify cart product quantity
+    '''
+    info = request.get_json()
+    token = info['token']
+    cart_id = info['cart_id']
+    quantity = info['quantity']
+    return dumps(notify_quantity(token, cart_id, quantity))
+
+@APP.route('/api/user/delete/cart', methods=['DELETE'])
+def delete_cart():
+    '''
+    Route for delete cart
+    '''
+    info = request.get_json()
+    token = info['token']
+    cart_id = info['cart_id']
+    return dumps(delete_cart_product(token, cart_id))
+
 #############################################################################################
 #############################################################################################
 ######
@@ -266,62 +326,13 @@ def target_product_delete():
     product_id = info['product_id']
     return dumps(delete_product(token, product_id))
 
-@APP.route('/api/user/add/cart', methods=['POST'])
-def add_product_to_cart():
+@APP.route('/api/admin/search/<token>/<search_text>/<category>', methods=['GET'])
+def target_product_search(token, search_text, category):
     '''
-    Route for add prodcut to cart
+    Route for listing profile
     '''
-    info = request.get_json()
-    token = info['token']
-    product_id = info['product_id']
-    quantity = info['quantity']
-    return dumps(add_to_cart(token, product_id, quantity))
-
-@APP.route('/api/user/show/cart/<token>', methods=['GET'])
-def show_cart_product_info(token):
-    '''
-    Route for show cart products info
-    '''
-    return dumps(show_cart_products(token))
-
-@APP.route('/api/user/edit/checked', methods=['PUT'])
-def edit_cart_checked_status():
-    '''
-    Route for edit cart checked status
-    '''
-    info = request.get_json()
-    token = info['token']
-    cart_id = info['cart_id']
-    checked = info['checked']
-    return dumps(edit_checked_product(token, cart_id, checked))
-
-@APP.route('/api/user/checkout/cart/<token>', methods=['GET'])
-def checkout_cart(token):
-    '''
-    Route for checkout all cart checked products
-    '''
-    return dumps(checkout(token))
-
-@APP.route('/api/user/notify/quantity', methods=['PUT'])
-def notify_cart_quantity():
-    '''
-    Route for notify cart product quantity
-    '''
-    info = request.get_json()
-    token = info['token']
-    cart_id = info['cart_id']
-    quantity = info['quantity']
-    return dumps(notify_quantity(token, cart_id, quantity))
-
-@APP.route('/api/user/delete/cart', methods=['DELETE'])
-def delete_cart():
-    '''
-    Route for delete cart
-    '''
-    info = request.get_json()
-    token = info['token']
-    cart_id = info['cart_id']
-    return dumps(delete_cart_product(token, cart_id))
+    # print(token)
+    return dumps(admin_search(token, search_text, category))
 
 if __name__ == "__main__":
     db.create_all()
