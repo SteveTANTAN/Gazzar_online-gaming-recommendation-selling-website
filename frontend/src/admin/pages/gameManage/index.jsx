@@ -1,6 +1,6 @@
 import { Table, Popconfirm } from 'antd';
 import React from 'react';
-import { Input, Button, Space, Layout, Menu,Tooltip, Row, Col} from 'antd';
+import { Input, Button, Space, Layout, Menu,Tooltip, Row, Col, message} from 'antd';
 import {
   UserOutlined,
   CustomerServiceOutlined,
@@ -10,8 +10,13 @@ import {
   SearchOutlined,
 } from '@ant-design/icons';
 import { Link, Redirect, useHistory } from 'umi';
+const BASE_URL = 'http://localhost:55467';
+
 export default (props) => {
 const [gamename, setGamename] = React.useState('');
+const [gamedata, setGamedata] = React.useState([]);
+const [profileUpdate, setprofileUpdate] = React.useState(true);
+
 const history = useHistory();
 
 const columns = [
@@ -141,8 +146,8 @@ function admindelete (email) {
   });
 }
 
-function gamedata () {
-  fetch(`${BASE_URL}/api/admin/profile/${localStorage.getItem('token')}`, {
+function setgamedata () {
+  fetch(`${BASE_URL}/api/get/product/all/0/${localStorage.getItem('token')}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -156,7 +161,7 @@ function gamedata () {
         console.log('Success:', result);
 
         message.success("admin profile updating successful 😊!!!")
-        setadmin_data(result.admins_profile);
+        setGamedata(result);
       });
     } else if (data.status === 400) {
       data.json().then(result => {
@@ -167,7 +172,7 @@ function gamedata () {
   })
 }
 if (profileUpdate) {
-  admindata();
+  setgamedata();
   setprofileUpdate(false);
 }
 
@@ -232,6 +237,6 @@ return(<div>
 </Row>
 
 </center>
-<Table columns={columns} dataSource={data} onChange={onChange} />
+<Table columns={columns} dataSource={gamedata} onChange={onChange} />
 </div>);
 }
