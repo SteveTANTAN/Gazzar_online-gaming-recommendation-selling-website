@@ -211,13 +211,13 @@ def product_get(token, product_id):
     # print(token)
     return dumps(get_product(token, product_id))
 
-@APP.route('/api/get/product/all/<token>', methods=['GET'])
-def product_get_all(token):
+@APP.route('/api/get/product/all/<product_category>/<token>', methods=['GET'])
+def product_get_all(token, product_category):
     '''
     Route for listing profile
     '''
     # print(token)
-    return dumps(get_product_all(token))
+    return dumps(get_product_all(token, product_category))
 
 @APP.route('/api/delete/product', methods=['DELETE'])
 def target_product_delete():
