@@ -45,7 +45,7 @@ function admindelete (email) {
     email: email,
     token:localStorage.getItem('token'),
   };
-  fetch(`${BASE_URL}/api/admin/delete`, {
+  fetch(`/api/admin/delete`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
@@ -69,7 +69,7 @@ function admindelete (email) {
 }
 
 function admindata () {
-  fetch(`${BASE_URL}/api/admin/profile/${localStorage.getItem('token')}`, {
+  fetch(`/api/admin/profile/${localStorage.getItem('token')}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -103,7 +103,7 @@ function submit () {
     password: password,
     token:localStorage.getItem('token'),
   };
-  fetch(`${BASE_URL}/api/admin/add`, {
+  fetch(`/api/admin/add`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
