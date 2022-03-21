@@ -101,11 +101,11 @@ const columns = [
     key: 'delete',
     render: (text, record) =>
     <div>
-      <Popconfirm title="Sure to delete?" onConfirm={() => {admindelete(record.email)}}>
+      <Popconfirm title="Sure to delete?" onConfirm={() => {productdelete(record.id)}}>
         <a>Delete</a>
       </Popconfirm>
       <p></p>
-        <Popconfirm title="Sure to Edit?" style={{}} onConfirm={() => {admindelete(record.email)}}>
+        <Popconfirm title="Sure to Edit?" style={{}} onConfirm={() => {{history.push(`/admin/manage/games/edit/${record.id}`);}}}>
         <a>Edit</a>
       </Popconfirm>
     </div>
@@ -114,16 +114,16 @@ const columns = [
 ];
 
 console.log('Success1:');
-function admindelete (email) {
+function productdelete (id) {
 
 
-  console.log('record ddddddddddddddddd:', email);
+  console.log('record ddddddddddddddddd:', id);
   
   const delte = {
-    email: email,
+    product_id: id,
     token:localStorage.getItem('token'),
   };
-  fetch(`${BASE_URL}/api/admin/delete`, {
+  fetch(`${BASE_URL}/api/delete/product`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
@@ -135,7 +135,7 @@ function admindelete (email) {
       data.json().then(result => {
         console.log('Success:', result);
         setprofileUpdate(true);
-        message.success("Admin deleting successful 😊!!!")
+        message.success("game deleting successful 😊!!!")
       });
     } else if (data.status === 400) {
       data.json().then(result => {
@@ -160,7 +160,7 @@ function setgamedata () {
       data.json().then(result => {
         console.log('Success:', result);
 
-        message.success("admin profile updating successful 😊!!!")
+        message.success("Games details updating successful 😊!!!")
         setGamedata(result);
       });
     } else if (data.status === 400) {

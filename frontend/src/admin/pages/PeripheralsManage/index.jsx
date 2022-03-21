@@ -94,11 +94,11 @@ const columns = [
     key: 'delete',
     render: (text, record) =>
     <div>
-      <Popconfirm title="Sure to delete?" onConfirm={() => {admindelete(record.email)}}>
+      <Popconfirm title="Sure to delete?" onConfirm={() => {productdelete(record.id)}}>
         <a>Delete</a>
       </Popconfirm>
       <p></p>
-        <Popconfirm title="Sure to Edit?" style={{}} onConfirm={() => {admindelete(record.email)}}>
+        <Popconfirm title="Sure to Edit?" style={{}} onConfirm={() => {{history.push(`/admin/manage/peripherals/edit/${record.id}`);}}}>
         <a>Edit</a>
       </Popconfirm>
     </div>
@@ -107,16 +107,16 @@ const columns = [
 ];
 
 console.log('Success1:');
-function admindelete (email) {
+function productdelete (id) {
 
 
-  console.log('record ddddddddddddddddd:', email);
+  console.log('record ddddddddddddddddd:', id);
   
   const delte = {
-    email: email,
+    product_id: id,
     token:localStorage.getItem('token'),
   };
-  fetch(`${BASE_URL}/api/admin/delete`, {
+  fetch(`${BASE_URL}/api/delete/product`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
@@ -128,7 +128,7 @@ function admindelete (email) {
       data.json().then(result => {
         console.log('Success:', result);
         setprofileUpdate(true);
-        message.success("Admin deleting successful 😊!!!")
+        message.success("Peripherals deleting successful 😊!!!")
       });
     } else if (data.status === 400) {
       data.json().then(result => {
@@ -138,6 +138,7 @@ function admindelete (email) {
     }
   });
 }
+
 
 function setgamedata () {
   fetch(`${BASE_URL}/api/get/product/all/1/${localStorage.getItem('token')}`, {
@@ -153,7 +154,7 @@ function setgamedata () {
       data.json().then(result => {
         console.log('Success:', result);
 
-        message.success("admin profile updating successful 😊!!!")
+        message.success("Peripherals details updating successful 😊!!!")
         setGamedata(result);
       });
     } else if (data.status === 400) {
@@ -216,15 +217,15 @@ return(<div>
 <Row>
 <Col span={21}>
 <Input onChange={e => setGamename(e.target.value)}  style={{ width: 240, borderRadius: 12, marginLeft: 20 }}
-  value = {gamename} type = 'text' placeholder='Search Game Here' />
+  value = {gamename} type = 'text' placeholder='Search Peripherals Here' />
 <Tooltip title="search">
 <Button shape="circle" icon={<SearchOutlined />} onClick={() => {history.push('/user/search');}}/>
 </Tooltip>
 </Col>
 
-<Link onClick={() => {}} to="/admin/manage/games/add" >
+<Link onClick={() => {}} to="/admin/manage/Peripherals/add" >
   <Button  type="primary" shape="round" >
-  Add new Game
+  Add new Peripherals
   </Button>
 </Link>
 </Row>
