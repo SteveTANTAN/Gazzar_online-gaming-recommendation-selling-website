@@ -61,10 +61,11 @@ def show_cart_products(token):
     cart_products = []
     for item in target_cart:
         target_product = Product.query.join(Cart).filter(Product.product_id==item.product_id).all()[0]
-        # convert main_image and sub_image string to list
+        # convert main_image string to list
         cover = ast.literal_eval(target_product.main_image)
         cover_image = {'image': cover[0]['thumbUrl']}
         target_product_info = {
+            'cart_id': item.cart_id,
             'product_id': target_product.product_id,
             'name': target_product.name,
             'description': target_product.description,
@@ -74,51 +75,95 @@ def show_cart_products(token):
             'checked ': item.checked
         }
         cart_products.append(target_product_info)
+    return cart_products
 
+def edit_checked_product(token, cart_id, checked):
+    u_id = token_to_id(token)
+    # check valid user
+    users = User.query.filter(User.user_id==u_id).all()
+    if len(users) == 0:
+        raise ErrorMessage(Error.query.filter(Error.error_id == 17).all()[0].error_name)
+
+    # access target cart item
+    target_cart_item = Cart.query.filter(Cart.user_id==u_id, Cart.cart_id==cart_id).all()[0]
+    target_cart_item.checked = checked
+    return
+
+def delete_cart_product(token, cart_id):
+    u_id = token_to_id(token)
+    # check valid user
+    users = User.query.filter(User.user_id==u_id).all()
+    if len(users) == 0:
+        raise ErrorMessage(Error.query.filter(Error.error_id == 17).all()[0].error_name)
+
+    # access target cart item
+    target_cart_item = Cart.query.filter(Cart.user_id==u_id, Cart.cart_id==cart_id).all()[0]
+    db.session.delete(target_cart_item)
+    db.session.commit()
+    return
+
+def checkout(token):
+    u_id = token_to_id(token)
+    # check valid user
+    users = User.query.filter(User.user_id==u_id).all()
+    if len(users) == 0:
+        raise ErrorMessage(Error.query.filter(Error.error_id == 17).all()[0].error_name)
+
+    original_price = 0
+    total_discount = 0
+    actual_transaction = 0
+
+    target_user_carts = Cart.query.filter(Cart.user_id==u_id).all()
+    checkout_products = []
+    for item in target_user_carts:
+        if item.checked == 1:
+            target_product = Product.query.join(Cart).filter(Product.product_id==item.product_id).all()[0]
+             # convert main_image string to list
+            cover = ast.literal_eval(target_product.main_image)
+            target_product_info = {
+                'cart_id': item.cart_id,
+                'product_id': target_product.product_id,
+                'name': target_product.name,
+                'description': target_product.description,
+                'main_image': cover[0]['thumbUrl'],
+                'current_price': float(target_product.price) * float(target_product.discount) * (0.01),
+                'quantity': item.quantity,
+            }
+            original_price = original_price + float(target_product.price * item.quantity)
+            total_discount = total_discount + float((100 - target_product.discount) * (0.01) * original_price)
+            checkout_products.append(target_product_info)
+
+    actual_transaction = float(original_price - total_discount)
     output = {
-        'user_id': u_id,
-        'cart_products': cart_products
+        'checkout_products': checkout_products,
+        'original_price': original_price,
+        'total_discount': total_discount,
+        'actual_transaction': actual_transaction
+
     }
     return output
 
-def checked_product(token, product_id):
+def notify_quantity(token, cart_id, new_quantity):
     u_id = token_to_id(token)
     # check valid user
     users = User.query.filter(User.user_id==u_id).all()
     if len(users) == 0:
         raise ErrorMessage(Error.query.filter(Error.error_id == 17).all()[0].error_name)
-    # check and get valid product
-    products = Product.query.filter(Product.product_id==product_id).all()
-    if len(products) == 0:
-        raise ErrorMessage(Error.query.filter(Error.error_id==16).all()[0].error_name)
-    # access target item
-    target_cart_item = Cart.query.filter(Cart.user_id==u_id, Cart.product_id==product_id).all()[0]
-    target_cart_item.checked = 1
+
+    target_user_cart = Cart.query.filter(Cart.user_id==u_id, Cart.cart_id==cart_id).all()[0]
+    target_user_cart.quantity = new_quantity
     return
 
-def re_checked_product(token, product_id):
-    u_id = token_to_id(token)
-    # check valid user
-    users = User.query.filter(User.user_id==u_id).all()
-    if len(users) == 0:
-        raise ErrorMessage(Error.query.filter(Error.error_id == 17).all()[0].error_name)
-    # check and get valid product
-    products = Product.query.filter(Product.product_id==product_id).all()
-    if len(products) == 0:
-        raise ErrorMessage(Error.query.filter(Error.error_id==16).all()[0].error_name)
-    # access target item
-    target_cart_item = Cart.query.filter(Cart.user_id==u_id, Cart.product_id==product_id).all()[0]
-    target_cart_item.checked = 0
-    return
-
-if __name__ == "__main__":
-    add_to_cart('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 123, 6)
-    add_to_cart('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 120, 5)
-    add_to_cart('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 121, 3)
-    add_to_cart('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 122, 4)
-
-    #print(Cart.query.filter(Cart.user_id == 15).all())
-    # checked_product('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 123)
-    # checked_product('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 120)
-    res = show_cart_products('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf')
-    pprint.pprint(res)
+# if __name__ == "__main__":
+#     add_to_cart('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 20, 1)
+#     #add_to_cart('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 6, 5)
+#     #add_to_cart('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 14, 3)
+#     #delete_cart_product('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 1)
+#     edit_checked_product('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 1, 1)
+#     #print(Cart.query.filter(Cart.user_id == 15).all())
+#     # checked_product('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 123)
+#     # checked_product('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 120)
+#     res = show_cart_products('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf')
+#     pprint.pprint(res)
+#     rest = checkout('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf')
+#     pprint.pprint(rest)
