@@ -55,13 +55,22 @@ def user_order_add(token, product_list):
 
 def delete_user_order(order_detail_id):
     target_order_detail = Order_detail.query.filter(Order_detail.order_detail_id==order_detail_id).all()[0]
-    order_id = target_order_detail.order_id
-    print(Order_detail.order_detail_id)
-    # db.session.delete(target_order_detail)
-    # db.session.commit()
+    order_id = (target_order_detail.order_id,)
+    db.session.delete(target_order_detail)
+    db.session.commit()
+
+    # FETCH ALL THE RECORDS IN THE RESPONSE
+    result = db.session.query(Order_detail.order_id).all()
+    if order_id in result:
+         pass
+    else:
+        target_order = Order.query.filter(Order.order_id==order_id).all()[0]
+        db.session.delete(target_order)
+        db.session.commit()
+    #print(target_order.order_id)
 
 
-def show_user_order(token):
+def show_user_order_count(token):
     user_id = token_to_id(token)
     target_user_orders = Order.query.filter(Order.user_id==user_id).count()
     return target_user_orders
@@ -130,11 +139,11 @@ def show_user_order(token):
     output = sorted(output, key=lambda e:e['order_detail_id'], reverse= True)
     return output
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
     #token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjJ9.OeDycojnBAH3tuWeaoRGhE_M9M_I-rBnlcNCVetVKOg'
     #product_str = [{"product_id": 3, "quantity": 5}, {"product_id": 2, "quantity": 3}]
     #user_order_add(token, product_str)
     #rate_comment_order(token, 3, 4, '')
     #res = show_user_order(token)
     #pprint.pprint(res)
-    delete_user_order(5)
+    #delete_user_order(5)

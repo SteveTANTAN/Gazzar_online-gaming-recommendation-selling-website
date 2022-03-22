@@ -1,3 +1,4 @@
+from lib2to3.pgen2 import token
 from flask import Blueprint, request
 from json import dumps
 from flask import Flask, request
@@ -10,7 +11,7 @@ sys.path.append('../../database/src')
 from database import db
 
 from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile, show_user_payment, show_user_cart
-from order import user_order_add, show_user_order
+from order import user_order_add, show_user_order, show_user_order_count, delete_user_order, rate_comment_order
 from customer_product import search, show_product_details, buy_now, show_product_rate_comment
 from cart_operation import add_to_cart, show_cart_products, edit_checked_product, delete_cart_product, checkout, notify_quantity, show_user_cart
 from payment_operation import show_user_payment, add_payment, delete_payment
@@ -112,6 +113,40 @@ def show_order(token):
     Route for current user's order count
     '''
     return dumps(show_user_order(token))
+
+@APP.route('/api/user/order/delete', methods=['PUT'])
+def delete_order():
+    '''
+    Route for current user's order count
+    '''
+    info = request.get_json()
+    order_detail_id = info['order_detail_id']
+    result = delete_user_order(order_detail_id)
+    return dumps(result)
+
+@APP.route('/api/user/order_count', methods=['GET'])
+def show_order_count():
+    '''
+    Route for current user's order count
+    '''
+    info = request.get_json()
+    token = info['token']
+    result = show_user_order_count(token)
+    return dumps(result)
+
+@APP.route('/api/user/order_count', methods=['GET'])
+def show_order_count():
+    '''
+    Route for current user's order count
+    '''
+    info = request.get_json()
+    token = info['token']
+    order_detail_id  = info['order_detail_id']
+    rate = info['rate']
+    comment = info['comment']
+    result = show_user_order_count(token)
+    rate_comment_order(token, order_detail_id, rate, comment)
+    return dumps(result)
 
 @APP.route('/api/user/show/payment/<token>', methods=['GET'])
 def show_payment(token):
