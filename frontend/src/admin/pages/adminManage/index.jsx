@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Button, Space, Layout, Menu, message  } from 'antd';
+import { Input, Button, Space, Layout, Menu, message,PageHeader} from 'antd';
 import { Alert } from 'antd';
 import {
   Form,
@@ -45,7 +45,7 @@ function admindelete (email) {
     email: email,
     token:localStorage.getItem('token'),
   };
-  fetch(`${BASE_URL}/api/admin/delete`, {
+  fetch(`/api/admin/delete`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json'
@@ -69,7 +69,7 @@ function admindelete (email) {
 }
 
 function admindata () {
-  fetch(`${BASE_URL}/api/admin/profile/${localStorage.getItem('token')}`, {
+  fetch(`/api/admin/profile/${localStorage.getItem('token')}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -103,7 +103,7 @@ function submit () {
     password: password,
     token:localStorage.getItem('token'),
   };
-  fetch(`${BASE_URL}/api/admin/add`, {
+  fetch(`/api/admin/add`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -135,6 +135,11 @@ console.log('Received values of form: ', admin_data);
 
 return (
   <div>
+  <PageHeader
+    className="site-page-header"
+    title="Admins Management Page"
+    subTitle=""
+  />
   <Header className="site-layout-sub-header-background" style={{ padding: 0 }} >
   <Form
     name="normal_login"

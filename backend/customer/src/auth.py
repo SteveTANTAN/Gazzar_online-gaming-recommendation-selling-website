@@ -10,7 +10,6 @@ from cart import Cart
 from order import Order
 from type import Type
 from product import Product
-from payment_detail import Payment_detail
 from error import Error
 import smtplib
 from email.mime.text import MIMEText
@@ -155,44 +154,10 @@ def show_user_profile(token):
 
     return output
 
-def show_user_payment(token):
-    user_id = token_to_id(token)
-    # # payment details
-    target_user_payment = Payment_detail.query.join(User).filter(Payment_detail.user_id==user_id).all()
-    payment_info = []
-    for i in target_user_payment:
-        payment_details = {'card_type': i.card_type, 'card_number': i.card_number,
-            'name_on_card': i.name_on_card, 'expration_date': i.expration_date}
-        payment_info.append(payment_details)
-
-    output = {}
-    output['payment_info'] = payment_info
-    return output
-
-def show_user_cart(token):
-    user_id = token_to_id(token)
-    # # cart details
-    target_user_cart = Cart.query.join(User).filter(Cart.user_id==user_id).all()
-    cart_info = {'card_count': len(target_user_cart)}
-    info_cart = []
-    info_cart.append(cart_info)
-
-    output = {}
-    output['cart_info'] = info_cart
-    return output
-
 def show_user_order(token):
     user_id = token_to_id(token)
-    # order details
-    target_user_order = Order.query.join(User).filter(Order.user_id==user_id).all()
-    order_info = {'order_count': len(target_user_order)}
-
-    info_order = []
-    info_order.append(order_info)
-
-    output = {}
-    output['order_info'] = info_order
-    return output
+    target_user_orders = Order.query.filter(Order.user_id==user_id).all()
+    return len(target_user_orders)
 
 def edit_username(token, newname):
     user_id =  token_to_id(token)

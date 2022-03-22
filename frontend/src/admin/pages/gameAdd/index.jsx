@@ -57,7 +57,7 @@ const onFinish = (values) => {
     token:localStorage.getItem('token'),
     product_dict: values,
   };
-  fetch(`${BASE_URL}/api/add/games`, {
+  fetch(`/api/add/games`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
