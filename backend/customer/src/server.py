@@ -9,7 +9,8 @@ import sys
 sys.path.append('../../database/src')
 from database import db
 
-from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile, show_user_payment, show_user_cart, show_user_order
+from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile, show_user_payment, show_user_cart
+from order import user_order_add, show_user_order
 from customer_product import search, show_product_details, buy_now
 from cart_operation import add_to_cart, show_cart_products, edit_checked_product, delete_cart_product, checkout, notify_quantity
 
@@ -105,6 +106,14 @@ def show_payment(token):
     # info = request.get_json()
     # token = info['token']
     return dumps(show_user_payment(token))
+
+@APP.route('/api/user/add_order', methods = ['POST'])
+def order_add():
+    info = request.get_json()
+    token = info['token']
+    product_list = info['product_list']
+    result = user_order_add(token, product_list)
+    return dumps(result)
 
 @APP.route('/api/user/order/<token>', methods=['GET'])
 def show_order(token):
