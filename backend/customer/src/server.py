@@ -6,7 +6,6 @@ import json
 import ast
 
 import sys
-from backend.customer.src.customer_product import show_product_rate_comment
 sys.path.append('../../database/src')
 from database import db
 
