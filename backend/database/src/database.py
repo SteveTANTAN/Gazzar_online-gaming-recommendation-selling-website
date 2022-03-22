@@ -4,6 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://admin:mysql1234@gazzar.cyyjsjb2yprw.ap-southeast-1.rds.amazonaws.com/gazzar"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:vision@114.55.74.30:3306/gazzar"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
+print(db)
