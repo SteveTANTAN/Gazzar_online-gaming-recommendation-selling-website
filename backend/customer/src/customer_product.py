@@ -14,6 +14,7 @@ from type import Type
 from user import User
 from json import dumps
 from error import Error
+from order_detail import Order_detail
 
 from sqlalchemy import or_,and_
 from help import token_to_id, ErrorMessage
@@ -90,6 +91,29 @@ def buy_now(token, product_id, quantity):
     }
     return output
 
+def show_product_rate_comment(token, product_id):
+    u_id = token_to_id(token)
+    # check valid user
+    users = User.query.filter(User.user_id==u_id).all()
+    if len(users) == 0:
+        raise ErrorMessage(Error.query.filter(Error.error_id == 17).all()[0].error_name)
+    # check valid product
+    products = Product.query.filter(Product.product_id==product_id).all()
+    if len(products) == 0:
+        raise ErrorMessage(Error.query.filter(Error.error_id==16).all()[0].error_name)
+    target_product = products[0]
+
+    orders = Order_detail.query.filter(Order_detail.product_id==product_id).all()
+    rate_comment_details = []
+    for i in orders:
+        if i.rate != 0:
+            rate_comment_info = {'rate': i.rate, 'comment': i.comment}
+            rate_comment_details.append(rate_comment_info)
+    output = {
+        'overall_rate': target_product.rate,
+        'rate_comment_details': rate_comment_details
+    }
+    return output
 
 
 # if __name__ == "__main__":
