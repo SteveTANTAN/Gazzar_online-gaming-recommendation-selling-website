@@ -235,4 +235,4 @@ def buy_product_now(token, product_id, quantity):
 
 if __name__ == "__main__":
     db.create_all()
-    APP.run(port=55467) # Do not edit this port
+    APP.run(port=55467,host="0.0.0.0") # Do not edit this port
