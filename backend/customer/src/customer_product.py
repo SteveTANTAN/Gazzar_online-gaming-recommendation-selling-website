@@ -14,6 +14,8 @@ from type import Type
 from user import User
 from json import dumps
 from error import Error
+from order_detail import Order_detail
+from order import Order
 
 from sqlalchemy import or_,and_
 from help import token_to_id, ErrorMessage
@@ -36,11 +38,11 @@ def show_product_details(token, product_id):
     # check valid user
     users = User.query.filter(User.user_id==u_id).all()
     if (len(users) == 0):
-        raise ErrorMessage(Error.query.filter(Error.error_id == 2).all()[0].error_name)
+        raise ErrorMessage(Error.query.filter(Error.error_id == 2).first().error_name)
     # check valid product
     products = Product.query.filter(Product.product_id==product_id).all()
     if len(products) == 0:
-        raise ErrorMessage(Error.query.filter(Error.error_id==16).all()[0].error_name)
+        raise ErrorMessage(Error.query.filter(Error.error_id==16).first().error_name)
     target_product = products[0]
 
     # convert main_image and sub_image string to list
@@ -67,9 +69,9 @@ def buy_now(token, product_id, quantity):
     # check valid user
     users = User.query.filter(User.user_id==u_id).all()
     if len(users) == 0:
-        raise ErrorMessage(Error.query.filter(Error.error_id == 17).all()[0].error_name)
+        raise ErrorMessage(Error.query.filter(Error.error_id == 17).first().error_name)
 
-    target_product = Product.query.filter(Product.product_id==product_id).all()[0]
+    target_product = Product.query.filter(Product.product_id==product_id).first()
     cover = ast.literal_eval(target_product.main_image)
     target_product_info = {
         'product_id': target_product.product_id,
@@ -90,10 +92,30 @@ def buy_now(token, product_id, quantity):
     }
     return output
 
+def show_product_rate_comment(product_id):
+    # check valid product
+    products = Product.query.filter(Product.product_id==product_id).all()
+    if len(products) == 0:
+        raise ErrorMessage(Error.query.filter(Error.error_id==16).first().error_name)
+    target_product = products[0]
+
+    orders = Order_detail.query.filter(Order_detail.product_id==product_id).all()
+    rate_comment_details = []
+    for i in orders:
+        if i.product_rate != 0:
+            target_order = Order.query.filter(Order.order_id==i.order_id).first()
+            target_user = User.query.filter(User.user_id==target_order.user_id).first()
+            rate_comment_info = {'user_name': target_user.name, 'rate': format(i.product_rate, '.1f'), 'comment': i.product_comment}
+            rate_comment_details.append(rate_comment_info)
+    output = {
+        'overall_rate': format(target_product.rate, '.1f'),
+        'rate_comment_details': rate_comment_details
+    }
+    return output
 
 
 # if __name__ == "__main__":
 #     db.create_all()
-#     result = show_product_details('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5w', 20)
+#     result = show_product_rate_comment(3)
 #     # result = search('grand')
 #     pprint.pprint(result)

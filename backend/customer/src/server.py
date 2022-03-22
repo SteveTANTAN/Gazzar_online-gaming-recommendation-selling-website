@@ -9,9 +9,10 @@ import sys
 sys.path.append('../../database/src')
 from database import db
 
-from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile, show_user_payment, show_user_cart, show_user_order
-from customer_product import search, show_product_details, buy_now
-from cart_operation import add_to_cart, show_cart_products, edit_checked_product, delete_cart_product, checkout, notify_quantity
+from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile, show_user_order
+from customer_product import search, show_product_details, buy_now, show_product_rate_comment
+from cart_operation import add_to_cart, show_cart_products, edit_checked_product, delete_cart_product, checkout, notify_quantity, show_user_cart
+from payment_operation import show_user_payment, add_payment, delete_payment
 
 sys.path.append('../../admin/src')
 from manager import add_admin, admin_login, admin_logout, show_all_admins, delete_admin
@@ -93,40 +94,42 @@ def show_profile(token):
     '''
     Route for listing profile
     '''
-    # print(token)
-    # info = request.get_json()
-    # token = info['token']
     return dumps(show_user_profile(token))
 
-@APP.route('/api/user/payment/<token>', methods=['GET'])
-def show_payment(token):
-    '''
-    Route for listing profile
-    '''
-    # print(token)
-    # info = request.get_json()
-    # token = info['token']
-    return dumps(show_user_payment(token))
 
 @APP.route('/api/user/order/<token>', methods=['GET'])
 def show_order(token):
     '''
-    Route for listing profile
+    Route for current user's order count
     '''
-    # print(token)
-    # info = request.get_json()
-    # token = info['token']
     return dumps(show_user_order(token))
 
-@APP.route('/api/user/cart/<token>', methods=['GET'])
-def show_cart(token):
+@APP.route('/api/user/show/payment/<token>', methods=['GET'])
+def show_payment(token):
     '''
-    Route for listing profile
+    Route for current user's payment count
     '''
-    # print(token)
-    # info = request.get_json()
-    # token = info['token']
-    return dumps(show_user_cart(token))
+    return dumps(show_user_payment(token))
+
+@APP.route('/api/user/add/payment', methods=['POST'])
+def add_user_payment():
+    '''
+    Route for add new payment option for cur user
+    '''
+    info = request.get_json()
+    token = info['token']
+    payment_dict = info['payment_dict']
+    return dumps(add_payment(token, payment_dict))
+
+@APP.route('/api/user/delete/payment', methods=['DELETE'])
+def delete_user_payment():
+    '''
+    Route for delete payment option for cur user
+    '''
+    info = request.get_json()
+    token = info['token']
+    payment_detail_id = info['payment_detail_id']
+    return dumps(delete_payment(token, payment_detail_id))
 
 @APP.route('/api/user/show/<product_id>/<token>', methods=['GET'])
 def product_details_show(token, product_id):
@@ -149,6 +152,19 @@ def buy_product_now(token, product_id, quantity):
     '''
     return dumps(buy_now(token, product_id, quantity))
 
+@APP.route('/api/user/show/rate/comment/<product_id>', methods=['GET'])
+def show_rate_comment(product_id):
+    '''
+    Route for show product rate and comments
+    '''
+    return dumps(show_product_rate_comment(product_id))
+
+@APP.route('/api/user/cart/<token>', methods=['GET'])
+def show_cart(token):
+    '''
+    Route for current user's cart count
+    '''
+    return dumps(show_user_cart(token))
 
 @APP.route('/api/user/add/cart', methods=['POST'])
 def add_product_to_cart():
