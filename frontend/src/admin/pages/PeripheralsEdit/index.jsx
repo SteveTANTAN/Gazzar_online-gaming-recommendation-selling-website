@@ -56,7 +56,7 @@ const formItemLayout = {
 const [form] = Form.useForm();
 form.setFieldsValue(product_data)
 function productdata () {
-  fetch(`${BASE_URL}/api/get/product/${localStorage.getItem('token')}/${params.peripheralsid}`, {
+  fetch(`/api/get/product/${localStorage.getItem('token')}/${params.peripheralsid}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -129,7 +129,7 @@ const onFinish = (values) => {
     token:localStorage.getItem('token'),
     product_dict: values,
   };
-  fetch(`${BASE_URL}/api/edit/products`, {
+  fetch(`/api/edit/products`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
