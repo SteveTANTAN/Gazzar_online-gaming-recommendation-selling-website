@@ -56,7 +56,7 @@ const formItemLayout = {
 const [form] = Form.useForm(); //定义form
 form.setFieldsValue(product_data)
 function productdata () {
-  fetch(`${BASE_URL}/api/get/product/${localStorage.getItem('token')}/${params.gameid}`, {
+  fetch(`/api/get/product/${localStorage.getItem('token')}/${params.gameid}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -117,6 +117,9 @@ const validateMessages = {
 };
 
 const onFinish = (values) => {
+  if (cover.length < 1){
+    return(message.error("Cover can not be None!!!"))
+  }
   values['Photo'] = fileList;
   values['Cover'] = cover;
   values['Product Id'] = params.gameid;
@@ -126,7 +129,7 @@ const onFinish = (values) => {
     token:localStorage.getItem('token'),
     product_dict: values,
   };
-  fetch(`${BASE_URL}/api/edit/products`, {
+  fetch(`/api/edit/products`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
@@ -138,6 +141,7 @@ const onFinish = (values) => {
       data.json().then(result => {
         console.log('Success:', result);
         // setprofileUpdate(true);
+        message.success("Game editing successful 😊!!!")
         history.push('/admin/manage/games')
 
       });
@@ -173,11 +177,6 @@ const onPreview = async file => {
   imgWindow.document.write(image.outerHTML);
 };
 
-if (!fileList) {
-  message.success("Game editing successful 😊!!!")
-
-
-} 
 
 return (
 

@@ -9,12 +9,16 @@ import sys
 sys.path.append('../../database/src')
 from database import db
 
-from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile, show_user_payment, show_user_cart, show_user_order
-from customer_product import search, show_product_details, buy_now
+from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile, show_user_order
+from customer_product import search, show_product_details, buy_now, show_product_rate_comment
+from cart_operation import add_to_cart, show_cart_products, edit_checked_product, delete_cart_product, checkout, notify_quantity, show_user_cart
+from payment_operation import show_user_payment, add_payment, delete_payment
 
 sys.path.append('../../admin/src')
 from manager import add_admin, admin_login, admin_logout, show_all_admins, delete_admin
-from product_manage import add_product, edit_product, get_product
+from product_manage import add_product, edit_product, get_product, get_product_all, delete_product
+from admin_search import admin_search
+
 def defaultHandler(err):
     """server"""
     response = err.get_response()
@@ -32,7 +36,13 @@ CORS(APP)
 APP.config['TRAP_HTTP_EXCEPTIONS'] = True
 APP.register_error_handler(Exception, defaultHandler)
 
-
+#############################################################################################
+#############################################################################################
+######
+######          USER FLASK
+######
+#############################################################################################
+#############################################################################################
 @APP.route('/api/user/register', methods = ['POST'])
 def register_user():
     """Registers a new user"""
@@ -84,41 +94,142 @@ def show_profile(token):
     '''
     Route for listing profile
     '''
-    # print(token)
-    # info = request.get_json()
-    # token = info['token']
     return dumps(show_user_profile(token))
 
-@APP.route('/api/user/payment/<token>', methods=['GET'])
-def show_payment(token):
-    '''
-    Route for listing profile
-    '''
-    # print(token)
-    # info = request.get_json()
-    # token = info['token']
-    return dumps(show_user_payment(token))
 
 @APP.route('/api/user/order/<token>', methods=['GET'])
 def show_order(token):
     '''
-    Route for listing profile
+    Route for current user's order count
     '''
-    # print(token)
-    # info = request.get_json()
-    # token = info['token']
     return dumps(show_user_order(token))
+
+@APP.route('/api/user/show/payment/<token>', methods=['GET'])
+def show_payment(token):
+    '''
+    Route for current user's payment count
+    '''
+    return dumps(show_user_payment(token))
+
+@APP.route('/api/user/add/payment', methods=['POST'])
+def add_user_payment():
+    '''
+    Route for add new payment option for cur user
+    '''
+    info = request.get_json()
+    token = info['token']
+    payment_dict = info['payment_dict']
+    return dumps(add_payment(token, payment_dict))
+
+@APP.route('/api/user/delete/payment', methods=['DELETE'])
+def delete_user_payment():
+    '''
+    Route for delete payment option for cur user
+    '''
+    info = request.get_json()
+    token = info['token']
+    payment_detail_id = info['payment_detail_id']
+    return dumps(delete_payment(token, payment_detail_id))
+
+@APP.route('/api/user/show/<product_id>/<token>', methods=['GET'])
+def product_details_show(token, product_id):
+    '''
+    Route for show product details
+    '''
+    return dumps(show_product_details(token, product_id))
+
+@APP.route('/api/user/search/<str>', methods=['GET'])
+def search_product(str):
+    '''
+    Route for search product with given string
+    '''
+    return dumps(search(str))
+
+@APP.route('/api/user/buynow/<product_id>/<quantity>/<token>', methods=['GET'])
+def buy_product_now(token, product_id, quantity):
+    '''
+    Route for buy product now
+    '''
+    return dumps(buy_now(token, product_id, quantity))
+
+@APP.route('/api/user/show/rate/comment/<product_id>', methods=['GET'])
+def show_rate_comment(product_id):
+    '''
+    Route for show product rate and comments
+    '''
+    return dumps(show_product_rate_comment(product_id))
 
 @APP.route('/api/user/cart/<token>', methods=['GET'])
 def show_cart(token):
     '''
-    Route for listing profile
+    Route for current user's cart count
     '''
-    # print(token)
-    # info = request.get_json()
-    # token = info['token']
     return dumps(show_user_cart(token))
 
+@APP.route('/api/user/add/cart', methods=['POST'])
+def add_product_to_cart():
+    '''
+    Route for add prodcut to cart
+    '''
+    info = request.get_json()
+    token = info['token']
+    product_id = info['product_id']
+    quantity = info['quantity']
+    return dumps(add_to_cart(token, product_id, quantity))
+
+@APP.route('/api/user/show/cart/<token>', methods=['GET'])
+def show_cart_product_info(token):
+    '''
+    Route for show cart products info
+    '''
+    return dumps(show_cart_products(token))
+
+@APP.route('/api/user/edit/checked', methods=['PUT'])
+def edit_cart_checked_status():
+    '''
+    Route for edit cart checked status
+    '''
+    info = request.get_json()
+    token = info['token']
+    cart_id = info['cart_id']
+    checked = info['checked']
+    return dumps(edit_checked_product(token, cart_id, checked))
+
+@APP.route('/api/user/checkout/cart/<token>', methods=['GET'])
+def checkout_cart(token):
+    '''
+    Route for checkout all cart checked products
+    '''
+    return dumps(checkout(token))
+
+@APP.route('/api/user/notify/quantity', methods=['PUT'])
+def notify_cart_quantity():
+    '''
+    Route for notify cart product quantity
+    '''
+    info = request.get_json()
+    token = info['token']
+    cart_id = info['cart_id']
+    quantity = info['quantity']
+    return dumps(notify_quantity(token, cart_id, quantity))
+
+@APP.route('/api/user/delete/cart', methods=['DELETE'])
+def delete_cart():
+    '''
+    Route for delete cart
+    '''
+    info = request.get_json()
+    token = info['token']
+    cart_id = info['cart_id']
+    return dumps(delete_cart_product(token, cart_id))
+
+#############################################################################################
+#############################################################################################
+######
+######          ADMIN FLASK
+######
+#############################################################################################
+#############################################################################################
 @APP.route('/api/admin/add', methods = ['POST'])
 def admin_add():
     """Registers a new user."""
@@ -212,26 +323,32 @@ def product_get(token, product_id):
     # print(token)
     return dumps(get_product(token, product_id))
 
-@APP.route('/api/user/show/<product_id>/<token>', methods=['GET'])
-def product_details_show(token, product_id):
+@APP.route('/api/get/product/all/<product_category>/<token>', methods=['GET'])
+def product_get_all(token, product_category):
     '''
-    Route for show product details
+    Route for listing profile
     '''
-    return dumps(show_product_details(token, product_id))
+    # print(token)
+    return dumps(get_product_all(token, product_category))
 
-@APP.route('/api/user/search/<str>', methods=['GET'])
-def search_product(str):
+@APP.route('/api/delete/product', methods=['DELETE'])
+def target_product_delete():
     '''
-    Route for search product with given string
+    Route for listing profile
     '''
-    return dumps(search(str))
+    # print(token)
+    info = request.get_json()
+    token = info['token']
+    product_id = info['product_id']
+    return dumps(delete_product(token, product_id))
 
-@APP.route('/api/user/buynow/<product_id>/<quantity>/<token>', methods=['GET'])
-def buy_product_now(token, product_id, quantity):
+@APP.route('/api/admin/search/<token>/<search_text>/<category>', methods=['GET'])
+def target_product_search(token, search_text, category):
     '''
-    Route for buy product now
+    Route for listing profile
     '''
-    return dumps(buy_now(token, product_id, quantity))
+    # print(token)
+    return dumps(admin_search(token, search_text, category))
 
 if __name__ == "__main__":
     db.create_all()

@@ -53,10 +53,10 @@ const formItemLayout = {
     span: 14,
   },
 };
-const [form] = Form.useForm(); //定义form
+const [form] = Form.useForm();
 form.setFieldsValue(product_data)
 function productdata () {
-  fetch(`${BASE_URL}/api/get/product/${localStorage.getItem('token')}/${params.peripheralsid}`, {
+  fetch(`/api/get/product/${localStorage.getItem('token')}/${params.peripheralsid}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -117,6 +117,9 @@ const validateMessages = {
 };
 
 const onFinish = (values) => {
+  if (cover.length < 1){
+    return(message.error("Cover can not be None!!!"))
+  }
   values['Photo'] = fileList;
   values['Cover'] = cover;
   values['Product Id'] = params.peripheralsid;
@@ -126,7 +129,7 @@ const onFinish = (values) => {
     token:localStorage.getItem('token'),
     product_dict: values,
   };
-  fetch(`${BASE_URL}/api/edit/products`, {
+  fetch(`/api/edit/products`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'

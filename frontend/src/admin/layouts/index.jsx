@@ -30,7 +30,7 @@ export default (props) => {
     };
     localStorage.removeItem('token');
 
-    fetch(`${BASE_URL}/api/admin/logout`, {
+    fetch(`/api/admin/logout`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

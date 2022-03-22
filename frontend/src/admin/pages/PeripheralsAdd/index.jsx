@@ -34,7 +34,8 @@ const [Uniteprice, setUniteprice] = React.useState(0);
 const [Stock, setStock] = React.useState(0);
 const [type, settype] = React.useState([]);
 const [photo, setphoto] = React.useState([]);
-
+const [fileList, setFileList] = React.useState([]);
+const [cover, setcover] = React.useState([]);
 
 const formItemLayout = {
   labelCol: {
@@ -48,6 +49,11 @@ const formItemLayout = {
 
 
 const onFinish = (values) => {
+  console.log('Received cover of form: ', cover);
+
+  if (cover.length < 1){
+    return(message.error("Cover can not be None!!!"))
+  }
   values['Photo'] = fileList;
   values['Cover'] = cover;
   console.log('Received values of form: ', values);
@@ -56,7 +62,7 @@ const onFinish = (values) => {
     token:localStorage.getItem('token'),
     product_dict: values,
   };
-  fetch(`${BASE_URL}/api/add/peripherals`, {
+  fetch(`/api/add/peripherals`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json'
@@ -80,14 +86,15 @@ const onFinish = (values) => {
     }
   });
 
+  
+
 };
 
-  const [fileList, setFileList] = useState([]);
+
 
   const ChangefileList = ({ fileList: newFileList }) => {
     setFileList(newFileList);
   };
-  const [cover, setcover] = useState([]);
   const ChangecoverList =({ fileList: newFileList }) => {
     setcover(newFileList);
   };
@@ -200,6 +207,7 @@ return (
     name="Cover"
     label="Cover"
     extra="Upload the Cover here (only One)"
+
     >
     <ImgCrop rotate>
       <Upload
@@ -208,6 +216,7 @@ return (
         fileList={cover}
         onChange={ChangecoverList}
         onPreview={onPreview}
+        rules={[{ required: true }]}
       >
         {cover.length < 1 && '+ Upload'}
       </Upload>

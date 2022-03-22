@@ -1,6 +1,6 @@
 import { Table, Popconfirm } from 'antd';
 import React from 'react';
-import { Input, Button, Space, Layout, Menu,Tooltip  } from 'antd';
+import { Input, Button, Space, Layout, Menu,Tooltip, PageHeader} from 'antd';
 import {
   UserOutlined,
   CustomerServiceOutlined,
@@ -85,7 +85,11 @@ function onChange(pagination, filters, sorter, extra) {
 }
 
 return(<div>
-
+  <PageHeader
+    className="site-page-header"
+    title="Order Management Page"
+    subTitle=""
+  />
 <center>
 <Input onChange={e => setGamename(e.target.value)}  style={{ width: 240, borderRadius: 12, marginLeft: 20 }}
   value = {gamename} type = 'text' placeholder='Search order by number Here' />
