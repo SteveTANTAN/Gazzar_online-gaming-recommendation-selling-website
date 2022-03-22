@@ -15,6 +15,7 @@ from user import User
 from json import dumps
 from error import Error
 from order_detail import Order_detail
+from order import Order
 
 from sqlalchemy import or_,and_
 from help import token_to_id, ErrorMessage
@@ -91,12 +92,7 @@ def buy_now(token, product_id, quantity):
     }
     return output
 
-def show_product_rate_comment(token, product_id):
-    u_id = token_to_id(token)
-    # check valid user
-    users = User.query.filter(User.user_id==u_id).all()
-    if len(users) == 0:
-        raise ErrorMessage(Error.query.filter(Error.error_id == 17).all()[0].error_name)
+def show_product_rate_comment(product_id):
     # check valid product
     products = Product.query.filter(Product.product_id==product_id).all()
     if len(products) == 0:
@@ -107,17 +103,19 @@ def show_product_rate_comment(token, product_id):
     rate_comment_details = []
     for i in orders:
         if i.rate != 0:
-            rate_comment_info = {'rate': i.rate, 'comment': i.comment}
+            target_order = Order.query.filter(Order.order_id==i.order_id).all()[0]
+            target_user = User.query.filter(User.user_id==target_order.user_id).all()[0]
+            rate_comment_info = {'user_name': target_user.name, 'rate': i.rate, 'comment': i.comment}
             rate_comment_details.append(rate_comment_info)
     output = {
-        'overall_rate': target_product.rate,
+        'overall_rate': format(target_product.rate, '.1f'),
         'rate_comment_details': rate_comment_details
     }
     return output
 
 
-# if __name__ == "__main__":
-#     db.create_all()
-#     result = show_product_details('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5w', 20)
-#     # result = search('grand')
-#     pprint.pprint(result)
+if __name__ == "__main__":
+    db.create_all()
+    result = show_product_rate_comment(2)
+    # result = search('grand')
+    pprint.pprint(result)
