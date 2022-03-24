@@ -101,8 +101,8 @@ def show_profile(token):
 
 @APP.route('/api/user/addorder', methods = ['POST'])
 def order_add():
-    info = request.get_json()
-    print(info)
+    info = request.get_data(True)
+    info = json.loads(info)
     token = info['token']
     product_list = info['product_list']
     result = user_order_add(token, product_list)
@@ -115,32 +115,33 @@ def show_order(token):
     '''
     return dumps(show_user_order(token))
 
-@APP.route('/api/user/order/delete', methods=['PUT'])
+@APP.route('/api/user/order/delete', methods=['DELETE'])
 def delete_order():
     '''
     Route for current user's order count
     '''
-    info = request.get_json()
+    info = request.get_data(True)
+    info = json.loads(info)
+    print(info)
     order_detail_id = info['order_detail_id']
     result = delete_user_order(order_detail_id)
     return dumps(result)
 
-@APP.route('/api/user/order_count', methods=['GET'])
-def show_order_count():
+@APP.route('/api/user/order_count/<token>', methods=['GET'])
+def show_order_count(token):
     '''
     Route for current user's order count
     '''
-    info = request.get_json()
-    token = info['token']
     result = show_user_order_count(token)
     return dumps(result)
 
-@APP.route('/api/user/order_rate&comment', methods=['GET'])
+@APP.route('/api/user/order_rate&comment', methods=['POST'])
 def rate_comment():
     '''
     Route for current user's order count
     '''
-    info = request.get_json()
+    info = request.get_data(True)
+    info = json.loads(info)
     token = info['token']
     order_detail_id  = info['order_detail_id']
     rate = info['rate']

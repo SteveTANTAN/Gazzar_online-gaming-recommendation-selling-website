@@ -125,7 +125,7 @@ def show_user_order(token):
             order_info['order_detail_id'] = product.order_detail_id
             order_info['order_id'] = product.order_id
             order_info['quantity'] = product.quantity
-            order_info['create_time'] = product.create_time
+            order_info['create_time'] = (product.create_time).strftime('%Y-%m-%d %H:%M:%S')
             order_info['cdkey'] = product.cdkey
             order_info['product_id'] = product.product_id
             order_info['product_name'] = product.product_name
@@ -139,11 +139,11 @@ def show_user_order(token):
     output = sorted(output, key=lambda e:e['order_detail_id'], reverse= True)
     return output
 
-#if __name__ == "__main__":
-    #token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjJ9.OeDycojnBAH3tuWeaoRGhE_M9M_I-rBnlcNCVetVKOg'
-    #product_str = [{"product_id": 3, "quantity": 5}, {"product_id": 2, "quantity": 3}]
+# if __name__ == "__main__":
+#     token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjJ9.OeDycojnBAH3tuWeaoRGhE_M9M_I-rBnlcNCVetVKOg'
+#     #product_str = [{"product_id": 3, "quantity": 5}, {"product_id": 2, "quantity": 3}]
     #user_order_add(token, product_str)
     #rate_comment_order(token, 3, 4, '')
-    #res = show_user_order(token)
-    #pprint.pprint(res)
+    # res = show_user_order(token)
+    # pprint.pprint(res)
     #delete_user_order(5)
