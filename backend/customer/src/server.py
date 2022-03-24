@@ -10,8 +10,8 @@ import sys
 sys.path.append('../../database/src')
 from database import db
 
-from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile, show_user_payment, show_user_cart
-from order import user_order_add, show_user_order, show_user_order_count, delete_user_order, rate_comment_order
+from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile
+from user_order import user_order_add, show_user_order, show_user_order_count, delete_user_order, rate_comment_order
 from customer_product import search, show_product_details, buy_now, show_product_rate_comment
 from cart_operation import add_to_cart, show_cart_products, edit_checked_product, delete_cart_product, checkout, notify_quantity, show_user_cart
 from payment_operation import show_user_payment, add_payment, delete_payment
@@ -99,15 +99,16 @@ def show_profile(token):
     return dumps(show_user_profile(token))
 
 
-@APP.route('/api/user/add_order', methods = ['POST'])
+@APP.route('/api/user/addorder', methods = ['POST'])
 def order_add():
     info = request.get_json()
+    print(info)
     token = info['token']
     product_list = info['product_list']
     result = user_order_add(token, product_list)
     return dumps(result)
 
-@APP.route('/api/user/order/<token>', methods=['GET'])
+@APP.route('/api/user/show_order/<token>', methods=['GET'])
 def show_order(token):
     '''
     Route for current user's order count
@@ -134,8 +135,8 @@ def show_order_count():
     result = show_user_order_count(token)
     return dumps(result)
 
-@APP.route('/api/user/order_count', methods=['GET'])
-def show_order_count():
+@APP.route('/api/user/order_rate&comment', methods=['GET'])
+def rate_comment():
     '''
     Route for current user's order count
     '''
