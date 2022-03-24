@@ -18,7 +18,7 @@ sys.path.append('../../admin/src')
 from manager import add_admin, admin_login, admin_logout, show_all_admins, delete_admin
 from product_manage import add_product, edit_product, get_product, get_product_all, delete_product
 from admin_search import admin_search
-
+from admin_order_management import order_search, get_order_all
 def defaultHandler(err):
     """server"""
     response = err.get_response()
@@ -349,6 +349,22 @@ def target_product_search(token, search_text, category):
     '''
     # print(token)
     return dumps(admin_search(token, search_text, category))
+
+@APP.route('/api/admin/order/search/<search_text>/<value>', methods=['GET'])
+def target_order_search(search_text, value):
+    '''
+    Route for listing profile
+    '''
+    # print(token)
+    return dumps(order_search(search_text, value))
+
+@APP.route('/api/get/order/all/<token>', methods=['GET'])
+def order_get_all(token):
+    '''
+    Route for listing profile
+    '''
+    # print(token)
+    return dumps(get_order_all(token))
 
 if __name__ == "__main__":
     db.create_all()

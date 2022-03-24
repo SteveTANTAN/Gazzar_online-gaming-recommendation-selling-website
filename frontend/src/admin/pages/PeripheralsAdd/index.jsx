@@ -14,6 +14,7 @@ import {
   Rate,
   Checkbox,
   Typography,
+  PageHeader,
   Row,
   Col,
 } from 'antd';
@@ -116,6 +117,13 @@ const onFinish = (values) => {
 
 
 return (
+  <div>
+  <PageHeader
+
+  onBack={() => history.goBack()}
+  title="Go Back"
+  subTitle="transfer to Peripherals Management"
+  />
   <Form
     name="validate_other"
     {...formItemLayout}
@@ -232,6 +240,6 @@ return (
         Submit
       </Button>
     </Form.Item>
-  </Form>
+  </Form></div>
 );
 }

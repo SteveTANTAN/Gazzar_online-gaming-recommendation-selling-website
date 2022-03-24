@@ -14,6 +14,7 @@ import {
   Rate,
   Checkbox,
   Typography,
+  PageHeader,
   Row,
   Col,
 } from 'antd';
@@ -112,6 +113,14 @@ const onPreview = async file => {
 
 
 return (
+  <div>
+  <PageHeader
+
+  onBack={() => history.goBack()}
+  title="Go Back"
+  subTitle="transfer to Game Management"
+></PageHeader>
+
   <Form
     name="validate_other"
     {...formItemLayout}
@@ -226,6 +235,6 @@ return (
         Submit
       </Button>
     </Form.Item>
-  </Form>
+  </Form></div>
 );
 };
