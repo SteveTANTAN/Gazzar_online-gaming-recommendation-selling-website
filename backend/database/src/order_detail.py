@@ -12,7 +12,7 @@ class Order_detail(db.Model):
     product_description = db.Column(db.String(500))
     product_price = db.Column(db.Float(10,2))
     product_discount = db.Column(db.Integer)
-    product_main_image = db.Column(db.String(500))
+    product_main_image = db.Column(db.String(32672))
     product_rate = db.Column(db.Float(2,1))
     product_comment = db.Column(db.String(500))
     # one to many
