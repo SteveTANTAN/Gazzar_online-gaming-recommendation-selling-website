@@ -15,6 +15,7 @@ import {
   Checkbox,
   Typography,
   visible,
+  PageHeader,
   Row,
   Col,
 } from 'antd';
@@ -183,7 +184,13 @@ if (!fileList) {
 } 
 
 return (
+  <div>
+  <PageHeader
 
+  onBack={() => history.goBack()}
+  title="Go Back"
+  subTitle="transfer to Peripherals Management"
+></PageHeader>
   <Form
     form={form}
     name="validate_other"
@@ -299,6 +306,7 @@ return (
     </Button>
   </Form.Item>
 </Form>
+</div>
 
 )
 

@@ -1,4 +1,4 @@
-import { Table, Popconfirm } from 'antd';
+import { Table, Popconfirm, Select,Cascader, message, Radio} from 'antd';
 import React from 'react';
 import { Input, Button, Space, Layout, Menu,Tooltip, PageHeader} from 'antd';
 import {
@@ -12,6 +12,10 @@ import {
 import { Link, Redirect, useHistory } from 'umi';
 export default (props) => {
 const [gamename, setGamename] = React.useState('');
+const [orderseach, setorderseach] = React.useState('0');
+const [orderData, setorderData] = React.useState([]);
+const [profileUpdate, setprofileUpdate] = React.useState(true);
+
 const history = useHistory();
 
 const columns = [
@@ -45,44 +49,83 @@ const columns = [
 
 ];
 
-const data = [
-  {
-    'Order_id': '999342342444',
-    'product_name': 'Elden Ring',
-    'quantity': 10,
-    'discount': '50%',
-    'tranding_hours': '2022-01-01 00:00:00 (UTC+9:30)',
-    'actual_price': 100,
-  },
-  {
-    'Order_id': '999342342444',
-    'product_name': 'Elden Ring',
-    'quantity': 1,
-    'discount': '50%',
-    'tranding_hours': '2022-01-01 00:00:00 (UTC+9:30)',
-    'actual_price': 70,
-  },
-  {
-    'Order_id': '999342342445',
-    'product_name': 'Elden Ring',
-    'quantity': 8,
-    'discount': '10%',
-    'tranding_hours': '2022-01-01 00:00:00 (UTC+9:30)',
-    'actual_price': 100,
-  },
-  {
-    'Order_id': '999342342446',
-    'product_name': 'Elden Ring',
-    'quantity': 16,
-    'discount': '30%',
-    'tranding_hours': '2022-01-01 00:00:00 (UTC+9:30)',
-    'actual_price': 80,
-  },
-];
+function Ordersearch (text, type){
+  console.log('Success:', text, type);
 
+  if (!text) {
+    setOrderData();
+    return
+  }
+
+  fetch(`/api/admin/order/search/${text}/${type}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    // body: JSON.stringify(loginPeople),
+  }).then((data) => {
+    if (data.status === 200) {
+      console.log('Success1:');
+
+      data.json().then(result => {
+        console.log('Success:', result);
+
+        message.success("Order search results updating successful 😊!!!")
+        setorderData(result);
+
+      });
+    } else if (data.status === 400) {
+      data.json().then(result => {
+        console.log('error 400', result.message);
+        message.error((result.message.replace("<p>","")).replace("</p>",""))
+      });
+    }
+  })
+}
+
+function setOrderData () {
+  fetch(`/api/get/order/all/${localStorage.getItem('token')}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    // body: JSON.stringify(loginPeople),
+  }).then((data) => {
+    if (data.status === 200) {
+      console.log('Success1:');
+
+      data.json().then(result => {
+        console.log('Success:', result);
+
+        message.success("Orders details updating successful 😊!!!")
+        setorderData(result);
+      });
+    } else if (data.status === 400) {
+      data.json().then(result => {
+        console.log('error 400', result.message);
+        message.error((result.message.replace("<p>","")).replace("</p>",""))
+      });
+    }
+  })
+}
+if (profileUpdate) {
+  setOrderData();
+  setprofileUpdate(false);
+}
 function onChange(pagination, filters, sorter, extra) {
   console.log('params', pagination, filters, sorter, extra);
 }
+const Search_options = [
+{
+  value: '0',
+  label: 'By Order ID',
+},
+{
+  value: '1',
+  label: 'By Product Name',
+},
+];
+
 
 return(<div>
   <PageHeader
@@ -92,12 +135,16 @@ return(<div>
   />
 <center>
 <Input onChange={e => setGamename(e.target.value)}  style={{ width: 240, borderRadius: 12, marginLeft: 20 }}
-  value = {gamename} type = 'text' placeholder='Search order by number Here' />
+  value = {gamename} type = 'text' placeholder='Search Here'/>
+
+<Radio.Group  onChange={e => setorderseach(e.target.value)}
+value={orderseach} options={Search_options}/>
+
 <Tooltip title="search">
-<Button shape="circle" icon={<SearchOutlined />} onClick={() => {history.push('/user/search');}}/>
+<Button shape="circle" icon={<SearchOutlined />} onClick={() => {Ordersearch(gamename, orderseach)}}/>
 </Tooltip>
 
 </center>
-<Table columns={columns} dataSource={data} onChange={onChange} />
+<Table columns={columns} dataSource={orderData} onChange={onChange} />
 </div>);
 }

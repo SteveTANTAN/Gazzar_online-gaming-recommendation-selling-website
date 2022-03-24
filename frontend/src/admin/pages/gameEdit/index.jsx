@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input,  Space, Layout, Menu, message, Modal} from 'antd';
+import { Input,  Space, Layout, Menu, message, Modal, PageHeader} from 'antd';
 import ImgCrop from 'antd-img-crop';
 import { Alert } from 'antd';
 import {
@@ -179,6 +179,13 @@ const onPreview = async file => {
 
 
 return (
+  <div>
+  <PageHeader
+
+  onBack={() => history.goBack()}
+  title="Go Back"
+  subTitle="transfer to Game Management"
+></PageHeader>
 
   <Form
     form={form}
@@ -297,6 +304,7 @@ return (
     </Button>
   </Form.Item>
 </Form>
+</div>
 
 )
 

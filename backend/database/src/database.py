@@ -8,4 +8,4 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+pymysql://root:vision@114.55.74.3
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
-print(db)
+# print(db)

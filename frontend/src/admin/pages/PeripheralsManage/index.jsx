@@ -103,7 +103,6 @@ const columns = [
       </Popconfirm>
     </div>
   },
-
 ];
 
 console.log('Success1:');
