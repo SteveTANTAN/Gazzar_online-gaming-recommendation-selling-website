@@ -33,7 +33,7 @@ def order_search(search_text, value):
         temp['product_name'] = target_order.product_name
         temp['quantity'] = target_order.quantity
         temp["discount"] = str(target_order.product_discount) + "%"
-        temp['trading_hours'] = str(target_order.create_time) + "   (UTC+5)"
+        temp['tranding_hours'] = str(target_order.create_time) + "  (UTC+5)"
         temp['actual_price'] = float(target_order.product_price)
         data.append(temp)
     return data
@@ -49,7 +49,7 @@ def get_order_all(token):
         temp['product_name'] = target_order.product_name
         temp['quantity'] = target_order.quantity
         temp["discount"] = str(target_order.product_discount) + "%"
-        temp['trading_hours'] = str(target_order.create_time) + "(UTC+5)"
+        temp['tranding_hours'] = str(target_order.create_time) + "  (UTC+5)"
         temp['actual_price'] = float(target_order.product_price)
         data.append(temp)
     return data
