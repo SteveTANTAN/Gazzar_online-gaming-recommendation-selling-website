@@ -6,7 +6,7 @@ class Payment_detail(db.Model):
     card_type = db.Column(db.String(100))
     card_number = db.Column(db.Integer)
     name_on_card = db.Column(db.String(100))
-    expration_date = db.Column(db.DateTime)
+    expration_date = db.Column(db.String(100))
     # one to many
     user_id = db.Column(db.Integer, db.ForeignKey('user.user_id'))
     user = db.relationship('User', lazy='select', backref=db.backref('payment_detail', lazy='joined'))
