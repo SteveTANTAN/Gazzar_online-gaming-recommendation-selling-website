@@ -24,7 +24,7 @@ import { useDispatch } from 'dva';
 export default function Register() {
   const [step, setStep] = useState(1);
   const [info, setInfo] = useState();
-  const history = useHistory()
+  const history = useHistory();
   const dispatch = useDispatch();
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
@@ -71,9 +71,13 @@ export default function Register() {
               type="primary"
               onClick={() => {
                 post('/api/user/register', info).then((res) => {
-                  dispatch({type:'app/setState',payload:{token:res.token}})
+                  dispatch({
+                    type: 'app/setState',
+                    payload: { token: res.token },
+                  });
+                  sessionStorage.setItem('token', res.token);
                   message.success('register success');
-                  history.push('/')
+                  history.push('/');
                 });
               }}
             >

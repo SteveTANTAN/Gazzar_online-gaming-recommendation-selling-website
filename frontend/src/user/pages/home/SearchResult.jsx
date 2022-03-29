@@ -1,10 +1,22 @@
 import styles from './SearchResult.less';
 import { PageHeader, Checkbox, Tabs, Row, Col, Radio } from 'antd';
 import GameCard from '../../components/GameCard';
-import { useHistory } from 'umi';
+import { useHistory, useParams } from 'umi';
+import { useEffect, useState } from 'react';
+import { get } from '@/user/utils/request';
 
 export default function SearchResult() {
   const history = useHistory();
+  const param = useParams();
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    if (!param.search) {
+      return;
+    }
+    get('/api/user/search/' + param.search).then((res) => {
+      setData(res);
+    });
+  }, [param.search]);
   return (
     <>
       <br />
@@ -56,9 +68,9 @@ export default function SearchResult() {
         </div>
         <div className={styles.right}></div>
         <Row gutter={[20, 20]}>
-          {[1, 2, 3, 4, 5].map((item) => (
-            <Col span={8}>
-              <GameCard></GameCard>
+          {data.map((item) => (
+            <Col span={8} key={item.id}>
+              <GameCard id={item.product_id} name={item.name}></GameCard>
             </Col>
           ))}
         </Row>

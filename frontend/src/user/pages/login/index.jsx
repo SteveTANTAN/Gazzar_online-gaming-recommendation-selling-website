@@ -15,8 +15,9 @@ export default function Login() {
   const dispatch = useDispatch();
   const onFinish = (values) => {
     post('/api/user/login', values).then((res) => {
-      dispatch({type:'app/setState',payload:{token:res.token}})
-      history.push('/')
+      dispatch({ type: 'app/setState', payload: { token: res.token } });
+      sessionStorage.setItem('token', res.token);
+      history.push('/');
     });
   };
 
