@@ -59,9 +59,9 @@ def delete_payment(token, payment_detail_id):
     db.session.commit()
     return
 
-# if __name__ == "__main__":
+if __name__ == "__main__":
 #     add_payment('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf',
 #         {'card_type': 'MasterCard', 'card_number': 623213123, 'name_on_card': 'XXXX XX', 'expration_date': '2323-12-31, 12:21, XXXX'})
-#     res = show_user_payment('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf')
-#     pprint.pprint(res)
+    res = show_user_payment('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjE1fQ.6HRn7wRRh2sOI0CnPq5V0wXe1ixDHbVLFPRlU-ll-po')
+    pprint.pprint(res)
 #     # delete_payment('eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5wf', 4)
