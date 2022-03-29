@@ -82,7 +82,7 @@ def buy_now(token, product_id, quantity):
         'quantity': quantity,
     }
     original_price = float(target_product.price) * float(quantity)
-    total_discount = float((100 - target_product.discount) * (0.01) * original_price)
+    total_discount = float((target_product.discount) * (0.01) * original_price)
     actual_transaction = float(original_price - total_discount)
     output = {
         'checkout_product': target_product_info,
