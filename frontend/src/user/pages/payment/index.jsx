@@ -42,7 +42,7 @@ export default function PaymentPage() {
         setPayment(res);
       },
     );
-  }, [param.id]);
+  }, [param?.id]);
   return (
     <>
       <div className={styles.wrap}>

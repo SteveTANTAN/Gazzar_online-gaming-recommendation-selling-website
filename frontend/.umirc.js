@@ -71,6 +71,10 @@ export default defineConfig({
           component: '@/user/pages/order/detail'
         },
         {
+          path: '/user/payment',
+          component: '@/user/pages/payment'
+        },
+        {
           path: '/user/payment/:id/:quantity',
           component: '@/user/pages/payment'
         },
@@ -90,7 +94,7 @@ export default defineConfig({
       //target: 'http://localhost:55467',//后端实际api地址
       target: 'http://114.55.74.30:55467',//后端实际api地址
       
-      changeOrigin: true,
+            changeOrigin: true,
       //pathRewrite会对前端的请求地址截取 如前端访问地址
       //http://localhost:8888/api/esbapi/manager/cm0004 截取/api/esbapi后再重新定位到 后端 http://127.0.0.1:56668/manager
     }

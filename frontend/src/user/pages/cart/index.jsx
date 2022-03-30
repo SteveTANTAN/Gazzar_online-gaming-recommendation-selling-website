@@ -10,7 +10,6 @@ import {
   Checkbox,
   message,
 } from 'antd';
-import { EditOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useSetState } from 'ahooks';
 import { useHistory } from 'umi';
 import OrderItem from '../../components/OrderItem';
@@ -44,7 +43,7 @@ export default function Profile() {
               {data.map((item) => (
                 <div className="fr" key={item.cart_id}>
                   <Checkbox
-                    checked={item.checked !== 0}
+                    defaultChecked={item.checked !== 0}
                     onChange={(e) => {
                       put(`/api/user/edit/checked`, {
                         token: sessionStorage.getItem('token'),
@@ -53,7 +52,9 @@ export default function Profile() {
                       }).then(getData);
                     }}
                   ></Checkbox>
-                  <OrderItem {...item}></OrderItem>
+                  <OrderItem editable {...item} onDelete={()=>{
+                    getData()
+                  }}></OrderItem>
                 </div>
               ))}
             </div>

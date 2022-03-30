@@ -1,13 +1,15 @@
 import { InputNumber } from 'antd';
 import { useHistory } from 'umi';
 import styles from './index.less';
-import { put } from '@/user/utils/request';
+import { EditOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+
+import { put,del } from '@/user/utils/request';
 export default function GameCard(props) {
   const history = useHistory();
   return (
     <div className={styles.item + ' fr blank'}>
-      <img src={props.main_image} alt="" />
-      <div>
+      <img src={props.main_image?.image} alt="" />
+      <div style={{flex:1}}>
         <h2>{props.name}</h2>
         <p>{props.description}</p>
       </div>
@@ -30,6 +32,22 @@ export default function GameCard(props) {
           <span>x{props.quantity}</span>
         )}
       </div>
+      {props.onDelete && (
+        <div
+          className={styles.del}
+          onClick={() => {
+            del('/api/user/delete/cart', {
+              token: sessionStorage.getItem('token'),
+              cart_id: props.cart_id,
+              quantity: props.quantity,
+            }).then(() => {
+              props.onDelete();
+            });
+          }}
+        >
+          <DeleteOutlined></DeleteOutlined>
+        </div>
+      )}
     </div>
   );
 }
