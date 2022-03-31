@@ -46,17 +46,17 @@ def show_product_details(token, product_id):
     target_product = products[0]
 
     # convert main_image and sub_image string to list
+    images = []
     cover = ast.literal_eval(target_product.main_image)
+    images.append(cover)
     photo = ast.literal_eval(target_product.sub_image)
-    photo_images = []
     for i in photo:
         cur_image = {'image': i['thumbUrl']}
-        photo_images.append(cur_image)
+        images.append(cur_image)
 
     product_details = {'product_id': target_product.product_id, 'name': target_product.name, 'description': target_product.description,
                     'price': float(target_product.price), 'discount': target_product.discount, 'stock': target_product.stock, 'status': target_product.status,
-                    'main_image': cover[0]['thumbUrl'], 'sub_image': photo_images, 'rate': float(target_product.rate),
-                    'comment': target_product.comment, 'type': get_type(target_product)}
+                    'main_image': images, 'rate': float(target_product.rate), 'comment': target_product.comment, 'type': get_type(target_product)}
 
     return product_details
 
