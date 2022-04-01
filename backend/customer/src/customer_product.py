@@ -203,21 +203,31 @@ def customized_homepage(token):
             output_peripheral.append(product_dict_form(product))
 
     print(len(output_game))
-    return {'game': output_game, 'peripheral': output_peripheral}
+    return {'game': output_game, 'peripheral': output_peripheral, 'count':len(output_game)}
 
-if __name__ == "__main__":
-    #db.create_all()
-    token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjE3fQ.12Gqt0B29VWffPR7Fp6qjWhNa2jsgU21Ns6uZh6Ihto"
-    # result = show_product_rate_comment(3)
-    #     # result = search('grand')
-    #     pprint.pprint(result)
-    #res = search('pubg')
-    # print(res)
-    res = customized_homepage(token)
-    print(res)
-    #list = [1,3,4,6,8,11,23,7,12]
-    #a = [1,1,1,1]
-    #print(random.sample(list, int(len(list)/2)))
-    #list.extend(a)
-    #print(list)
-    #print(Product.query.filter(Product.status==1).all())
+# if __name__ == "__main__":
+#     #db.create_all()
+#     token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjE3fQ.12Gqt0B29VWffPR7Fp6qjWhNa2jsgU21Ns6uZh6Ihto"
+#     # result = show_product_rate_comment(3)
+#     #     # result = search('grand')
+#     #     pprint.pprint(result)
+#     #res = search('pubg')
+#     # print(res)
+#     #res = customized_homepage(token)
+#     #print(res)
+#     #list = [1,3,4,6,8,11,23,7,12]
+#     #a = [1,1,1,1]
+#     #print(random.sample(list, int(len(list)/2)))
+#     #list.extend(a)
+#     #print(list)
+#     #print(Product.query.filter(Product.status==1).all())
+#     a = Product.query.filter(Product.product_id == 27).first()
+#     b = (ast.literal_eval(a.main_image))[0]['thumbUrl']
+#     c = a.main_image
+#     if b is c:
+#         print('aaaaa')
+#     else:
+#         print('bbbbb')
+#     print(type(c))
+#     print(type(b))
+#     #print(len(b))

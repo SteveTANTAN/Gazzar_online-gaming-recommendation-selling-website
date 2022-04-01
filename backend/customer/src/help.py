@@ -107,7 +107,7 @@ def get_type(product):
 
 def product_dict_form(product):
     return {"product_id": product.product_id, "name": product.name, "description": product.description,
-            "price": format(float(product.price), '.2f'), "discount": product.discount, "main_image": ast.literal_eval(product.main_image)[0]['thumbUrl'],
+            "price": format(float(product.price), '.2f'), "discount": product.discount, "main_image": (ast.literal_eval(product.main_image))[0]['thumbUrl'],
             "rate": format(float(product.rate), '.1f'), "type": get_type(product), "status": product.status}
 
 # if __name__ == "__main__":
