@@ -4,7 +4,7 @@ class Payment_detail(db.Model):
     __tablename__ = 'payment_detail'
     payment_detail_id = db.Column(db.Integer, primary_key=True)
     card_type = db.Column(db.String(100))
-    card_number = db.Column(db.Integer)
+    card_number = db.Column(db.String(100))
     name_on_card = db.Column(db.String(100))
     expration_date = db.Column(db.String(100))
     # one to many

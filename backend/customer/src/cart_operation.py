@@ -71,7 +71,7 @@ def show_cart_products(token):
             'main_image': cover_image,
             'current_price': float(target_product.price) * float(target_product.discount) * (0.01),
             'quantity': item.quantity,
-            'checked ': item.checked
+            'checked': item.checked
         }
         cart_products.append(target_product_info)
     return cart_products
@@ -130,16 +130,15 @@ def checkout(token):
                 'quantity': item.quantity,
             }
             original_price = original_price + float(target_product.price) * float(item.quantity)
-            total_discount = total_discount + float((100 - target_product.discount) * (0.01) * original_price)
+            total_discount = total_discount + float(target_product.discount * (0.01) * original_price)
             checkout_products.append(target_product_info)
 
     actual_transaction = float(original_price - total_discount)
     output = {
         'checkout_products': checkout_products,
-        'original_price': original_price,
-        'total_discount': total_discount,
-        'actual_transaction': actual_transaction
-
+        'original_price':  format(original_price, '.2f'),
+        'total_discount': format(total_discount, '.2f'),
+        'actual_transaction': format(actual_transaction, '.2f')
     }
     return output
 
