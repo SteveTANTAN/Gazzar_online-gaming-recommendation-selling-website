@@ -3,15 +3,15 @@ import { useHistory } from 'umi';
 import styles from './index.less';
 import { EditOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 
-import { put,del } from '@/user/utils/request';
+import { put, del } from '@/user/utils/request';
 export default function GameCard(props) {
   const history = useHistory();
   return (
     <div className={styles.item + ' fr blank'}>
-      <img src={props.main_image?.image} alt="" />
-      <div style={{flex:1}}>
+      <img src={props.main_image?.image ?? props.main_image} alt="" />
+      <div style={{ flex: 1 }}>
         <h2>{props.name}</h2>
-        <p>{props.description}</p>
+        <p className={styles.desc}>{props.description}</p>
       </div>
       <div className={styles.price}>
         <h2>${props.current_price}</h2>

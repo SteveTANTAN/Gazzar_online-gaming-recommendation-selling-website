@@ -12,8 +12,8 @@ import {
 import { EditOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useSetState } from 'ahooks';
 import { useHistory, useParams } from 'umi';
-import OrderItem from '@/user/components//OrderItem';
-import Payment from '@/user/components//Payment';
+import OrderItem from '@/user/components/OrderItem';
+import Payment from '@/user/components/Payment';
 import { useEffect, useState } from 'react';
 import { get } from '@/user/utils/request';
 export default function PaymentPage() {
@@ -39,7 +39,9 @@ export default function PaymentPage() {
     }
     get(`/api/user/show/payment/${sessionStorage.getItem('token')}`).then(
       (res) => {
-        setPayment(res);
+        if (res?.length > 0) {
+          setPayment([res[0]]);
+        }
       },
     );
   }, [param?.id]);

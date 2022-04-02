@@ -10,14 +10,13 @@ import {
   DatePicker,
   message,
 } from 'antd';
-import { EditOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
-import { useSetState } from 'ahooks';
 import { useHistory, useParams } from 'umi';
-import { useEffect, useState } from 'react';
-import { get,post  } from '@/user/utils/request';
+import { useEffect, useState, useRef } from 'react';
+import { get, post } from '@/user/utils/request';
 export default function Profile() {
   const history = useHistory();
   const param = useParams();
+  const imgRef = useRef();
   const [data, setData] = useState({});
   const [comment, setComment] = useState({});
   const [quantity, setQuantity] = useState(1);
@@ -42,14 +41,20 @@ export default function Profile() {
         <br />
         <div className={styles.info}>
           <div className={styles.left}>
-            <Carousel>
-              <div>
-                <img src={data.main_image} alt="" />
-              </div>
+            <Carousel ref={imgRef}>
+              {data.main_image?.map((item) => (
+                <div>
+                  <img src={item.image} alt="" />
+                </div>
+              ))}
             </Carousel>
             <div className={styles.preview}>
-              {data.sub_image?.map((item) => (
-                <img src={item.image} alt="" />
+              {data.main_image?.map((item, index) => (
+                <img
+                  src={item.image}
+                  alt=""
+                  onClick={() => imgRef.current.goTo(index)}
+                />
               ))}
             </div>
           </div>

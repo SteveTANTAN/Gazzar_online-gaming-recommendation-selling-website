@@ -18,15 +18,15 @@ import { useEffect, useState } from 'react';
 export default function Profile() {
   const history = useHistory();
   const [data, setData] = useState([]);
-  const getData = ()=>{
+  const getData = () => {
     get(`/api/user/show/cart/${sessionStorage.getItem('token')}`).then(
       (res) => {
         setData(res);
       },
     );
-  }
+  };
   useEffect(() => {
-    getData()
+    getData();
   }, []);
   return (
     <>
@@ -52,9 +52,13 @@ export default function Profile() {
                       }).then(getData);
                     }}
                   ></Checkbox>
-                  <OrderItem editable {...item} onDelete={()=>{
-                    getData()
-                  }}></OrderItem>
+                  <OrderItem
+                    editable
+                    {...item}
+                    onDelete={() => {
+                      getData();
+                    }}
+                  ></OrderItem>
                 </div>
               ))}
             </div>

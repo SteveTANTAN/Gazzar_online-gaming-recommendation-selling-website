@@ -1,11 +1,20 @@
 import styles from './index.less';
-import { Button, Space, Modal, Input, Form, DatePicker, message, InputNumber } from 'antd';
+import {
+  Button,
+  Space,
+  Modal,
+  Input,
+  Form,
+  DatePicker,
+  message,
+  InputNumber,
+} from 'antd';
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { useSetState } from 'ahooks';
 import Payment from '@/user/components/Payment';
 import { get, put, post } from '@/user/utils/request';
 import { useSelector, useDispatch } from 'dva';
-import { useEffect,useState  } from 'react';
+import { useEffect, useState } from 'react';
 import maleImg from '@/assets/Male.png';
 import femaleImg from '@/assets/Female.png';
 import mysteriousImg from '@/assets/Mysterious.png';
@@ -23,10 +32,13 @@ export default function Profile() {
       },
     );
   };
-  useEffect(() => {
+  const getData = () => {
     get(`/api/user/profile/${token}`).then((res) => {
       setData(res.user_info[0] || {});
     });
+  };
+  useEffect(() => {
+    getData();
     getPayment();
   }, []);
   return (
@@ -37,7 +49,20 @@ export default function Profile() {
           <div>
             <Space>
               {info?.visible ? (
-                <Input defaultValue={data.name} />
+                <Input
+                  defaultValue={data.name}
+                  onBlur={() => setInfo({ visible: false })}
+                  onPressEnter={(e) => {
+                    put(`/api/user/edit/username`, {
+                      token,
+                      name: e.target.value,
+                    }).then(() => {
+                      message.success('success');
+                      getData();
+                      setInfo({ visible: false });
+                    });
+                  }}
+                />
               ) : (
                 <h3>{data.name}</h3>
               )}
@@ -182,10 +207,15 @@ export default function Profile() {
               onFinish={(values) => {
                 post('/api/user/add/payment', {
                   token,
-                  payment_dict: {...values,expration_date:values.expration_date?.format('YYYY-MM-DD HH:mm:ss')},
+                  payment_dict: {
+                    ...values,
+                    expration_date: values.expration_date?.format(
+                      'YYYY-MM-DD HH:mm:ss',
+                    ),
+                  },
                 }).then(() => {
-                  setCard({ visible: false })
-                  message.success('success')
+                  setCard({ visible: false });
+                  message.success('success');
                   getPayment();
                 });
               }}
@@ -202,7 +232,7 @@ export default function Profile() {
                 label="Card Number"
                 rules={[{ required: true }]}
               >
-                <InputNumber />
+                <Input />
               </Form.Item>
 
               <Form.Item
@@ -217,7 +247,7 @@ export default function Profile() {
                 label="Expiration Date"
                 rules={[{ required: true }]}
               >
-                <DatePicker  />
+                <DatePicker />
               </Form.Item>
               <Form.Item wrapperCol={{ span: 24 }}>
                 <div className={'center'}>

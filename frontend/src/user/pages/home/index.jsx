@@ -8,14 +8,26 @@ import { useState, useEffect } from 'react';
 import maleImg from '@/assets/Male.png';
 import femaleImg from '@/assets/Female.png';
 import mysteriousImg from '@/assets/Mysterious.png';
+import { useSetState } from 'ahooks';
 export default function Home() {
   const history = useHistory();
+  const [profile, setProfile] = useState({});
   const [data, setData] = useState({});
+  const [state, setState] = useSetState({ cart: 0, order: 0 });
   const { token } = useSelector((state) => state.app);
   useEffect(() => {
     if (!token) return;
+    get(`/api/user/customized/homepage/${token}`).then((res) => {
+      setData(res);
+    });
     get(`/api/user/profile/${token}`).then((res) => {
-      setData((res.user_info && res.user_info[0]) || {});
+      setProfile((res.user_info && res.user_info[0]) || {});
+    });
+    get(`/api/user/order/${token}`).then((res) => {
+      setState({ order: res ?? 0 });
+    });
+    get(`/api/user/cart/${token}`).then((res) => {
+      setState({ cart: res ?? 0 });
     });
   }, []);
   return (
@@ -41,12 +53,12 @@ export default function Home() {
           <div className={styles.right + ' shadow'}>
             <div className="fr">
               <img
-                src={[maleImg, femaleImg, mysteriousImg][data.gender]}
+                src={[maleImg, femaleImg, mysteriousImg][profile.gender]}
                 alt=""
               />
               <div>
-                <h4>{data.name}</h4>
-                <div className="desc">{data.email}</div>
+                <h4>{profile.name}</h4>
+                <div className="desc">{profile.email}</div>
               </div>
             </div>
             <div className={styles.info + ' fr'}>
@@ -55,14 +67,14 @@ export default function Home() {
                 onClick={() => history.push('/user/cart')}
               >
                 <h2>Cart</h2>
-                <div>0</div>
+                <div>{state.cart ?? 0}</div>
               </div>
               <div
                 className="pointer"
                 onClick={() => history.push('/user/order')}
               >
                 <h2>Order</h2>
-                <div>0</div>
+                <div>{state.order ?? 0}</div>
               </div>
             </div>
           </div>
@@ -70,16 +82,25 @@ export default function Home() {
       </div>
       <br />
       <Tabs type="card">
-        <Tabs.TabPane tab="Games" key="1"></Tabs.TabPane>
-        <Tabs.TabPane tab="Peripherals" key="Peripherals"></Tabs.TabPane>
+        <Tabs.TabPane tab="Games" key="1">
+          <Row gutter={[20, 20]}>
+            {data.game?.map((item) => (
+              <Col span={6} key={item.product_id}>
+                <GameCard {...item}></GameCard>
+              </Col>
+            ))}
+          </Row>
+        </Tabs.TabPane>
+        <Tabs.TabPane tab="Peripherals" key="Peripherals">
+          <Row gutter={[20, 20]}>
+            {data.peripheral?.map((item) => (
+              <Col span={6} key={item.product_id}>
+                <GameCard {...item}></GameCard>
+              </Col>
+            ))}
+          </Row>
+        </Tabs.TabPane>
       </Tabs>
-      <Row gutter={[20, 20]}>
-        {[1, 2, 3, 4, 5].map((item) => (
-          <Col span={6}>
-            <GameCard></GameCard>
-          </Col>
-        ))}
-      </Row>
     </>
   );
 }
