@@ -46,13 +46,9 @@ def show_product_details(token, product_id):
     target_product = products[0]
 
     # convert main_image and sub_image string to list
-    images = []
-    cover = ast.literal_eval(target_product.main_image)
-    images.append(cover)
+    images = ast.literal_eval(target_product.main_image)
     photo = ast.literal_eval(target_product.sub_image)
-    for i in photo:
-        cur_image = {'image': i['thumbUrl']}
-        images.append(cur_image)
+    images.extend(photo)
 
     product_details = {'product_id': target_product.product_id, 'name': target_product.name, 'description': target_product.description,
                     'price': float(target_product.price), 'discount': target_product.discount, 'stock': target_product.stock, 'status': target_product.status,
@@ -120,25 +116,23 @@ def customized_homepage(token):
     all_product = Product.query.order_by(Product.rate.desc()).all()
 
     # 拿到折扣的游戏 id list
-    game_on_promote = []
-    promote_games = Product.query.filter(Product.status==1, Product.category==0).all()
-    for i in promote_games:
-        game_on_promote.append(i.product_id)
-
     # 拿到折扣的周边 id list
+    game_on_promote = []
     peripheral_on_promote = []
-    promote_peripherals = Product.query.filter(Product.status==1, Product.category==1).all()
-    for i in promote_peripherals:
-        peripheral_on_promote.append(i.product_id)
+    promote = Product.query.filter(Product.status==1).all()
+    for i in promote:
+        if i.category == 0:
+            game_on_promote.append(i.product_id)
+        else:
+            peripheral_on_promote.append(i.product_id)
 
     # 添加折扣的游戏， 按照rate 排序
+    # 添加折扣的周边， 按照rate 排序
     output_game_id.extend(game_on_promote)
+    output_peripheral_id.extend(peripheral_on_promote)
     for product in all_product:
         if product.product_id in game_on_promote:
             output_game.append(product_dict_form(product))
-    # 添加折扣的周边， 按照rate 排序
-    output_peripheral_id.extend(peripheral_on_promote)
-    for product in all_product:
         if product.product_id in peripheral_on_promote:
             output_peripheral.append(product_dict_form(product))
 
@@ -167,43 +161,40 @@ def customized_homepage(token):
     random_game_interest = random.sample(game_interest, int(len(game_interest)/4))
     random_peripheral_interest = random.sample(peripheral_interest, int(len(peripheral_interest)/4))
     # 添加折扣的游戏， 按照rate 排序
+    # 添加折扣的周边， 按照rate 排序
     output_game_id.extend(random_game_interest)
+    output_peripheral_id.extend(random_peripheral_interest)
     for product in all_product:
         if product.product_id in random_game_interest:
             output_game.append(product_dict_form(product))
-    # 添加折扣的周边， 按照rate 排序
-    output_peripheral_id.extend(random_peripheral_interest)
-    for product in all_product:
         if product.product_id in random_peripheral_interest:
             output_peripheral.append(product_dict_form(product))
 
     rest_game = []
     rest_peripheral = []
     #拿到所有未添加的游戏（没有促销）
-    all_games = Product.query.filter(Product.status==0, Product.category==0).all()
-    for product in all_games:
-        if product.product_id not in output_game_id:
-            rest_game.append(product.product_id)
-
     #拿到所有未添加的周边（没有促销）
-    all_peripherals = Product.query.filter(Product.status==0, Product.category==1).all()
-    for product in all_peripherals:
-        if product.product_id not in output_peripheral_id:
-            rest_peripheral.append(product.product_id)
+    all_gam_per = Product.query.filter(Product.status==0).all()
+    for product in all_gam_per:
+        if product.category == 0:
+            if product.product_id not in output_game_id:
+                rest_game.append(product.product_id)
+        else:
+            if product.product_id not in output_peripheral_id:
+                rest_peripheral.append(product.product_id)
 
     # 添加剩余的游戏， 按照rate 排序
+    # 添加剩余的周边， 按照rate 排序
     output_game_id.extend(rest_game)
+    output_peripheral_id.extend(rest_peripheral)
     for product in all_product:
         if product.product_id in rest_game:
             output_game.append(product_dict_form(product))
-    # 添加剩余的周边， 按照rate 排序
-    output_peripheral_id.extend(rest_peripheral)
-    for product in all_product:
         if product.product_id in rest_peripheral:
             output_peripheral.append(product_dict_form(product))
 
-    print(len(output_game))
-    return {'game': output_game, 'peripheral': output_peripheral, 'count':len(output_game)}
+    #print(len(output_game))
+    return {'game': output_game, 'peripheral': output_peripheral}#, 'count':len(output_game)}
 
 # if __name__ == "__main__":
 #     #db.create_all()
@@ -211,23 +202,19 @@ def customized_homepage(token):
 #     # result = show_product_rate_comment(3)
 #     #     # result = search('grand')
 #     #     pprint.pprint(result)
-#     #res = search('pubg')
-#     # print(res)
-#     #res = customized_homepage(token)
+#     #res = search('K')
 #     #print(res)
+#     res = customized_homepage(token)
+#     print(res)
 #     #list = [1,3,4,6,8,11,23,7,12]
 #     #a = [1,1,1,1]
 #     #print(random.sample(list, int(len(list)/2)))
 #     #list.extend(a)
 #     #print(list)
 #     #print(Product.query.filter(Product.status==1).all())
-#     a = Product.query.filter(Product.product_id == 27).first()
-#     b = (ast.literal_eval(a.main_image))[0]['thumbUrl']
-#     c = a.main_image
-#     if b is c:
-#         print('aaaaa')
-#     else:
-#         print('bbbbb')
-#     print(type(c))
-#     print(type(b))
-#     #print(len(b))
+#     # a = Product.query.filter(Product.product_id == 27).first()
+#     # images = ast.literal_eval(a.main_image)
+#     # photo = ast.literal_eval(a.sub_image)
+#     # images.extend(photo)
+#     # print(type(images))
+#     # print(len(images))
