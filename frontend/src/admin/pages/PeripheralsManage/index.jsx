@@ -35,20 +35,12 @@ const columns = [
     dataIndex: 'type',
     filters: [
       {
-        text: 'Crafts',
-        value: 'Crafts',
+        text: 'Game Props',
+        value: 'Game Props',
       },
       {
-        text: 'Clothes',
-        value: 'Clothes',
-      },
-      {
-        text: 'Daily necessities',
-        value: 'Daily necessities',
-      },
-      {
-        text: 'Garage Kit',
-        value: 'Garage Kit',
+        text: 'Costume',
+        value: 'Costume',
       },
     ],
     filterMode: 'tree',
