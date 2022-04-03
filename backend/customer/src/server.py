@@ -9,8 +9,8 @@ import sys
 sys.path.append('../../database/src')
 from database import db
 
-from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile, show_user_order
-from customer_product import search, show_product_details, buy_now, show_product_rate_comment
+from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile, show_user_order, add_interest, edit_username
+from customer_product import search, show_product_details, buy_now, show_product_rate_comment, customized_homepage, surprise_store
 from cart_operation import add_to_cart, show_cart_products, edit_checked_product, delete_cart_product, checkout, notify_quantity, show_user_cart
 from payment_operation import show_user_payment, add_payment, delete_payment
 
@@ -96,6 +96,38 @@ def show_profile(token):
     '''
     return dumps(show_user_profile(token))
 
+@APP.route('/api/user/edit/username', methods = ['PUT'])
+def username_edit():
+    """user edit username"""
+    info = request.get_json()
+    token = info['token']
+    name = info['name']
+    result = edit_username(token, name)
+    return dumps(result)
+
+@APP.route('/api/user/add/interest', methods=['POST'])
+def add_user_interest():
+    '''
+    Route for add interest for cur user
+    '''
+    info = request.get_json()
+    token = info['token']
+    interest_dict = info['interest_dict']
+    return dumps(add_interest(token, interest_dict))
+
+@APP.route('/api/user/customized/homepage/<token>', methods=['GET'])
+def show_customized_homepage(token):
+    '''
+    Route for current user's customized homepage
+    '''
+    return dumps(customized_homepage(token))
+
+@APP.route('/api/user/surprise/store/<token>', methods=['GET'])
+def show_surprise_store(token):
+    '''
+    Route for current user's surprise_store
+    '''
+    return dumps(surprise_store(token))
 
 @APP.route('/api/user/order/<token>', methods=['GET'])
 def show_order(token):

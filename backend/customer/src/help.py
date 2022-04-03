@@ -10,6 +10,7 @@ from type import Type
 from error import Error
 import jwt
 import re
+import ast
 from werkzeug.exceptions import HTTPException
 def create_uid():
     """
@@ -97,6 +98,17 @@ class ErrorMessage(HTTPException):
     """Input/Access Error"""
     code = 400
     message = 'No message specified'
+
+def get_type(product):
+    tags = []
+    for a in product.genre:
+        tags.append(a.type_name)
+    return tags
+
+def product_dict_form(product):
+    return {"product_id": product.product_id, "name": product.name, "description": product.description,
+            "price": format(float(product.price), '.2f'), "discount": product.discount, "main_image": ast.literal_eval(product.main_image),
+            "rate": format(float(product.rate), '.1f'), "type": get_type(product), "status": product.status}
 
 # if __name__ == "__main__":
 #     print(token_to_id("eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjF9.zf40wtVW374ygpDOvfCMhBfnLrddY2Y9C6IlDmzwxy4"))

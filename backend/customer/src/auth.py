@@ -15,7 +15,7 @@ import smtplib
 from email.mime.text import MIMEText
 from email.header import Header
 import pprint
-
+from sqlalchemy import or_,and_
 from help import create_uid, create_token, add_to_database, check_email, check_password, token_to_id, ErrorMessage
 
 def user_register(email, password, name, age, gender):
@@ -166,13 +166,24 @@ def edit_username(token, newname):
     db.session.commit()
     return {}
 
+def add_interest(token, interest_dict):
+    user_id =  token_to_id(token)
+    target_user = User.query.filter(User.user_id==user_id).first()
 
-# if __name__ == "__main__":
-#     token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjF9.zf40wtVW374ygpDOvfCMhBfnLrddY2Y9C6IlDmzwxy4"
-#     print(show_user_profile(token))
-#     print(show_user_payment(token))
-#     print(show_user_cart(token))
-#     print(show_user_order(token))
-    # payment_details = Payment_detail.query.join(User).filter(Payment_detail.user_id==1).all()
-    # for i in payment_details:
-    #     print(i.card_type)
+    for key_type, type_value in interest_dict.items():
+        if type_value == 1:
+            cur_type = Type.query.filter(Type.type_name == key_type).first()
+            target_user.interest.append(cur_type)
+            db.session.commit()
+
+    return
+
+
+if __name__ == "__main__":
+    db.create_all()
+    token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjE3fQ.12Gqt0B29VWffPR7Fp6qjWhNa2jsgU21Ns6uZh6Ihto"
+    interest_dict = {'RPG': 1, 'Strategy': 1}
+    add_interest(token, interest_dict)
+    #print(Product.query.join(Type, Product.genre).filter(Type.type_id==1).all())
+    #print(Product.query.join(Type, Product.genre).filter(Type.type_id==1).all())
+
