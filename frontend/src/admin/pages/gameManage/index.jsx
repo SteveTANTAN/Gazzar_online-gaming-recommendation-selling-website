@@ -38,6 +38,10 @@ const columns = [
         value: 'Action & Adventure',
       },
       {
+        text: 'Casual',
+        value: 'Casual',
+      },
+      {
         text: 'FPS',
         value: 'FPS',
       },
