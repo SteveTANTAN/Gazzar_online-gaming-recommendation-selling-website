@@ -182,8 +182,8 @@ def add_interest(token, interest_dict):
 if __name__ == "__main__":
     db.create_all()
     token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjE3fQ.12Gqt0B29VWffPR7Fp6qjWhNa2jsgU21Ns6uZh6Ihto"
-    # interest_dict = {'Action & Adventure': 1, 'Casual': 1, 'FPS': 1, 'RPG': 1, 'Simulation': 1, 'Sports & Racing': 1, 'Strategy': 1, 'Crafts': 1, 'Clothes': 1, 'Daily necessities': 1, 'Garage Kit': 1}
-    # add_interest(token, interest_dict)
+    interest_dict = {'RPG': 1, 'Strategy': 1}
+    add_interest(token, interest_dict)
     #print(Product.query.join(Type, Product.genre).filter(Type.type_id==1).all())
     #print(Product.query.join(Type, Product.genre).filter(Type.type_id==1).all())
 

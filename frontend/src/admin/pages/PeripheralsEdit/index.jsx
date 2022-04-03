@@ -247,10 +247,8 @@ return (
     ]}
   >
     <Select mode="multiple" placeholder="Please select the Product Type!">
-      <Option value="Crafts">Crafts</Option>
-      <Option value="Clothes">Clothes</Option>
-      <Option value="Daily necessities">Daily necessities</Option>
-      <Option value="Garage Kit">Garage Kit</Option>
+      <Option value="Game Props">Game Props</Option>
+      <Option value="Costume">Costume</Option>
     </Select>
   </Form.Item>
   <Form.Item name="Product description" label="Peripherals Description" rules={[{ required: true }]}>
