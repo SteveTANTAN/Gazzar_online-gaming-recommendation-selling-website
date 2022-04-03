@@ -17,7 +17,9 @@ class User(db.Model):
     email = db.Column(db.String(100))
     password = db.Column(db.String(100))
     interest = db.relationship('Type', secondary=user_type_connection, lazy='subquery', backref=db.backref('user', lazy=True))
-
+    surprise_discount = db.Column(db.Integer(255))
+    surprise_timer = db.Column(db.String(255))
+    surprise_product = db.Column(db.String(100))
 
     def __init__(self, token, user_id, name, age, gender, email, password):
         self.token = token
@@ -27,3 +29,4 @@ class User(db.Model):
         self.gender = gender
         self.email = email
         self.password = password
+        self.surprise_discount = 0
