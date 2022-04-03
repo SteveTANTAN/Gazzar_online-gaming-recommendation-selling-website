@@ -17,7 +17,7 @@ class User(db.Model):
     email = db.Column(db.String(100))
     password = db.Column(db.String(100))
     interest = db.relationship('Type', secondary=user_type_connection, lazy='subquery', backref=db.backref('user', lazy=True))
-    surprise_discount = db.Column(db.Integer(255))
+    surprise_discount = db.Column(db.Integer)
     surprise_timer = db.Column(db.String(255))
     surprise_product = db.Column(db.String(100))
 
