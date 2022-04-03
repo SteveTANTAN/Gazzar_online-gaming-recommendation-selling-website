@@ -244,6 +244,7 @@ return (
   >
     <Select mode="multiple" placeholder="Please select the Product Type!">
       <Option value="Action & Adventure">Action & Adventure</Option>
+      <Option value="Casual">Casual</Option>
       <Option value="FPS">FPS</Option>
       <Option value="Sports & Racing">Sports & Racing</Option>
       <Option value="RPG">RPG</Option>
