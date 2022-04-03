@@ -3,7 +3,9 @@ customer_product.py is used for customer product-relevant operation
 This file will include the search, show_product_details
 """
 from cgitb import reset
+from re import A
 from tabnanny import check
+from time import strftime
 from unittest import result
 
 import sys
@@ -12,6 +14,7 @@ from database import db
 from product import Product
 from type import Type
 from user import User
+from cart import Cart
 from json import dumps
 from error import Error
 from order_detail import Order_detail
@@ -22,6 +25,8 @@ from help import token_to_id, ErrorMessage, product_dict_form, get_type
 import ast
 import pprint
 import random
+import time
+import datetime as dt
 
 def search(str):
     '''search product with given str, match in product name and description'''
@@ -196,25 +201,108 @@ def customized_homepage(token):
     #print(len(output_game))
     return {'game': output_game, 'peripheral': output_peripheral}#, 'count':len(output_game)}
 
-# if __name__ == "__main__":
+def surprise_store(token):
+    user_id =  token_to_id(token)
+    target_user = User.query.filter(User.user_id==user_id).first()
+
+    check = 0
+    output = []
+    # 专属折扣
+    if target_user.surprise_discount == 0:
+        target_user.surprise_discount = random.randint.uniform(1, 40)
+        target_user.surprise_timer = time.strftime('%Y-%m-%d', time.localtime())
+        db.session.commit()
+        check = 1
+    else:
+        # 折扣时效，惊喜商品时效
+        current_time = time.strftime('%Y-%m-%d', time.localtime())
+        date1 = dt.datetime.strptime(current_time, '%Y-%m-%d').date()
+        date2 = dt.datetime.strptime(target_user.surprise_timer, '%Y-%m-%d').date()
+        diff_day = (date1 - date2).days
+        if diff_day > 7:
+            target_user.surprise_discount = random.randint.uniform(0, 40)
+            target_user.surprise_timer = time.strftime('%Y-%m-%d', time.localtime())
+            db.session.commit()
+            check = 1
+        else:
+            for i in ast.literal_eval(target_user.surprise_product):
+                product = Product.query.filter(Product.product_id==i).first()
+                output.append(product_dict_form(product))
+
+    # 生成折扣商品
+    # 促销
+    if check == 1:
+        output_id_list = []
+        game_on_promote = []
+        peripheral_on_promote = []
+        promote = Product.query.filter(Product.status==1).all()
+        for i in promote:
+            if i.category == 0:
+                game_on_promote.append(i.product_id)
+            else:
+                peripheral_on_promote.append(i.product_id)
+
+        if len(game_on_promote) > 2:
+            double_discount_game = random.sample(game_on_promote, 1)
+        else:
+            double_discount_game = random.sample(game_on_promote, len(game_on_promote))
+        if len(peripheral_on_promote) > 2:
+            double_discount_peripheral = random.sample(peripheral_on_promote, 2)
+        else:
+            double_discount_peripheral = random.sample(peripheral_on_promote, len(peripheral_on_promote))
+        output_id_list.extend(double_discount_game)
+        output_id_list.extend(double_discount_peripheral)
+
+        # 购物车
+        cart_list = []
+        target_cart = Cart.query.filter(Cart.user_id==target_user.user_id).all()
+        for i in target_cart:
+            product = Product.query.filter(Product.product_id==i.product_id).first()
+            cart_list.append(product.product_id)
+        if len(cart_list) > 2:
+            discount_cart_product = random.sample(target_cart, 2)
+        else:
+            discount_cart_product = random.sample(target_cart, len(cart_list))
+        output_id_list.extend(discount_cart_product)
+
+        # 兴趣
+        interests_list = []
+        for interest_type in target_user.interest:
+            interests_list.append(interest_type.type_id)
+
+        interest = []
+        for i in interests_list:
+            interest_products = Product.query.join(Type, Product.genre).filter(Product.status==0, Type.type_id==i).all()
+            for product in interest_products:
+                if product.product_id not in interest:
+                    interest.append(product.product_id)
+
+        # 随机选取 感兴趣的游戏和周边
+        random_game_interest = random.sample(interest, 8-len(output_id_list))
+        output_id_list.extend(random_game_interest)
+
+        # 生成输出
+        for i in output_id_list:
+            product = Product.query.filter(Product.product_id==i).first()
+            output.append(product_dict_form(product))
+
+        # 存储用户 折扣商品 id
+        target_user.surprise_product = '[' + ','.join(list(map(str, output_id_list))) + ']'
+
+    return {'surprise_discount': target_user.surprise_discount, 'surprise_product': output, 'count': len(output)}
+
+
+
+
+
+if __name__ == "__main__":
 #     #db.create_all()
-#     token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjE3fQ.12Gqt0B29VWffPR7Fp6qjWhNa2jsgU21Ns6uZh6Ihto"
-#     # result = show_product_rate_comment(3)
-#     #     # result = search('grand')
-#     #     pprint.pprint(result)
-#     #res = search('K')
-#     #print(res)
-#     res = customized_homepage(token)
-#     print(res)
-#     #list = [1,3,4,6,8,11,23,7,12]
-#     #a = [1,1,1,1]
-#     #print(random.sample(list, int(len(list)/2)))
-#     #list.extend(a)
-#     #print(list)
-#     #print(Product.query.filter(Product.status==1).all())
-#     # a = Product.query.filter(Product.product_id == 27).first()
-#     # images = ast.literal_eval(a.main_image)
-#     # photo = ast.literal_eval(a.sub_image)
-#     # images.extend(photo)
-#     # print(type(images))
-#     # print(len(images))
+    token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjE3fQ.12Gqt0B29VWffPR7Fp6qjWhNa2jsgU21Ns6uZh6Ihto"
+    # res = surprise_store(token)
+    # print(res)
+    #a= time.strftime('%Y-%m-%d', time.localtime())
+    # output_id_list = [1,2,3,4,5,6,7,8]
+    # a = '[' + ','.join(list(map(str, output_id_list))) + ']'
+    # print(a)
+    # b=ast.literal_eval(a)
+    # print(type(b))
