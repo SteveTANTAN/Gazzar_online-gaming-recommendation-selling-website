@@ -11,7 +11,7 @@ class Product(db.Model):
 
     product_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
-    description = db.Column(db.String(32672))
+    description = db.Column(db.String(599))
     price = db.Column(db.Float(10,2))
     discount = db.Column(db.Integer)
     # 0-default 1-on promotion
