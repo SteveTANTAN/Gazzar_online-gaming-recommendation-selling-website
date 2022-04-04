@@ -55,6 +55,10 @@ export default defineConfig({
           component: '@/user/pages/home/SearchResult'
         },
         {
+          path: '/user/discount',
+          component: '@/user/pages/home/Discount'
+        },
+        {
           path: '/user/detail/:id',
           component: '@/user/pages/detail'
         },

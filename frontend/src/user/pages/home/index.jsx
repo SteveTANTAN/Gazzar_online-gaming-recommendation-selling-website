@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import maleImg from '@/assets/Male.png';
 import femaleImg from '@/assets/Female.png';
 import mysteriousImg from '@/assets/Mysterious.png';
+import bannerImg from '@/assets/banner1.png';
 import { useSetState } from 'ahooks';
 export default function Home() {
   const history = useHistory();
@@ -35,15 +36,9 @@ export default function Home() {
       <div className={styles.top + ' fr'}>
         <div className={styles.left + ' shadow'}>
           <Carousel autoplay>
-            <div>
+            <div onClick={()=>history.push('/user/discount')}>
               <img
-                src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2F1113%2F052420105424%2F200524105424-8-1200.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1649384798&t=f7a0a0bff022f75ffe30557d7cb5d60e"
-                alt=""
-              />
-            </div>
-            <div>
-              <img
-                src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2F1113%2F052420105424%2F200524105424-8-1200.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1649384798&t=f7a0a0bff022f75ffe30557d7cb5d60e"
+                src={bannerImg}
                 alt=""
               />
             </div>

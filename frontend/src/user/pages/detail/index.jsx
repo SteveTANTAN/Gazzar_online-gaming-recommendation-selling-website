@@ -13,6 +13,7 @@ import {
 import { useHistory, useParams } from 'umi';
 import { useEffect, useState, useRef } from 'react';
 import { get, post } from '@/user/utils/request';
+import { OmitProps } from 'antd/lib/transfer/ListBody';
 export default function Profile() {
   const history = useHistory();
   const param = useParams();
@@ -44,14 +45,14 @@ export default function Profile() {
             <Carousel ref={imgRef}>
               {data.main_image?.map((item) => (
                 <div>
-                  <img src={item.image} alt="" />
+                  <img src={item.thumbUrl} alt="" />
                 </div>
               ))}
             </Carousel>
             <div className={styles.preview}>
               {data.main_image?.map((item, index) => (
                 <img
-                  src={item.image}
+                  src={item.thumbUrl}
                   alt=""
                   onClick={() => imgRef.current.goTo(index)}
                 />
@@ -64,10 +65,24 @@ export default function Profile() {
               <h2 style={{ color: 'orange' }}>Overall Rate: {data.rate}</h2>
             </div>
             <br />
-            <div className={styles.price + ' fr'}>
+            {data.status===1?<div className={styles.discount + ' fr'}>
+                <div className='blank'>
+                  <div className={'fr'}>
+                    <h4>Original Price</h4>
+                    <span className={styles.delPrice}>&nbsp;${data.price}&nbsp;</span>
+                  </div>
+                  <div className={'fr'}>
+                    <h4>Price After discount</h4>
+                    <span>${Math.round(data.price*(100-data.discount)/100)}</span>
+                  </div>
+                </div>
+                <div className={"center "+styles.r}>
+                  {data.discount}% OFF
+                </div>
+            </div> : <div className={styles.price + ' fr'}>
               <h4>Price</h4>
               <span>${data.price}</span>
-            </div>
+            </div>}
             <br />
             <div className="fr">
               <h4>Quantity</h4>
