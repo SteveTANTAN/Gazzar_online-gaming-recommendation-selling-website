@@ -122,8 +122,8 @@ def get_product_all(token, product_category):
             output_type.append(product_type_name.type_name)
         temp["type"] = ', '.join(output_type)
         temp['rate'] = float(target_product.rate)
-        if target_product.status == 0: temp['state'] = 'On Sale'
         temp['state'] = 'On Promotion'
+        if target_product.status == 0: temp['state'] = 'On Sale'
         #temp['state'] = str(target_product.status)
         temp['last modified by'] = target_product.last_modified
         temp['stock'] = target_product.stock
