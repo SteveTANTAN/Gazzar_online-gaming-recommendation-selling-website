@@ -75,7 +75,7 @@ def buy_now(token, product_id, quantity):
         'name': target_product.name,
         'description': target_product.description,
         'main_image': cover[0]['thumbUrl'],
-        'current_price': float(target_product.price) * float(target_product.discount) * (0.01),
+        'current_price': format(float(target_product.price) * float(100 - target_product.discount) * (0.01), '.2f'),
         'quantity': quantity,
     }
     original_price = float(target_product.price) * float(quantity)
