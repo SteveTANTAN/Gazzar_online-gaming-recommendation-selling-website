@@ -194,7 +194,6 @@ function setgamedata () {
   })
 }
 
-
 if (profileUpdate) {
   if (localStorage.getItem('PeipheralsData') != null) {
     var json=localStorage.getItem("PeipheralsData");
