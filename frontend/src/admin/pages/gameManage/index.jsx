@@ -199,7 +199,7 @@ function setgamedata () {
 
         message.success("Games details updating successful 😊!!!")
         setGamedata(result);
-        localStorage.setItem('Gamedata', result);
+        // localStorage.setItem('Gamedata', result);
       });
     } else if (data.status === 400) {
       data.json().then(result => {
@@ -209,9 +209,9 @@ function setgamedata () {
     }
   })
 }
-if (localStorage.getItem('Gamedata') != null) {
+/* if (localStorage.getItem('Gamedata') != null) {
   setGamedata(localStorage.getItem('token'));
-}
+} */
 
 if (profileUpdate) {
   setgamedata();

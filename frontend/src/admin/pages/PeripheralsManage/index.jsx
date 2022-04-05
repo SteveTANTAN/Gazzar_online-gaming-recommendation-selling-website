@@ -175,7 +175,7 @@ function setgamedata () {
 
         message.success("Peripherals details updating successful 😊!!!")
         setGamedata(result);
-        localStorage.setItem('PeipheralsData', result);
+        // localStorage.setItem('PeipheralsData', result);
 
       });
     } else if (data.status === 400) {
@@ -186,10 +186,10 @@ function setgamedata () {
     }
   })
 }
-if (localStorage.getItem('PeipheralsData') != null) {
+/* if (localStorage.getItem('PeipheralsData') != null) {
   setGamedata(localStorage.getItem('token'));
 }
-
+ */
 
 if (profileUpdate) {
   setgamedata();
