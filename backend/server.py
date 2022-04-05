@@ -6,15 +6,16 @@ import json
 import ast
 
 import sys
-sys.path.append('../../database/src')
+sys.path.append('database/src')
 from database import db
 
+sys.path.append('customer/src')
 from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile, show_user_order, add_interest, edit_username
 from customer_product import search, show_product_details, buy_now, show_product_rate_comment, customized_homepage, surprise_store
 from cart_operation import add_to_cart, show_cart_products, edit_checked_product, delete_cart_product, checkout, notify_quantity, show_user_cart
 from payment_operation import show_user_payment, add_payment, delete_payment
 
-sys.path.append('../../admin/src')
+sys.path.append('admin/src')
 from manager import add_admin, admin_login, admin_logout, show_all_admins, delete_admin
 from product_manage import add_product, edit_product, get_product, get_product_all, delete_product
 from admin_search import admin_search
