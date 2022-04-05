@@ -95,8 +95,9 @@ export default defineConfig({
   ],
   proxy: {
     '/api': {
-      target: 'http://localhost:55467',//后端实际api地址 用运行server
+      // target: 'http://localhost:55467',//后端实际api地址 用运行server
       //target: 'http://114.55.74.30:55467',//后端为云端 不用运行server
+      target: 'https://bkdapp.herokuapp.com/',//后端为云端 不用运行server
       
             changeOrigin: true,
       //pathRewrite会对前端的请求地址截取 如前端访问地址
