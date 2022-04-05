@@ -199,6 +199,8 @@ function setgamedata () {
 
         message.success("Games details updating successful 😊!!!")
         setGamedata(result);
+        var d=JSON.stringify(result);
+        localStorage.setItem("Game_data",d);
       });
     } else if (data.status === 400) {
       data.json().then(result => {
@@ -208,7 +210,16 @@ function setgamedata () {
     }
   })
 }
+/* if (localStorage.getItem('Gamedata') != null) {
+  setGamedata(localStorage.getItem('token'));
+} */
+
 if (profileUpdate) {
+  if (localStorage.getItem('Game_data') != null) {
+    var json=localStorage.getItem("Game_data");
+    var jsonObj=JSON.parse(json);
+    setGamedata(jsonObj);
+  }
   setgamedata();
   setprofileUpdate(false);
 }

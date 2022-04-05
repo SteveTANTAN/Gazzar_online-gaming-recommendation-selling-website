@@ -174,7 +174,16 @@ function setgamedata () {
         console.log('Success:', result);
 
         message.success("Peripherals details updating successful 😊!!!")
+        
         setGamedata(result);
+        var d=JSON.stringify(result);
+        localStorage.setItem("PeipheralsData",d);
+        //将JSON字符串转换成为JSON对象输出
+        var json=localStorage.getItem("PeipheralsData");
+        var jsonObj=JSON.parse(json);
+        //localStorage.setItem('PeipheralsData', gamedata);
+        console.log("data", jsonObj)
+        
       });
     } else if (data.status === 400) {
       data.json().then(result => {
@@ -184,9 +193,17 @@ function setgamedata () {
     }
   })
 }
+
 if (profileUpdate) {
+  if (localStorage.getItem('PeipheralsData') != null) {
+    var json=localStorage.getItem("PeipheralsData");
+    var jsonObj=JSON.parse(json);
+    setGamedata(jsonObj);
+  }
+
   setgamedata();
   setprofileUpdate(false);
+
 }
 
 const data = [

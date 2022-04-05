@@ -199,6 +199,7 @@ def customized_homepage(token):
     #print(interest_games)
     return {'game': output_game, 'peripheral': output_peripheral}#, 'count':output_game_id}
 
+
 def surprise_store(token):
     user_id =  token_to_id(token)
     target_user = User.query.filter(User.user_id==user_id).first()
