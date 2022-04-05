@@ -192,6 +192,10 @@ def customized_homepage(token):
         product = Product.query.filter(Product.product_id==i).first()
         output_game.append(product_dict_form(product))
 
+    for i in output_peripheral_id:
+        product = Product.query.filter(Product.product_id==i).first()
+        output_peripheral.append(product_dict_form(product))
+
     #print(interest_games)
     return {'game': output_game, 'peripheral': output_peripheral}#, 'count':output_game_id}
 
