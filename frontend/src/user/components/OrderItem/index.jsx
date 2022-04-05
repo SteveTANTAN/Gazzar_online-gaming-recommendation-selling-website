@@ -1,22 +1,53 @@
+import { InputNumber } from 'antd';
 import { useHistory } from 'umi';
 import styles from './index.less';
-export default function GameCard() {
+import { EditOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+
+import { put, del } from '@/user/utils/request';
+export default function GameCard(props) {
   const history = useHistory();
   return (
     <div className={styles.item + ' fr blank'}>
-      <img src="" alt="" />
-      <div>
-        <h2>Name</h2>
-        <p>
-          mod bibendum laoreet. Proin gravida dolor sit amet lacmod bibendum
-          laoreet. Proin gravida dolor sit amet lac
-        </p>
+      <img src={props.main_image?.image ?? props.main_image} alt="" />
+      <div style={{ flex: 1 }}>
+        <h2>{props.name}</h2>
+        <p className={styles.desc}>{props.description}</p>
       </div>
       <div className={styles.price}>
-        <h2>$150</h2>
+        <h2>${props.current_price}</h2>
         <div className="blank"></div>
-        <span>x10</span>
+        {props.editable ? (
+          <InputNumber
+            defaultValue={props.quantity}
+            min={1}
+            onChange={(v) => {
+              put(`/api/user/notify/quantity`, {
+                token: sessionStorage.getItem('token'),
+                cart_id: props.cart_id,
+                quantity: v,
+              });
+            }}
+          />
+        ) : (
+          <span>x{props.quantity}</span>
+        )}
       </div>
+      {props.onDelete && (
+        <div
+          className={styles.del}
+          onClick={() => {
+            del('/api/user/delete/cart', {
+              token: sessionStorage.getItem('token'),
+              cart_id: props.cart_id,
+              quantity: props.quantity,
+            }).then(() => {
+              props.onDelete();
+            });
+          }}
+        >
+          <DeleteOutlined></DeleteOutlined>
+        </div>
+      )}
     </div>
   );
 }

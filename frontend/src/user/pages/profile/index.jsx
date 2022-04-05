@@ -1,34 +1,68 @@
 import styles from './index.less';
-import { Button, Space, Modal, Input, Form, DatePicker, message } from 'antd';
+import {
+  Button,
+  Space,
+  Modal,
+  Input,
+  Form,
+  DatePicker,
+  message,
+  InputNumber,
+} from 'antd';
 import { EditOutlined, PlusOutlined } from '@ant-design/icons';
 import { useSetState } from 'ahooks';
 import Payment from '@/user/components/Payment';
-import { get,put } from '@/user/utils/request';
-import {useSelector,useDispatch} from 'dva'
-import { useEffect } from 'react';
-import maleImg from '@/assets/Male.png'
-import femaleImg from '@/assets/Female.png'
-import mysteriousImg from '@/assets/Mysterious.png'
+import { get, put, post } from '@/user/utils/request';
+import { useSelector, useDispatch } from 'dva';
+import { useEffect, useState } from 'react';
+import maleImg from '@/assets/Male.png';
+import femaleImg from '@/assets/Female.png';
+import mysteriousImg from '@/assets/Mysterious.png';
 export default function Profile() {
   const [password, setPassword] = useSetState({ visible: false });
   const [info, setInfo] = useSetState({ visible: false });
   const [card, setCard] = useSetState({ visible: false });
-  const [data, setData] = useSetState({  });
-  const {token} = useSelector(state=>state.app)
-  useEffect(()=>{
-    get(`/api/user/profile/${token}`).then(res=>{
-      setData(res.user_info[0]||{})
-    })
-  },[])
+  const [data, setData] = useSetState({});
+  const { token } = useSelector((state) => state.app);
+  const [payment, setPayment] = useState([]);
+  const getPayment = () => {
+    get(`/api/user/show/payment/${sessionStorage.getItem('token')}`).then(
+      (res) => {
+        setPayment(res);
+      },
+    );
+  };
+  const getData = () => {
+    get(`/api/user/profile/${token}`).then((res) => {
+      setData(res.user_info[0] || {});
+    });
+  };
+  useEffect(() => {
+    getData();
+    getPayment();
+  }, []);
   return (
     <div className="bg">
       <div className={styles.wrap}>
         <div className={styles.info + ' fr'}>
-        <img src={[maleImg,femaleImg,mysteriousImg][data.gender]} alt="" />
+          <img src={[maleImg, femaleImg, mysteriousImg][data.gender]} alt="" />
           <div>
             <Space>
               {info?.visible ? (
-                <Input defaultValue={data.name} />
+                <Input
+                  defaultValue={data.name}
+                  onBlur={() => setInfo({ visible: false })}
+                  onPressEnter={(e) => {
+                    put(`/api/user/edit/username`, {
+                      token,
+                      name: e.target.value,
+                    }).then(() => {
+                      message.success('success');
+                      getData();
+                      setInfo({ visible: false });
+                    });
+                  }}
+                />
               ) : (
                 <h3>{data.name}</h3>
               )}
@@ -55,8 +89,12 @@ export default function Profile() {
           ></Button>
         </div>
         <div className={styles.items}>
-          {[1, 2].map((item) => (
-            <Payment></Payment>
+          {payment?.map((item) => (
+            <Payment
+              key={item.payment_detail_id}
+              {...item}
+              onDelete={() => getPayment()}
+            ></Payment>
           ))}
         </div>
         <Modal
@@ -66,12 +104,19 @@ export default function Profile() {
           onCancel={() => setPassword({ visible: false })}
         >
           <div className="pt">
-            <Form labelCol={{ span: 7 }} wrapperCol={{ span: 16 }} onFinish={values=>{
-              put('/api/user/edit/password',{password:values.password,token}).then(()=>{
-                message.success('success')
-                setPassword({visible:false})
-              })
-            }}>
+            <Form
+              labelCol={{ span: 7 }}
+              wrapperCol={{ span: 16 }}
+              onFinish={(values) => {
+                put('/api/user/edit/password', {
+                  password: values.password,
+                  token,
+                }).then(() => {
+                  message.success('success');
+                  setPassword({ visible: false });
+                });
+              }}
+            >
               <Form.Item
                 name={'password'}
                 label="New Password"
@@ -159,16 +204,31 @@ export default function Profile() {
               labelAlign="left"
               labelCol={{ span: 8 }}
               wrapperCol={{ span: 16 }}
+              onFinish={(values) => {
+                post('/api/user/add/payment', {
+                  token,
+                  payment_dict: {
+                    ...values,
+                    expration_date: values.expration_date?.format(
+                      'YYYY-MM-DD HH:mm:ss',
+                    ),
+                  },
+                }).then(() => {
+                  setCard({ visible: false });
+                  message.success('success');
+                  getPayment();
+                });
+              }}
             >
               <Form.Item
-                name={'Type'}
+                name={'card_type'}
                 label="Card Type"
                 rules={[{ required: true }]}
               >
                 <Input />
               </Form.Item>
               <Form.Item
-                name={'Number'}
+                name={'card_number'}
                 label="Card Number"
                 rules={[{ required: true }]}
               >
@@ -176,14 +236,14 @@ export default function Profile() {
               </Form.Item>
 
               <Form.Item
-                name={'Name'}
+                name={'name_on_card'}
                 label="Name on Card"
                 rules={[{ required: true }]}
               >
                 <Input />
               </Form.Item>
               <Form.Item
-                name={'Expiration'}
+                name={'expration_date'}
                 label="Expiration Date"
                 rules={[{ required: true }]}
               >

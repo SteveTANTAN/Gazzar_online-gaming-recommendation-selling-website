@@ -6,13 +6,13 @@ import {
   SearchOutlined,
 } from '@ant-design/icons';
 import { Link, useHistory } from 'umi';
-import {useSelector,useDispatch} from 'dva'
+import { useSelector, useDispatch } from 'dva';
 import logoImg from '@/assets/logo.png';
 import { post } from '@/user/utils/request';
 export default (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const {token} = useSelector(state=>state.app)
+  const { token } = useSelector((state) => state.app);
   return (
     <div className={styles.wrap}>
       <div className={styles.header}>
@@ -24,38 +24,49 @@ export default (props) => {
             <Input
               style={{ width: 240, borderRadius: 12, marginLeft: 20 }}
               suffix={<SearchOutlined />}
-              onPressEnter={() => {
-                history.push('/user/search');
+              onPressEnter={(e) => {
+                history.push('/user/search/' + e.target.value);
               }}
             ></Input>
           </Space>
           <div className="blank"></div>
           <Space>
-            {token&&<><ShoppingCartOutlined
-              className={styles.icon}
-              onClick={() => {
-                history.push('/user/cart');
-              }}
-            ></ShoppingCartOutlined>
-            <UserOutlined
-              className={styles.icon}
-              onClick={() => {
-                history.push('/user/profile');
-              }}
-            ></UserOutlined></>}
-            {token?<Link className={styles.button} onClick={()=>{
-            post('/api/user/logout',{token}).then(()=>{
-              dispatch({type:'app/setState',payload:{token:''}})
-            })
-            }}>
-              <Button type="primary" style={{ borderRadius: 16 }}>
-                Logout
-              </Button>
-            </Link>:<Link className={styles.button} to="/user/login">
-              <Button type="primary" style={{ borderRadius: 16 }}>
-                Login
-              </Button>
-            </Link>}
+            {token && (
+              <>
+                <ShoppingCartOutlined
+                  className={styles.icon}
+                  onClick={() => {
+                    history.push('/user/cart');
+                  }}
+                ></ShoppingCartOutlined>
+                <UserOutlined
+                  className={styles.icon}
+                  onClick={() => {
+                    history.push('/user/profile');
+                  }}
+                ></UserOutlined>
+              </>
+            )}
+            {token ? (
+              <Link
+                className={styles.button}
+                onClick={() => {
+                  post('/api/user/logout', { token }).then(() => {
+                    dispatch({ type: 'app/setState', payload: { token: '' } });
+                  });
+                }}
+              >
+                <Button type="primary" style={{ borderRadius: 16 }}>
+                  Logout
+                </Button>
+              </Link>
+            ) : (
+              <Link className={styles.button} to="/user/login">
+                <Button type="primary" style={{ borderRadius: 16 }}>
+                  Login
+                </Button>
+              </Link>
+            )}
           </Space>
         </div>
       </div>

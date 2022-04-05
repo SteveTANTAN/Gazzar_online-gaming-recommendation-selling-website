@@ -4,13 +4,13 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Link, useHistory } from 'umi';
 import { post } from '@/user/utils/request';
 export default function Password() {
-  const history = useHistory()
+  const history = useHistory();
   const onFinish = (values) => {
     console.log('Received values of form: ', values);
-    post('/api/user/forget/password',values).then(()=>{
-      message.success('success')
-      history.push('/user/login')
-    })
+    post('/api/user/forget/password', values).then(() => {
+      message.success('success');
+      history.push('/user/login');
+    });
   };
 
   return (

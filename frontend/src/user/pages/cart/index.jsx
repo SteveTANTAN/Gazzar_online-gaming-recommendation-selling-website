@@ -8,14 +8,26 @@ import {
   InputNumber,
   Rate,
   Checkbox,
+  message,
 } from 'antd';
-import { EditOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useSetState } from 'ahooks';
 import { useHistory } from 'umi';
 import OrderItem from '../../components/OrderItem';
-
+import { get, put } from '@/user/utils/request';
+import { useEffect, useState } from 'react';
 export default function Profile() {
   const history = useHistory();
+  const [data, setData] = useState([]);
+  const getData = () => {
+    get(`/api/user/show/cart/${sessionStorage.getItem('token')}`).then(
+      (res) => {
+        setData(res);
+      },
+    );
+  };
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <>
       <div className={styles.wrap}>
@@ -28,10 +40,25 @@ export default function Profile() {
               subTitle="(tick multiple blocks to check out)"
             ></PageHeader>
             <div className={styles.items}>
-              {[1, 2, 3].map((item) => (
-                <div className="fr">
-                  <Checkbox></Checkbox>
-                  <OrderItem></OrderItem>
+              {data.map((item) => (
+                <div className="fr" key={item.cart_id}>
+                  <Checkbox
+                    defaultChecked={item.checked !== 0}
+                    onChange={(e) => {
+                      put(`/api/user/edit/checked`, {
+                        token: sessionStorage.getItem('token'),
+                        cart_id: item.cart_id,
+                        checked: e.target.checked ? 1 : 0,
+                      }).then(getData);
+                    }}
+                  ></Checkbox>
+                  <OrderItem
+                    editable
+                    {...item}
+                    onDelete={() => {
+                      getData();
+                    }}
+                  ></OrderItem>
                 </div>
               ))}
             </div>
