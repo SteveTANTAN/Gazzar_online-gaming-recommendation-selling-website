@@ -22,7 +22,7 @@ import { Link, useHistory } from 'umi';
 import { post } from '@/user/utils/request';
 import { useDispatch } from 'dva';
 export default function Register() {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   const [interest, setInterest] = useState([]);
   const history = useHistory();
   const dispatch = useDispatch();
