@@ -14,6 +14,7 @@ from auth import user_register, user_login, user_logout, forget_password, edit_p
 from customer_product import search, show_product_details, buy_now, show_product_rate_comment, customized_homepage, surprise_store
 from cart_operation import add_to_cart, show_cart_products, edit_checked_product, delete_cart_product, checkout, notify_quantity, show_user_cart
 from payment_operation import show_user_payment, add_payment, delete_payment
+from user_order import user_order_add, show_user_order_detail, delete_user_order, rate_comment_order
 
 sys.path.append('admin/src')
 from manager import add_admin, admin_login, admin_logout, show_all_admins, delete_admin
@@ -255,6 +256,49 @@ def delete_cart():
     token = info['token']
     cart_id = info['cart_id']
     return dumps(delete_cart_product(token, cart_id))
+
+@APP.route('/api/user/addorder', methods = ['POST'])
+def order_add():
+    info = request.get_data(True)
+    info = json.loads(info)
+    token = info['token']
+    product_list = info['product_list']
+    result = user_order_add(token, product_list)
+    return dumps(result)
+
+@APP.route('/api/user/show_order/<token>', methods=['GET'])
+def show_order_detail(token):
+    '''
+    Route for current user's order count
+    '''
+    return dumps(show_user_order_detail(token))
+
+@APP.route('/api/user/order/delete', methods=['DELETE'])
+def delete_order():
+    '''
+    Route for current user's order count
+    '''
+    info = request.get_data(True)
+    info = json.loads(info)
+    print(info)
+    order_detail_id = info['order_detail_id']
+    result = delete_user_order(order_detail_id)
+    return dumps(result)
+
+@APP.route('/api/user/order_rate&comment', methods=['POST'])
+def rate_comment():
+    '''
+    Route for current user's order count
+    '''
+    info = request.get_data(True)
+    info = json.loads(info)
+    token = info['token']
+    order_detail_id  = info['order_detail_id']
+    rate = info['rate']
+    comment = info['comment']
+    result = rate_comment_order(token, order_detail_id, rate, comment)
+    return dumps(result)
+
 
 #############################################################################################
 #############################################################################################
