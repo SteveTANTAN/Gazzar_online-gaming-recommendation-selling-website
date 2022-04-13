@@ -24,13 +24,6 @@ def create_uid():
     #generate len(uid) + 1
     return ((all_uid[-1][0]) + 1 )
 
-def create_oid():
-    """
-    This function is used to create a user id(uid)
-    return valid user id
-    """
-    return ''.join(str(random.choice(range(10))) for _ in range(10))
-
 def create_cdk():
     string_len = 5
     letters = string.ascii_uppercase + string.digits

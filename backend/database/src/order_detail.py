@@ -17,9 +17,9 @@ class Order_detail(db.Model):
     product_comment = db.Column(db.String(500))
     # one to many
     order_id = db.Column(db.Integer, db.ForeignKey('order.order_id'))
-    order = db.relationship('Order', lazy='select', backref=db.backref('order_detail', lazy='joined'))
+    # order = db.relationship('Order', lazy='select', backref=db.backref('order_detail', lazy='joined'))
 
-    def __init__(self, order_detail_id, quantity, create_time, cdkey, order,
+    def __init__(self, order_detail_id, quantity, create_time, cdkey, order_id,
         product_id, product_name, product_description, product_price, product_discount,
         product_main_image, product_rate, product_comment):
 
@@ -27,7 +27,7 @@ class Order_detail(db.Model):
         self.quantity = quantity
         self.create_time = create_time
         self.cdkey = cdkey
-        self.order = order
+        self.order_id = order_id
         self.product_id = product_id
         self.product_name = product_name
         self.product_description = product_description
