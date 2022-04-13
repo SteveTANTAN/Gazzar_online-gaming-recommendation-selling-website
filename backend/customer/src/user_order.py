@@ -13,7 +13,7 @@ import ast
 import smtplib
 import pprint
 
-from help import token_to_id, create_oid, add_to_database, ErrorMessage, create_cdk
+from help import token_to_id, add_to_database, ErrorMessage, create_cdk
 
 def user_order_add(token, product_list):
     user_id = token_to_id(token)
@@ -22,11 +22,15 @@ def user_order_add(token, product_list):
     if len(users) == 0:
         raise ErrorMessage(Error.query.filter(Error.error_id == 17).all()[0].error_name)
     target_user = users[0]
+    
+    all_order_id = Order.query.all()
+    if len(all_order_id) != 0:
+            order_id = (all_order_id[-1].order_id) + 1
+    else:
+        order_id = 1
 
-    order_id = create_oid()
     order = Order(order_id, target_user)
     add_to_database(order)
-
     create_time= datetime.datetime.now()
     for product in product_list:
         target_product = Product.query.filter(Product.product_id==int(product['product_id'])).all()[0]
@@ -48,32 +52,22 @@ def user_order_add(token, product_list):
         else:
             order_detail_id = 1
 
-        order_detail= Order_detail(order_detail_id, int(product['quantity']), create_time, cdkey, order, product_id, product_name,
+        order_detail= Order_detail(order_detail_id, int(product['quantity']), create_time, cdkey, order_id, product_id, product_name,
                 product_description, product_price, product_discount, product_main_image, product_rate, product_comment)
         add_to_database(order_detail)
     return
 
 def delete_user_order(order_detail_id):
-    target_order_detail = Order_detail.query.filter(Order_detail.order_detail_id==order_detail_id).all()[0]
-    order_id = (target_order_detail.order_id,)
+    target_order_detail = Order_detail.query.filter(Order_detail.order_detail_id==order_detail_id).first()
+    order_id = target_order_detail.order_id
     db.session.delete(target_order_detail)
     db.session.commit()
-
-    # FETCH ALL THE RECORDS IN THE RESPONSE
-    result = db.session.query(Order_detail.order_id).all()
-    if order_id in result:
-         pass
-    else:
-        target_order = Order.query.filter(Order.order_id==order_id).all()[0]
+    order_detail_checker = Order_detail.query.filter(Order_detail.order_id==order_id).all()
+    if len(order_detail_checker) == 0:
+        target_order = Order.query.filter(Order.order_id==order_id).first()
         db.session.delete(target_order)
         db.session.commit()
-    #print(target_order.order_id)
-
-
-# def show_user_order_count(token):
-#     user_id = token_to_id(token)
-#     target_user_orders = Order.query.filter(Order.user_id==user_id).count()
-#     return target_user_orders
+    return
 
 def rate_comment_order(token, order_detail_id, rate, comment):
     u_id = token_to_id(token)
