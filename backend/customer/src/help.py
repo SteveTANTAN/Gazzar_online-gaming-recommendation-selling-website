@@ -24,6 +24,7 @@ def create_uid():
     #generate len(uid) + 1
     return ((all_uid[-1][0]) + 1 )
 
+# creat cdk in 16 letter
 def create_cdk():
     string_len = 5
     letters = string.ascii_uppercase + string.digits
