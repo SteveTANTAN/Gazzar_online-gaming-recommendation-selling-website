@@ -69,6 +69,11 @@ def buy_now(token, product_id, quantity):
         raise ErrorMessage(Error.query.filter(Error.error_id == 17).first().error_name)
 
     target_product = Product.query.filter(Product.product_id==product_id).first()
+
+    # check quantity valid
+    if target_product.stock < int(quantity):
+        raise ErrorMessage(Error.query.filter(Error.error_id==21).all()[0].error_name)
+
     cover = ast.literal_eval(target_product.main_image)
     target_product_info = {
         'product_id': target_product.product_id,
@@ -234,7 +239,7 @@ def surprise_store(token):
         output_id_list = []
         game_on_promote = []
         peripheral_on_promote = []
-        promote = Product.query.filter(Product.status==1).all()
+        promote = Product.query.filter(Product.status==1, Product.stock>=1).all()
         for i in promote:
             if i.category == 0:
                 game_on_promote.append(i.product_id)
@@ -270,14 +275,14 @@ def surprise_store(token):
 
         interest = []
         for i in interests_list:
-            interest_products = Product.query.join(Type, Product.genre).filter(Product.status==0, Type.type_id==i).all()
+            interest_products = Product.query.join(Type, Product.genre).filter(Product.status==0, Type.type_id==i, Product.stock>=1).all()
             for product in interest_products:
                 if product.product_id not in interest:
                     interest.append(product.product_id)
 
         rest= []
         #拿到所有未添加的游戏（没有促销）
-        all_gam_per = Product.query.filter(Product.status==0).all()
+        all_gam_per = Product.query.filter(Product.status==0, Product.stock>=1).all()
         for product in all_gam_per:
             if product.product_id not in output_id_list:
                 rest.append(product.product_id)

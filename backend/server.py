@@ -15,6 +15,7 @@ from customer_product import search, show_product_details, buy_now, show_product
 from cart_operation import add_to_cart, show_cart_products, edit_checked_product, delete_cart_product, checkout, notify_quantity, show_user_cart
 from payment_operation import show_user_payment, add_payment, delete_payment
 from user_order import user_order_add, show_user_order_detail, delete_user_order, rate_comment_order
+from lottery import user_lottery, lottery_order
 
 sys.path.append('admin/src')
 from manager import add_admin, admin_login, admin_logout, show_all_admins, delete_admin
@@ -298,6 +299,20 @@ def rate_comment():
     comment = info['comment']
     result = rate_comment_order(token, order_detail_id, rate, comment)
     return dumps(result)
+
+@APP.route('/api/user/lottery/<token>', methods=['GET'])
+def show_user_lottery(token):
+    '''
+    Route for current user's lottery
+    '''
+    return dumps(user_lottery(token))
+
+@APP.route('/api/user/lottery/order', methods = ['POST'])
+def add_lottery_order():
+    info = request.get_json()
+    token = info['token']
+    product_id = info['product_id']
+    return dumps(lottery_order(token, product_id))
 
 
 #############################################################################################

@@ -27,6 +27,10 @@ def add_to_cart(token, product_id, quantity):
         raise ErrorMessage(Error.query.filter(Error.error_id==16).all()[0].error_name)
     target_product = products[0]
 
+    # check quantity valid
+    if target_product.stock < int(quantity):
+        raise ErrorMessage(Error.query.filter(Error.error_id==21).all()[0].error_name)
+
     # check whether product has been exist in current user's cart
     target_cart = Cart.query.filter(Cart.user_id==u_id, Cart.product_id==target_product.product_id).all()
     if len(target_cart) == 0:
@@ -148,9 +152,15 @@ def notify_quantity(token, cart_id, new_quantity):
     # check valid user
     users = User.query.filter(User.user_id==u_id).all()
     if len(users) == 0:
-        raise ErrorMessage(Error.query.filter(Error.error_id == 17).all()[0].error_name)
+        raise ErrorMessage(Error.query.filter(Error.error_id == 17).first().error_name)
 
-    target_user_cart = Cart.query.filter(Cart.user_id==u_id, Cart.cart_id==cart_id).all()[0]
+    target_user_cart = Cart.query.filter(Cart.user_id==u_id, Cart.cart_id==cart_id).first()
+
+    # check quantity valid
+    target_product = Product.query.filter(Product.product_id==target_user_cart.product_id).first()
+    if target_product.stock < int(new_quantity):
+        raise ErrorMessage(Error.query.filter(Error.error_id==21).first().error_name)
+
     target_user_cart.quantity = int(new_quantity)
     db.session.commit()
     return
