@@ -154,11 +154,13 @@ def show_user_profile(token):
 
     return output
 
+# show the number of user's order
 def show_user_order(token):
     user_id = token_to_id(token)
     target_user_orders = Order.query.filter(Order.user_id==user_id).all()
     return len(target_user_orders)
 
+# edit user's name
 def edit_username(token, newname):
     user_id =  token_to_id(token)
     target_user = User.query.filter(User.user_id==user_id).all()[0]
@@ -166,10 +168,14 @@ def edit_username(token, newname):
     db.session.commit()
     return {}
 
+# add interest to user
 def add_interest(token, interest_dict):
+    
+    # find target user
     user_id =  token_to_id(token)
     target_user = User.query.filter(User.user_id==user_id).first()
 
+    # loop interest_dict and store them to target user
     for key_type, type_value in interest_dict.items():
         if type_value == 1:
             cur_type = Type.query.filter(Type.type_name == key_type).first()
