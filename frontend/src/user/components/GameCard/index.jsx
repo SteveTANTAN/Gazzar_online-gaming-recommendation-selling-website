@@ -1,7 +1,24 @@
+import { useState } from 'react';
 import { useHistory } from 'umi';
 import styles from './index.less';
+import img from '@/assets/w.png'
 export default function GameCard({ id, name,...props }) {
   const history = useHistory();
+  const [init,setInit]=useState(false)
+  if(props.discount&&!init){
+    return (
+      <div
+      className={styles.card + ' shadow'}
+      onClick={() => setInit(true)}
+    >
+      <img
+        src={img}
+        alt=""
+      />
+     
+    </div>
+    )
+  }
   return (
     <div
       className={styles.card + ' shadow'}

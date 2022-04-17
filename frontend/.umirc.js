@@ -71,7 +71,7 @@ export default defineConfig({
           component: '@/user/pages/order'
         },
         {
-          path: '/user/order-detail',
+          path: '/user/order-detail/:id',
           component: '@/user/pages/order/detail'
         },
         {
