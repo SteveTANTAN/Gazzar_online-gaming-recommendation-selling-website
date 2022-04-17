@@ -122,7 +122,7 @@ def lottery_order(token, product_id):
     create_time= dt.datetime.now()
     cdkey = create_cdk()
     order_detail= Order_detail(order_detail_id, 1, create_time, cdkey, order_id, product_id, target_product.name,
-            target_product.description, 0, 100, ast.literal_eval(target_product.main_image), target_product.rate, target_product.comment)
+            target_product.description, 0, 100, target_product.main_image, target_product.rate, target_product.comment)
     add_to_database(order_detail)
 
     target_product.stock = target_product.stock - 1
