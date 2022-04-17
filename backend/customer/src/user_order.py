@@ -52,7 +52,7 @@ def user_order_add(token, product_list):
         product_description = target_product.description
         product_price = target_product.price
         product_discount = target_product.discount
-        product_main_image = ast.literal_eval(target_product.main_image)
+        product_main_image = target_product.main_image
         product_rate = 0
         product_comment = ''
 
@@ -152,7 +152,7 @@ def show_user_order_detail(token):
             order_info['product_description'] = product.product_description
             order_info['product_price'] = float(format(product.product_price, '.2f'))
             order_info['product_discount'] = product.product_discount
-            order_info['product_main_image'] = product.product_main_image
+            order_info['product_main_image'] = ast.literal_eval(product.product_main_image)
             order_info['product_rate'] = float(format(product.product_rate, '.1f'))
             order_info['product_comment'] = product.product_comment
 
