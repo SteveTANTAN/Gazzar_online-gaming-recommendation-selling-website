@@ -88,7 +88,13 @@ export default function Profile() {
               <h4>Quantity</h4>
               <InputNumber
                 value={quantity}
-                onChange={(v) => setQuantity(v)}
+                onChange={(v) => {
+                  if(v>data.stock){
+                    message.warn('quantity wrong')
+                    return
+                  }
+                  setQuantity(v)
+                }}
                 min={1}
               ></InputNumber>
             </div>
