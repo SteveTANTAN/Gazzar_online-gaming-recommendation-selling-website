@@ -22,6 +22,8 @@ from manager import add_admin, admin_login, admin_logout, show_all_admins, delet
 from product_manage import add_product, edit_product, get_product, get_product_all, delete_product
 from admin_search import admin_search
 from admin_order_management import order_search, get_order_all
+from admin_overview import get_overview
+
 def defaultHandler(err):
     """server"""
     response = err.get_response()
@@ -457,6 +459,14 @@ def order_get_all(token):
     '''
     # print(token)
     return dumps(get_order_all(token))
+
+@APP.route('/api/get/overview/all/<token>', methods=['GET'])
+def overview_get_all(token):
+    '''
+    Route for listing profile
+    '''
+    # print(token)
+    return dumps(get_overview(token))
 
 if __name__ == "__main__":
     db.create_all()
