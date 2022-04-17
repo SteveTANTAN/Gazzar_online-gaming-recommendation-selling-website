@@ -4,6 +4,7 @@ sys.path.append('../../database/src')
 from product import Product
 from database import db
 from order import Order
+from cart import Cart
 from user import User
 from type import Type
 from error import Error
@@ -24,7 +25,13 @@ def user_order_add(token, product_list):
     if len(users) == 0:
         raise ErrorMessage(Error.query.filter(Error.error_id == 17).all()[0].error_name)
     target_user = users[0]
-    
+
+    #remove cart product
+    for product in product_list:
+        target_product = Cart.query.filter(Cart.product_id==int(product['product_id']), Cart.user_id==user_id).first()
+        db.session.delete(target_product)
+        db.session.commit()
+
     # create order_id as ascending
     all_order_id = Order.query.all()
     if len(all_order_id) != 0:
