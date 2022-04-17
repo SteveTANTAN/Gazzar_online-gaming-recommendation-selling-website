@@ -52,7 +52,7 @@ def user_order_add(token, product_list):
         product_description = target_product.description
         product_price = target_product.price
         product_discount = target_product.discount
-        product_main_image = target_product.main_image
+        product_main_image = ast.literal_eval(target_product.main_image)
         product_rate = 0
         product_comment = ''
 
