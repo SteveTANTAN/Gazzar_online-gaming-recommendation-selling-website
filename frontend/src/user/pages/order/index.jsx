@@ -1,7 +1,8 @@
+import { useEffect, useState } from 'react';
 import styles from './index.less';
 import {
   PageHeader,
-  Carousel,
+  Pagination,
   Button,
   Space,
   Tabs,
@@ -14,9 +15,22 @@ import { useSetState } from 'ahooks';
 import { Link, useHistory } from 'umi';
 import GameCard from '../../components/GameCard';
 import OrderItem from '../../components/OrderItem';
+import { get,post } from '@/user/utils/request';
 
 export default function Profile() {
   const history = useHistory();
+  const [data, setData] = useState([]);
+  const [page,setPage] = useSetState({current:1,total:0,size:5})
+  const getData=()=>{
+    get(`/api/user/show_order/${sessionStorage.getItem('token')}`).then((res)=>{
+      setData(res??[])
+      setPage({current:1,total:res.length??0})
+    })
+  }
+
+  useEffect(() => {
+   getData()
+  },[])
   return (
     <>
       <div className={styles.wrap}>
@@ -29,19 +43,24 @@ export default function Profile() {
               subTitle="(click blocks to check more details)"
             ></PageHeader>
             <div className={styles.items}>
-              {[1, 2, 3].map((item) => (
-                <div>
-                  <Link to={'/user/order-detail'}>
-                    <OrderItem></OrderItem>
+              {data.slice((page.current-1)*page.size,page.current*page.size).map((item) => (
+                <div key={item.order_detail_id}>
+                  <Link to={'/user/order-detail/'+item.order_detail_id}>
+                    <OrderItem {...item} onDelete={()=>{
+                      getData()
+                    }}></OrderItem>
                   </Link>
                 </div>
               ))}
+            </div>
+            <div className="center mt">
+            <Pagination total={page.total} pageSize={page.size} current={page.current} onChange={(current)=>setPage({current})}></Pagination>
             </div>
           </div>
         </div>
         <div className={styles.right}>
           <h1>Guess you Like...</h1>
-          {[1, 3].map((item) => (
+          {[].map((item) => (
             <div className="fr">
               <GameCard></GameCard>
             </div>
