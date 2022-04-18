@@ -130,9 +130,9 @@ def lottery_order(token, product_id):
     return
 
 
-# if __name__ == "__main__":
-#     #     #db.create_all()
-#     token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5w"
-#     #res = user_lottery(token)
-#     #print(res)
-#     lottery_order(token, 6)
+if __name__ == "__main__":
+    #     #db.create_all()
+    token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjB9.iQfXIXBl6UUzeise2YrpHK43XimDKNSu6iCE7NKtB5w"
+    #res = user_lottery(token)
+    #print(res)
+    lottery_order(token, 6)
