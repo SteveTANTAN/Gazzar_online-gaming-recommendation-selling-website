@@ -32,7 +32,7 @@ export default function SearchResult() {
         <Row gutter={[20, 20]}>
           {data.surprise_product?.map((item) => (
             <Col span={6} key={item.product_id}>
-              <GameCard discount id={item.product_id} name={item.name} {...item}></GameCard>
+              <GameCard isDiscount id={item.product_id} name={item.name} {...item}></GameCard>
             </Col>
           ))}
         </Row>

@@ -20,23 +20,26 @@ export default function Profile() {
   const history = useHistory();
   const params = useParams();
   const [submit, setSubmit] = useSetState({rate:0,comment:''});
-  const save=()=>{
-    post('/api/user/order_rate&comment',{token:sessionStorage.getItem('token'),
-    order_detail_id:params.id,...submit
-  }).then(()=>{
-    message.success('success')
-  })
-  }
   const [data, setData] = useState({});
   const getData=()=>{
     get(`/api/user/show_order/${sessionStorage.getItem('token')}`).then((res)=>{
       setData(res?.filter(i=>i.order_detail_id==params.id)?.[0]??{})
     })
   }
+  const save=()=>{
+    post('/api/user/order_rate&comment',{token:sessionStorage.getItem('token'),
+    order_detail_id:params.id,...submit
+  }).then(()=>{
+    getData()
+    message.success('success')
+  })
+  }
+ 
 
   useEffect(() => {
    getData()
   },[])
+  const disabled = data.product_comment&&data.product_rate
   return (
     <div className="bg">
       <PageHeader
@@ -72,21 +75,22 @@ export default function Profile() {
           className={styles.header}
           title="My Rate & Comment"
           subTitle="(Less than 500 character)"
-          extra={<Rate onChange={v=>{
+          extra={<Rate  disabled={disabled} defaultValue={data.product_rate} onChange={v=>{
             setSubmit({rate:v})
           }}/>}
         ></PageHeader>
         <Input.TextArea
+        disabled={disabled}
           rows={6}
           onChange={e=>{
             setSubmit({comment:e.target.value})
           }}
-          
+          defaultValue={data.product_comment}
         ></Input.TextArea>
         <br />
-        <Button type='primary' onClick={()=>{
+        {!disabled&&<Button type='primary' onClick={()=>{
             save()
-          }}>Submit</Button>
+          }}>Submit</Button>}
       </div>
     </div>
   );

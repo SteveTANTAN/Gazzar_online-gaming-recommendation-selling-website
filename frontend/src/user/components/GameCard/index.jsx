@@ -5,7 +5,7 @@ import img from '@/assets/w.png'
 export default function GameCard({ id, name,...props }) {
   const history = useHistory();
   const [init,setInit]=useState(false)
-  if(props.discount&&!init){
+  if(props.isDiscount&&!init){
     return (
       <div
       className={styles.card + ' shadow'}

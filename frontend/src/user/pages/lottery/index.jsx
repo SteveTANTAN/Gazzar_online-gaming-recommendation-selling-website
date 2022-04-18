@@ -47,7 +47,8 @@ export default function Profile() {
             <p className="mt">
               According to your personal preferences, search records and other
               data, we have selected some products that may be of interest to
-              you as the prizes of the lottery. Gazzar thank you for your
+              you as the prizes of the lottery. Gazzar thank you for your visit,
+              hope to see you next time!
             </p>
 
             <p className={styles.small + ' mt'}>
@@ -82,7 +83,7 @@ export default function Profile() {
                   if(!ref.current)return
                   ref.current.play();
                   setTimeout(() => {
-                    const index=Math.random()<0.98?7:0
+                    const index=Math.random()<0.00?7:0
                     ref.current.stop(index);
                     ref.current=null
                   }, 5000);

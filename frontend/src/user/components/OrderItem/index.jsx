@@ -9,7 +9,7 @@ export default function OrderCard(props) {
   console.log(props?.product_main_image)
   return (
     <div className={styles.item + ' fr blank'}>
-      <img src={props?.product_main_image?.image} alt="" />
+      <img src={props?.product_main_image?.[0]?.thumbUrl} alt="" />
       <div style={{ flex: 1 }}>
         <h2>{props.product_name}</h2>
         <p className={styles.desc}>{props.product_description}</p>
