@@ -10,7 +10,7 @@ sys.path.append('database/src')
 from database import db
 
 sys.path.append('customer/src')
-from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile, show_user_order, add_interest, edit_username
+from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile, show_user_order, edit_username
 from customer_product import search, show_product_details, buy_now, show_product_rate_comment, customized_homepage, surprise_store
 from cart_operation import add_to_cart, show_cart_products, edit_checked_product, delete_cart_product, checkout, notify_quantity, show_user_cart
 from payment_operation import show_user_payment, add_payment, delete_payment
