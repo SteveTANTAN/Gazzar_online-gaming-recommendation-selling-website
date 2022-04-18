@@ -65,35 +65,41 @@ export default function Profile() {
               <h2 style={{ color: 'orange' }}>Overall Rate: {data.rate}</h2>
             </div>
             <br />
-            {data.status===1?<div className={styles.discount + ' fr'}>
-                <div className='blank'>
+            {data.status === 1 ? (
+              <div className={styles.discount + ' fr'}>
+                <div className="blank">
                   <div className={'fr'}>
                     <h4>Original Price</h4>
-                    <span className={styles.delPrice}>&nbsp;${data.price}&nbsp;</span>
+                    <span className={styles.delPrice}>
+                      &nbsp;${data.price}&nbsp;
+                    </span>
                   </div>
                   <div className={'fr'}>
                     <h4>Price After discount</h4>
-                    <span>${Math.round(data.price*(100-data.discount)/100)}</span>
+                    <span>
+                      ${Math.round((data.price * (100 - data.discount)) / 100)}
+                    </span>
                   </div>
                 </div>
-                <div className={"center "+styles.r}>
-                  {data.discount}% OFF
-                </div>
-            </div> : <div className={styles.price + ' fr'}>
-              <h4>Price</h4>
-              <span>${data.price}</span>
-            </div>}
+                <div className={'center ' + styles.r}>{data.discount}% OFF</div>
+              </div>
+            ) : (
+              <div className={styles.price + ' fr'}>
+                <h4>Price</h4>
+                <span>${data.price}</span>
+              </div>
+            )}
             <br />
             <div className="fr">
               <h4>Quantity</h4>
               <InputNumber
                 value={quantity}
                 onChange={(v) => {
-                  if(v>data.stock){
-                    message.warn('quantity wrong')
-                    return
+                  if (v > data.stock) {
+                    message.warn('quantity wrong');
+                    return;
                   }
-                  setQuantity(v)
+                  setQuantity(v);
                 }}
                 min={1}
               ></InputNumber>
@@ -148,7 +154,7 @@ export default function Profile() {
                 {comment.rate_comment_details?.map?.((item) => (
                   <div className={styles.comment}>
                     <Rate value={item.rate}></Rate>
-                    {item.user_name}
+                    <span style={{marginLeft:66}}>{item.user_name}</span>
                     <p>{item.comment}</p>
                   </div>
                 ))}

@@ -11,11 +11,11 @@ import {
 } from 'antd';
 import { EditOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useSetState } from 'ahooks';
-import { useHistory, useParams } from 'umi';
+import { useHistory, useParams, Link } from 'umi';
 import OrderItem from '@/user/components/OrderItem/CartItem';
 import Payment from '@/user/components/Payment';
 import { useEffect, useState } from 'react';
-import { get,post } from '@/user/utils/request';
+import { get, post } from '@/user/utils/request';
 export default function PaymentPage() {
   const history = useHistory();
   const param = useParams();
@@ -42,7 +42,7 @@ export default function PaymentPage() {
       (res) => {
         if (res?.length > 0) {
           setPayment(res);
-          setCheck(res[0].payment_detail_id)
+          setCheck(res[0].payment_detail_id);
         }
       },
     );
@@ -60,7 +60,7 @@ export default function PaymentPage() {
             <div className={styles.content}>
               <div className={styles.items}>
                 {data.checkout_products?.map((item) => (
-                  <div  key={item.product_id}>
+                  <div key={item.product_id}>
                     <OrderItem {...item}></OrderItem>
                   </div>
                 ))}
@@ -71,11 +71,22 @@ export default function PaymentPage() {
                 title="Payment Option"
               ></PageHeader>
               <div className={styles.items}>
+                {payment?.length===0&&<h2>
+                  You haven't got any payment option, <Link to='/user/profile'>&nbsp;try&nbsp;</Link> to add one
+                </h2>}
                 {payment?.map((item) => (
-                  <div className='fr' key={item.payment_detail_id}>
-                    <Checkbox checked={check===item.payment_detail_id} onClick={()=>{
-                      setCheck(item.payment_detail_id)
-                    }}></Checkbox>&nbsp; <div className="blank"> <Payment {...item}></Payment></div>
+                  <div className="fr" key={item.payment_detail_id}>
+                    <Checkbox
+                      checked={check === item.payment_detail_id}
+                      onClick={() => {
+                        setCheck(item.payment_detail_id);
+                      }}
+                    ></Checkbox>
+                    &nbsp;{' '}
+                    <div className="blank">
+                      {' '}
+                      <Payment {...item}></Payment>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -98,12 +109,23 @@ export default function PaymentPage() {
           </div>
           <hr />
           <div className="center">
-            <Button disabled={!data.checkout_products?.length} type="primary" onClick={()=>{
-              post('/api/user/addorder',{token:sessionStorage.getItem('token'),product_list:data.checkout_products?.map(i=>({product_id:i.product_id,quantity:i.quantity}))})
-              .then(()=>{
-                history.push('/user/lottery')
-              })
-            }}>Place Your Order in AUD</Button>
+            <Button
+              disabled={!data.checkout_products?.length}
+              type="primary"
+              onClick={() => {
+                post('/api/user/addorder', {
+                  token: sessionStorage.getItem('token'),
+                  product_list: data.checkout_products?.map((i) => ({
+                    product_id: i.product_id,
+                    quantity: i.quantity,
+                  })),
+                }).then(() => {
+                  history.push('/user/lottery');
+                });
+              }}
+            >
+              Place Your Order in AUD
+            </Button>
           </div>
         </div>
       </div>

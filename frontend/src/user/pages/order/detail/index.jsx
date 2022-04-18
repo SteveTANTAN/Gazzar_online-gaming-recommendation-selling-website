@@ -13,33 +13,36 @@ import {
 } from 'antd';
 import { EditOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useSetState } from 'ahooks';
-import { useHistory,useParams } from 'umi';
+import { useHistory, useParams } from 'umi';
 import OrderItem from '@/user/components//OrderItem';
-import { get,post } from '@/user/utils/request';
+import { get, post } from '@/user/utils/request';
 export default function Profile() {
   const history = useHistory();
   const params = useParams();
-  const [submit, setSubmit] = useSetState({rate:0,comment:''});
+  const [submit, setSubmit] = useSetState({ rate: 0, comment: '' });
   const [data, setData] = useState({});
-  const getData=()=>{
-    get(`/api/user/show_order/${sessionStorage.getItem('token')}`).then((res)=>{
-      setData(res?.filter(i=>i.order_detail_id==params.id)?.[0]??{})
-    })
-  }
-  const save=()=>{
-    post('/api/user/order_rate&comment',{token:sessionStorage.getItem('token'),
-    order_detail_id:params.id,...submit
-  }).then(()=>{
-    getData()
-    message.success('success')
-  })
-  }
- 
+  const getData = () => {
+    get(`/api/user/show_order/${sessionStorage.getItem('token')}`).then(
+      (res) => {
+        setData(res?.filter((i) => i.order_detail_id == params.id)?.[0] ?? {});
+      },
+    );
+  };
+  const save = () => {
+    post('/api/user/order_rate&comment', {
+      token: sessionStorage.getItem('token'),
+      order_detail_id: params.id,
+      ...submit,
+    }).then(() => {
+      getData();
+      message.success('success');
+    });
+  };
 
   useEffect(() => {
-   getData()
-  },[])
-  const disabled = data.product_comment&&data.product_rate
+    getData();
+  }, []);
+  const disabled = data.product_comment && data.product_rate;
   return (
     <div className="bg">
       <PageHeader
@@ -67,7 +70,7 @@ export default function Profile() {
             { k: 'Discount', v: data.product_discount },
             { k: 'Quantity', v: data.quantity },
             { k: 'Unit Price', v: data.product_price },
-            { k: 'Actual transaction price', v: data.product_price},
+            { k: 'Actual transaction price', v: data.product_price },
           ]}
         ></Table>
         <br />
@@ -75,22 +78,35 @@ export default function Profile() {
           className={styles.header}
           title="My Rate & Comment"
           subTitle="(Less than 500 character)"
-          extra={<Rate  disabled={disabled} defaultValue={data.product_rate} onChange={v=>{
-            setSubmit({rate:v})
-          }}/>}
+          extra={
+            <Rate
+              disabled={disabled}
+              defaultValue={data.product_rate}
+              onChange={(v) => {
+                setSubmit({ rate: v });
+              }}
+            />
+          }
         ></PageHeader>
         <Input.TextArea
-        disabled={disabled}
+          disabled={disabled}
           rows={6}
-          onChange={e=>{
-            setSubmit({comment:e.target.value})
+          onChange={(e) => {
+            setSubmit({ comment: e.target.value });
           }}
           defaultValue={data.product_comment}
         ></Input.TextArea>
         <br />
-        {!disabled&&<Button type='primary' onClick={()=>{
-            save()
-          }}>Submit</Button>}
+        {!disabled && (
+          <Button
+            type="primary"
+            onClick={() => {
+              save();
+            }}
+          >
+            Submit
+          </Button>
+        )}
       </div>
     </div>
   );

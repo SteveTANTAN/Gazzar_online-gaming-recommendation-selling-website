@@ -22,19 +22,20 @@ import { Link, useHistory } from 'umi';
 import { post } from '@/user/utils/request';
 import { useDispatch } from 'dva';
 export default function Register() {
+  const [state, setState] = useState({});
   const [step, setStep] = useState(1);
   const [interest, setInterest] = useState([]);
   const history = useHistory();
-  const dispatch = useDispatch();
   const onFinish = (values) => {
-    post('/api/user/register', values).then((res) => {
-      dispatch({
-        type: 'app/setState',
-        payload: { token: res.token },
-      });
-      sessionStorage.setItem('token', res.token);
-      setStep(2);
-    });
+    setStep(2);
+    setState(values)
+    // post('/api/user/register', values).then((res) => {
+    //   dispatch({
+    //     type: 'app/setState',
+    //     payload: { token: res.token },
+    //   });
+    //   sessionStorage.setItem('token', res.token);
+    // });
   };
   if (step === 2) {
     return (
@@ -55,13 +56,19 @@ export default function Register() {
                 'Simulation',
               ].map((item) => (
                 <Col span={8}>
-                  <Checkbox checked={interest.includes(item)} onChange={e=>{
-                    if(e.target.checked){
-                      setInterest([...interest,item])
-                    }else{
-                      setInterest(interest.filter(i=>i!==item))
-                    }
-                  }} value={item}>{item}</Checkbox>
+                  <Checkbox
+                    checked={interest.includes(item)}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setInterest([...interest, item]);
+                      } else {
+                        setInterest(interest.filter((i) => i !== item));
+                      }
+                    }}
+                    value={item}
+                  >
+                    {item}
+                  </Checkbox>
                 </Col>
               ))}
             </Row>
@@ -71,13 +78,18 @@ export default function Register() {
             <Row>
               {['Costume', 'Game props'].map((item) => (
                 <Col span={12}>
-                  <Checkbox value={item} onChange={e=>{
-                     if(e.target.checked){
-                      setInterest([...interest,item])
-                    }else{
-                      setInterest(interest.filter(i=>i!==item))
-                    }
-                  }}>{item}</Checkbox>
+                  <Checkbox
+                    value={item}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        setInterest([...interest, item]);
+                      } else {
+                        setInterest(interest.filter((i) => i !== item));
+                      }
+                    }}
+                  >
+                    {item}
+                  </Checkbox>
                 </Col>
               ))}
             </Row>
@@ -87,16 +99,16 @@ export default function Register() {
               style={{ width: 140 }}
               type="primary"
               onClick={() => {
-                const interest_dict = {}
-                interest.forEach(i=>{
-                  interest_dict[i] = 1
-                })
-                post('/api/user/add/interest', {
-                  token:sessionStorage.getItem('token'),
-                  interest_dict
+                const interest_dict = {};
+                interest.forEach((i) => {
+                  interest_dict[i] = 1;
+                });
+                post('/api/user/register', {
+                  interest_dict,
+                  ...state
                 }).then(() => {
-                  message.success('success')
-                  history.push('/')
+                  message.success('success');
+                  history.push('/');
                 });
               }}
             >
