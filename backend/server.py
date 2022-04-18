@@ -57,7 +57,8 @@ def register_user():
     name = info['name']
     age = info['age']
     gender = info['gender']
-    result = user_register(email, password, name, age, gender)
+    interest_dict = info['interest_dict']
+    result = user_register(email, password, name, age, gender, interest_dict)
     return dumps(result)
 
 @APP.route('/api/user/login', methods = ['POST'])
@@ -110,15 +111,15 @@ def username_edit():
     result = edit_username(token, name)
     return dumps(result)
 
-@APP.route('/api/user/add/interest', methods=['POST'])
-def add_user_interest():
-    '''
-    Route for add interest for cur user
-    '''
-    info = request.get_json()
-    token = info['token']
-    interest_dict = info['interest_dict']
-    return dumps(add_interest(token, interest_dict))
+# @APP.route('/api/user/add/interest', methods=['POST'])
+# def add_user_interest():
+#     '''
+#     Route for add interest for cur user
+#     '''
+#     info = request.get_json()
+#     token = info['token']
+#     interest_dict = info['interest_dict']
+#     return dumps(add_interest(token, interest_dict))
 
 @APP.route('/api/user/customized/homepage/<token>', methods=['GET'])
 def show_customized_homepage(token):

@@ -18,7 +18,7 @@ import pprint
 from sqlalchemy import or_,and_
 from help import create_uid, create_token, add_to_database, check_email, check_password, token_to_id, ErrorMessage
 
-def user_register(email, password, name, age, gender):
+def user_register(email, password, name, age, gender, interest_dict):
     """
     This function is used for register user and store to the database->user table
     input: email, password, name, age, gender
@@ -45,6 +45,14 @@ def user_register(email, password, name, age, gender):
     user = User(token, uid, name, age, gender, email, password)
     # add data to database
     add_to_database(user)
+
+    target_user = User.query.filter(User.user_id==uid).first()
+
+    for key_type, type_value in interest_dict.items():
+        if type_value == 1:
+            cur_type = Type.query.filter(Type.type_name == key_type).first()
+            target_user.interest.append(cur_type)
+            db.session.commit()
 
     output = {'token': token}
     return output
@@ -169,20 +177,20 @@ def edit_username(token, newname):
     return {}
 
 # add interest to user
-def add_interest(token, interest_dict):
+# def add_interest(token, interest_dict):
     
-    # find target user
-    user_id =  token_to_id(token)
-    target_user = User.query.filter(User.user_id==user_id).first()
+#     # find target user
+#     user_id =  token_to_id(token)
+#     target_user = User.query.filter(User.user_id==user_id).first()
 
-    # loop interest_dict and store them to target user
-    for key_type, type_value in interest_dict.items():
-        if type_value == 1:
-            cur_type = Type.query.filter(Type.type_name == key_type).first()
-            target_user.interest.append(cur_type)
-            db.session.commit()
+#     # loop interest_dict and store them to target user
+#     for key_type, type_value in interest_dict.items():
+#         if type_value == 1:
+#             cur_type = Type.query.filter(Type.type_name == key_type).first()
+#             target_user.interest.append(cur_type)
+#             db.session.commit()
 
-    return
+#     return
 
 
 if __name__ == "__main__":
