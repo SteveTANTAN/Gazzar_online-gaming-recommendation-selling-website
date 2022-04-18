@@ -67,27 +67,35 @@ def buy_now(token, product_id, quantity):
     users = User.query.filter(User.user_id==u_id).all()
     if len(users) == 0:
         raise ErrorMessage(Error.query.filter(Error.error_id == 17).first().error_name)
+    target_user = users[0]
 
     # get target product
     target_product = Product.query.filter(Product.product_id==product_id).first()
-    
+
 
     # check quantity valid
     if target_product.stock < int(quantity):
         raise ErrorMessage(Error.query.filter(Error.error_id==21).all()[0].error_name)
 
     cover = ast.literal_eval(target_product.main_image)
+
+    price = float(target_product.price) * float(100 - target_product.discount) * (0.01)
+    if target_product in ast.literal_eval(target_user.surprise_product):
+        price = float(target_product.price) * float(100 - target_product.discount) * (0.0001) * float(100 - target_user.surprise_discount)
     # collect product information
     target_product_info = {
         'product_id': target_product.product_id,
         'name': target_product.name,
         'description': target_product.description,
         'main_image': cover[0]['thumbUrl'],
-        'current_price': format(float(target_product.price) * float(100 - target_product.discount) * (0.01), '.2f'),
+        'current_price': format(price, '.2f'),
         'quantity': quantity,
     }
     original_price = float(target_product.price) * float(quantity)
-    total_discount = float(target_product.discount * (0.01) * original_price)
+    if target_product in ast.literal_eval(target_user.surprise_product):
+        total_discount = float(target_product.discount * (0.0001) * original_price * target_user.surprise_discount)
+    else:
+        total_discount = float(target_product.discount * (0.01) * original_price)
     actual_transaction = float(original_price - total_discount)
     output = {
         'checkout_product': target_product_info,

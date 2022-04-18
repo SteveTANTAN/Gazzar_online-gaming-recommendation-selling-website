@@ -28,9 +28,11 @@ def user_order_add(token, product_list):
 
     #remove cart product
     for product in product_list:
-        target_product = Cart.query.filter(Cart.product_id==int(product['product_id']), Cart.user_id==user_id).first()
-        db.session.delete(target_product)
-        db.session.commit()
+        cart_products = Cart.query.filter(Cart.product_id==int(product['product_id']), Cart.user_id==user_id).all()
+        if len(cart_products) != 0:
+            for target_product in cart_products:
+                db.session.delete(target_product)
+                db.session.commit()
 
     # create order_id as ascending
     all_order_id = Order.query.all()
