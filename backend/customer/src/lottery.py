@@ -23,7 +23,7 @@ def user_lottery(token):
 
     output = []
 
-    # 生成抽奖商品
+    # form lottery product
     output_id_list = []
     game_on_promote = []
     peripheral_on_promote = []
@@ -45,7 +45,7 @@ def user_lottery(token):
     output_id_list.extend(double_discount_game)
     output_id_list.extend(double_discount_peripheral)
 
-    # 购物车
+    # form product list from cart
     cart_list = []
     target_cart = Cart.query.filter(Cart.user_id==target_user.user_id).all()
     for i in target_cart:
@@ -56,7 +56,7 @@ def user_lottery(token):
         discount_cart_product = random.sample(cart_list, len(cart_list))
     output_id_list.extend(discount_cart_product)
 
-    # 兴趣
+    # form product list from interest
     interests_list = []
     for interest_type in target_user.interest:
         interests_list.append(interest_type.type_id)
@@ -69,14 +69,14 @@ def user_lottery(token):
                 interest.append(product.product_id)
 
     rest= []
-    #拿到所有未添加的游戏（没有促销）
+    # get all no added product
     all_gam_per = Product.query.filter(Product.status==0, Product.stock>=1).all()
     for product in all_gam_per:
         if product.product_id not in output_id_list:
             rest.append(product.product_id)
 
 
-    # 随机选取 感兴趣的游戏和周边
+    # random pick product
     if len(output_id_list) == 0 and len(interest) >= 9:
         random_game_interest = random.sample(interest, 9)
     elif len(output_id_list) != 0 and len(interest) > 9:
@@ -88,12 +88,12 @@ def user_lottery(token):
         random_game_interest = random.sample(rest, 9 - len(output_id_list))
     output_id_list.extend(random_game_interest)
 
-    # 生成输出
+    # form output
     for i in output_id_list:
         product = Product.query.filter(Product.product_id==i).first()
         output.append(product_dict_form(product))
 
-    # 存储用户 折扣商品 id
+    # store surprise product
     target_user.surprise_product = '[' + ','.join(list(map(str, output_id_list))) + ']'
     db.session.commit()
 

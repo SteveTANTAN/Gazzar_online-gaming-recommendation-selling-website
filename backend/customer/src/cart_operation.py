@@ -112,6 +112,7 @@ def checkout(token):
     users = User.query.filter(User.user_id==u_id).all()
     if len(users) == 0:
         raise ErrorMessage(Error.query.filter(Error.error_id == 17).all()[0].error_name)
+    target_user = users[0]
 
     original_price = 0
     total_discount = 0
@@ -121,21 +122,27 @@ def checkout(token):
     checkout_products = []
     for item in target_user_carts:
         if item.checked == 1:
-            target_product = Product.query.join(Cart).filter(Product.product_id==item.product_id).all()[0]
+            target_product = Product.query.join(Cart).filter(Product.product_id==item.product_id).first()
              # convert main_image string to list
             cover = ast.literal_eval(target_product.main_image)
+            price = float(target_product.price) * float(100 - target_product.discount) * (0.01)
+            if target_product in ast.literal_eval(target_user.surprise_product):
+                price = float(target_product.price) * float(100 - target_product.discount) * (0.0001) * float(100 - target_user.surprise_discount)
             target_product_info = {
                 'cart_id': item.cart_id,
                 'product_id': target_product.product_id,
                 'name': target_product.name,
                 'description': target_product.description,
                 'main_image': cover[0]['thumbUrl'],
-                'current_price': float(target_product.price) * float(100 - target_product.discount) * (0.01),
+                'current_price': format(price, '.2f'),
                 'quantity': item.quantity,
             }
             cur_price = float(target_product.price) * float(item.quantity)
             original_price = original_price + cur_price
-            total_discount = total_discount + float(target_product.discount * (0.01) * cur_price)
+            if target_product in ast.literal_eval(target_user.surprise_product):
+                total_discount = total_discount + float(target_product.discount * (0.0001) * cur_price * target_user.surprise_discount)
+            else:
+                total_discount = total_discount + float(target_product.discount * (0.01) * cur_price)
             checkout_products.append(target_product_info)
 
     actual_transaction = float(original_price - total_discount)
