@@ -21,8 +21,12 @@ def create_uid():
     """
     # get all uid
     all_uid = db.session.query(User.user_id).all()
+    if len(all_uid) != 0:
+        uid = (all_uid[-1].user_id) + 1
+    else:
+        uid = 1
     #generate len(uid) + 1
-    return ((all_uid[-1][0]) + 1 )
+    return uid
 
 # creat cdk in 16 letter
 def create_cdk():
