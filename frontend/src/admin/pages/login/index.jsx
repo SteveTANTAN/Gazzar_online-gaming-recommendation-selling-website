@@ -12,7 +12,7 @@ export default function Login() {
   const [login, setlogin] = React.useState(false);
 
   if (localStorage.getItem('token') != null || login) {
-    history.push('/admin/manage/');
+    history.push('/admin/manage/overView');
   }
   // some fetching used here
   function submit () {
