@@ -18,7 +18,8 @@ def show_user_payment(token):
     if len(users) == 0:
         raise ErrorMessage(Error.query.filter(Error.error_id == 17).all()[0].error_name)
     # payment details
-    target_user_payment = Payment_detail.query.join(User).filter(Payment_detail.user_id==u_id).all()
+    target_user_payment = Payment_detail.query.filter(Payment_detail.user_id==u_id).all()
+    #target_user_payment = Payment_detail.query.join(User).filter(Payment_detail.user_id==u_id).all()
     payment_info = []
     for i in target_user_payment:
         payment_details = {'payment_detail_id': i.payment_detail_id, 'card_type': i.card_type, 'card_number': i.card_number,

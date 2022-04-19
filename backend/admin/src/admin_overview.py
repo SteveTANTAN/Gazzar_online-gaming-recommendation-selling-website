@@ -46,26 +46,21 @@ def get_overview(token):
     ou = len(all_users)
     data = [
         {
-            "title": "GMV",
+            "title": "Gross Merchandise Volume (GMV)",
             "result": str(int(gmv)),
         },
         {
-            "title": 'MGMV',
+            "title": 'Monthly Gross Merchandise Volume (MGMV)',
             "result": str(int(mgmv)),
 
         },
         {
-            "title": 'ATV',
+            "title": 'Average Transaction Value',
             "result": str(int(atv)),
 
         },
-        # {
-        #     "title": 'Best Seller',
-        #     "result": str(int(count)),
-
-        # },
         {
-            "title": 'PV',
+            "title": 'Overall Users',
             "result": str(ou),
 
         }
