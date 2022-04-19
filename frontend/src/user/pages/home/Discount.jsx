@@ -29,8 +29,7 @@ export default function SearchResult() {
             background: 'red',
           }}
         >
-          {' '}
-          Discount of This Week: 80% OFF
+          Discount of This Week: {data.surprise_discount??''}% OFF
         </span>
       </div>
       <br /> <br />

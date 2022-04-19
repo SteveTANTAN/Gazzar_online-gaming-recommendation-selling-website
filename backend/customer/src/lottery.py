@@ -106,7 +106,10 @@ def lottery_order(token, product_id):
 
     all_order_id = Order.query.all()
     if len(all_order_id) != 0:
-        order_id = (all_order_id[-1].order_id) + 1
+        k = 0
+        for i in all_order_id:
+            if (i.order_id > k): k = i.order_id
+        order_id = k + 1
     else:
         order_id = 1
 
