@@ -13,7 +13,8 @@ export const get = (url, data = {}) => {
         });
       } else {
         response.json().then((res) => {
-          message.error(res.message || 'error');
+          // message.error(res.message || 'error');
+          message.error((res.message.replace("<p>","")).replace("</p>",""));
         });
       }
     });
@@ -36,7 +37,8 @@ export const post = (url, data) => {
         });
       } else {
         response.json().then((res) => {
-          message.error(res.message || 'error');
+          //message.error(res.message || 'error');
+          message.error((res.message.replace("<p>","")).replace("</p>",""));
         });
       }
     });
@@ -59,7 +61,8 @@ export const put = (url, data) => {
         });
       } else {
         response.json().then((res) => {
-          message.error(res.message || 'error');
+          //message.error(res.message || 'error');
+          message.error((res.message.replace("<p>","")).replace("</p>",""));
         });
       }
     });
@@ -81,7 +84,8 @@ export const del = (url, data) => {
         });
       } else {
         response.json().then((res) => {
-          message.error(res.message || 'error');
+          //message.error(res.message || 'error');
+          message.error((res.message.replace("<p>","")).replace("</p>",""));
         });
       }
     });
