@@ -77,7 +77,7 @@ export default function Profile() {
                   <div className={'fr'}>
                     <h4>Price After discount</h4>
                     <span>
-                      ${Math.round((data.price * (100 - data.discount)) / 100)}
+                      ${Number((data.price * (100 - data.discount)) / 100).toFixed(2)}
                     </span>
                   </div>
                 </div>
