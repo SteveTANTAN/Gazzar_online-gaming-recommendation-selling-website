@@ -18,7 +18,23 @@ export default function OrderCard(props) {
         <h2>${props.product_price}</h2>
         <div className="blank"></div>
       </div>
-      
+      {props.onDelete && (
+        <div
+          className={styles.del}
+          onClick={(e) => {
+            e.stopPropagation();
+            e.preventDefault();
+            del('/api/user/order/delete', {
+              token: sessionStorage.getItem('token'),
+              order_detail_id: props.order_id,
+            }).then(() => {
+              props.onDelete();
+            });
+          }}
+        >
+          <DeleteOutlined></DeleteOutlined>
+        </div>
+      )}
     </div>
   );
 }
