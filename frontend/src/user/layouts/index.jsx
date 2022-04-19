@@ -21,13 +21,13 @@ export default (props) => {
             <Link to="/">
               <img className={styles.logo} src={logoImg} alt="" />
             </Link>
-            <Input
+            {token&&<Input
               style={{ width: 240, borderRadius: 12, marginLeft: 20 }}
               suffix={<SearchOutlined />}
               onPressEnter={(e) => {
                 history.push('/user/search/' + e.target.value);
               }}
-            ></Input>
+            ></Input>}
           </Space>
           <div className="blank"></div>
           <Space>

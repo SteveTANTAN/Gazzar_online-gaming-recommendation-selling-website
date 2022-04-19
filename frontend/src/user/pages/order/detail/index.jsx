@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import styles from './index.less';
 import {
   PageHeader,
@@ -8,14 +9,40 @@ import {
   Input,
   Rate,
   DatePicker,
+  message,
 } from 'antd';
 import { EditOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useSetState } from 'ahooks';
-import { useHistory } from 'umi';
+import { useHistory, useParams } from 'umi';
 import OrderItem from '@/user/components//OrderItem';
-
+import { get, post } from '@/user/utils/request';
 export default function Profile() {
   const history = useHistory();
+  const params = useParams();
+  const [submit, setSubmit] = useSetState({ rate: 0, comment: '' });
+  const [data, setData] = useState({});
+  const getData = () => {
+    get(`/api/user/show_order/${sessionStorage.getItem('token')}`).then(
+      (res) => {
+        setData(res?.filter((i) => i.order_detail_id == params.id)?.[0] ?? {});
+      },
+    );
+  };
+  const save = () => {
+    post('/api/user/order_rate&comment', {
+      token: sessionStorage.getItem('token'),
+      order_detail_id: params.id,
+      ...submit,
+    }).then(() => {
+      getData();
+      message.success('success');
+    });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+  const disabled = data.product_comment && data.product_rate;
   return (
     <div className="bg">
       <PageHeader
@@ -24,10 +51,10 @@ export default function Profile() {
         title=" "
       ></PageHeader>
       <div className={styles.wrap}>
-        <OrderItem></OrderItem>
+        <OrderItem {...data}></OrderItem>
         <div className="fr mt">
           <h2>CDKEY</h2>
-          <div className="blank center">xxxxx-xxxxx-xxxxx</div>
+          <div className="blank center">{data.cdkey}</div>
         </div>
         <Table
           bordered
@@ -37,13 +64,13 @@ export default function Profile() {
           className="mt"
           columns={[{ dataIndex: 'k' }, { dataIndex: 'v' }]}
           dataSource={[
-            { k: 'Order number', v: '24455463489804852731' },
-            { k: 'Trading hours', v: '2022-01-01 00：00：00 (UTC+9:30)‎' },
-            { k: 'Product Name', v: '2022-01-01 00：00：00 (UTC+9:30)‎' },
-            { k: 'Discount', v: '50%' },
-            { k: 'Quantity', v: '1' },
-            { k: 'Unit Price', v: '50%' },
-            { k: 'Actual transaction price', v: '50%' },
+            { k: 'Order number', v: data.order_id },
+            { k: 'Trading hours', v: data.create_time },
+            { k: 'Product Name', v: data.product_name },
+            { k: 'Discount', v: data.product_discount },
+            { k: 'Quantity', v: data.quantity },
+            { k: 'Unit Price', v: data.product_price },
+            { k: 'Actual transaction price', v: data.product_price },
           ]}
         ></Table>
         <br />
@@ -51,14 +78,35 @@ export default function Profile() {
           className={styles.header}
           title="My Rate & Comment"
           subTitle="(Less than 500 character)"
-          extra={<Rate />}
+          extra={
+            <Rate
+              disabled={disabled}
+              defaultValue={data.product_rate}
+              onChange={(v) => {
+                setSubmit({ rate: v });
+              }}
+            />
+          }
         ></PageHeader>
         <Input.TextArea
+          disabled={disabled}
           rows={6}
-          defaultValue={
-            'orem ipsum dolor sit amet, consectetur adipiscing elit. Aenean euismod bibendum laoreet. Proin gravida dolor sit amet lacus accumsan et viverra justo commodo. Proin sodales pulvinar tempor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam fermentum, nulla luctus p'
-          }
+          onChange={(e) => {
+            setSubmit({ comment: e.target.value });
+          }}
+          defaultValue={data.product_comment}
         ></Input.TextArea>
+        <br />
+        {!disabled && (
+          <Button
+            type="primary"
+            onClick={() => {
+              save();
+            }}
+          >
+            Submit
+          </Button>
+        )}
       </div>
     </div>
   );

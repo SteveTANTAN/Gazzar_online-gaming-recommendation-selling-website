@@ -10,16 +10,20 @@ sys.path.append('database/src')
 from database import db
 
 sys.path.append('customer/src')
-from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile, show_user_order, add_interest, edit_username
+from auth import user_register, user_login, user_logout, forget_password, edit_password, show_user_profile, show_user_order, edit_username
 from customer_product import search, show_product_details, buy_now, show_product_rate_comment, customized_homepage, surprise_store
 from cart_operation import add_to_cart, show_cart_products, edit_checked_product, delete_cart_product, checkout, notify_quantity, show_user_cart
 from payment_operation import show_user_payment, add_payment, delete_payment
+from user_order import user_order_add, show_user_order_detail, delete_user_order, rate_comment_order
+from lottery import user_lottery, lottery_order
 
 sys.path.append('admin/src')
 from manager import add_admin, admin_login, admin_logout, show_all_admins, delete_admin
 from product_manage import add_product, edit_product, get_product, get_product_all, delete_product
 from admin_search import admin_search
 from admin_order_management import order_search, get_order_all
+from admin_overview import get_overview
+
 def defaultHandler(err):
     """server"""
     response = err.get_response()
@@ -53,7 +57,8 @@ def register_user():
     name = info['name']
     age = info['age']
     gender = info['gender']
-    result = user_register(email, password, name, age, gender)
+    interest_dict = info['interest_dict']
+    result = user_register(email, password, name, age, gender, interest_dict)
     return dumps(result)
 
 @APP.route('/api/user/login', methods = ['POST'])
@@ -106,15 +111,15 @@ def username_edit():
     result = edit_username(token, name)
     return dumps(result)
 
-@APP.route('/api/user/add/interest', methods=['POST'])
-def add_user_interest():
-    '''
-    Route for add interest for cur user
-    '''
-    info = request.get_json()
-    token = info['token']
-    interest_dict = info['interest_dict']
-    return dumps(add_interest(token, interest_dict))
+# @APP.route('/api/user/add/interest', methods=['POST'])
+# def add_user_interest():
+#     '''
+#     Route for add interest for cur user
+#     '''
+#     info = request.get_json()
+#     token = info['token']
+#     interest_dict = info['interest_dict']
+#     return dumps(add_interest(token, interest_dict))
 
 @APP.route('/api/user/customized/homepage/<token>', methods=['GET'])
 def show_customized_homepage(token):
@@ -255,6 +260,63 @@ def delete_cart():
     token = info['token']
     cart_id = info['cart_id']
     return dumps(delete_cart_product(token, cart_id))
+
+@APP.route('/api/user/addorder', methods = ['POST'])
+def order_add():
+    info = request.get_data(True)
+    info = json.loads(info)
+    token = info['token']
+    product_list = info['product_list']
+    result = user_order_add(token, product_list)
+    return dumps(result)
+
+@APP.route('/api/user/show_order/<token>', methods=['GET'])
+def show_order_detail(token):
+    '''
+    Route for current user's order count
+    '''
+    return dumps(show_user_order_detail(token))
+
+@APP.route('/api/user/order/delete', methods=['DELETE'])
+def delete_order():
+    '''
+    Route for current user's order count
+    '''
+    info = request.get_data(True)
+    info = json.loads(info)
+    print(info)
+    order_detail_id = info['order_detail_id']
+    result = delete_user_order(order_detail_id)
+    return dumps(result)
+
+@APP.route('/api/user/order_rate&comment', methods=['POST'])
+def rate_comment():
+    '''
+    Route for current user's order count
+    '''
+    info = request.get_data(True)
+    info = json.loads(info)
+    token = info['token']
+    order_detail_id  = info['order_detail_id']
+    rate = info['rate']
+    comment = info['comment']
+    result = rate_comment_order(token, order_detail_id, rate, comment)
+    return dumps(result)
+
+@APP.route('/api/user/lottery/<token>', methods=['GET'])
+def show_user_lottery(token):
+    '''
+    Route for current user's lottery
+    '''
+    return dumps(user_lottery(token))
+
+@APP.route('/api/user/lottery/order', methods = ['POST'])
+def add_lottery_order():
+    info = request.get_json()
+    token = info['token']
+    product_id = info['product_id']
+    return dumps(lottery_order(token, product_id))
+
 
 #############################################################################################
 #############################################################################################
@@ -398,6 +460,14 @@ def order_get_all(token):
     '''
     # print(token)
     return dumps(get_order_all(token))
+
+@APP.route('/api/get/overview/all/<token>', methods=['GET'])
+def overview_get_all(token):
+    '''
+    Route for listing profile
+    '''
+    # print(token)
+    return dumps(get_overview(token))
 
 if __name__ == "__main__":
     db.create_all()

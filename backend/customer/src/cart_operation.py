@@ -27,6 +27,10 @@ def add_to_cart(token, product_id, quantity):
         raise ErrorMessage(Error.query.filter(Error.error_id==16).all()[0].error_name)
     target_product = products[0]
 
+    # check quantity valid
+    if target_product.stock < int(quantity):
+        raise ErrorMessage(Error.query.filter(Error.error_id==21).all()[0].error_name)
+
     # check whether product has been exist in current user's cart
     target_cart = Cart.query.filter(Cart.user_id==u_id, Cart.product_id==target_product.product_id).all()
     if len(target_cart) == 0:
@@ -108,6 +112,7 @@ def checkout(token):
     users = User.query.filter(User.user_id==u_id).all()
     if len(users) == 0:
         raise ErrorMessage(Error.query.filter(Error.error_id == 17).all()[0].error_name)
+    target_user = users[0]
 
     original_price = 0
     total_discount = 0
@@ -117,21 +122,28 @@ def checkout(token):
     checkout_products = []
     for item in target_user_carts:
         if item.checked == 1:
-            target_product = Product.query.join(Cart).filter(Product.product_id==item.product_id).all()[0]
+            target_product = Product.query.join(Cart).filter(Product.product_id==item.product_id).first()
              # convert main_image string to list
             cover = ast.literal_eval(target_product.main_image)
+            if target_product.product_id in ast.literal_eval(target_user.surprise_product):
+                price = float(target_product.price) * float(100 - target_product.discount) * (0.0001) * float(100 - target_user.surprise_discount)
+            else:
+                price = float(target_product.price) * float(100 - target_product.discount) * (0.01)
             target_product_info = {
                 'cart_id': item.cart_id,
                 'product_id': target_product.product_id,
                 'name': target_product.name,
                 'description': target_product.description,
                 'main_image': cover[0]['thumbUrl'],
-                'current_price': float(target_product.price) * float(100 - target_product.discount) * (0.01),
+                'current_price': format(price, '.2f'),
                 'quantity': item.quantity,
             }
             cur_price = float(target_product.price) * float(item.quantity)
             original_price = original_price + cur_price
-            total_discount = total_discount + float(target_product.discount * (0.01) * cur_price)
+            if target_product.product_id in ast.literal_eval(target_user.surprise_product):
+                total_discount = total_discount + float(target_product.discount * (0.0001) * cur_price * target_user.surprise_discount)
+            else:
+                total_discount = total_discount + float(target_product.discount * (0.01) * cur_price)
             checkout_products.append(target_product_info)
 
     actual_transaction = float(original_price - total_discount)
@@ -148,9 +160,15 @@ def notify_quantity(token, cart_id, new_quantity):
     # check valid user
     users = User.query.filter(User.user_id==u_id).all()
     if len(users) == 0:
-        raise ErrorMessage(Error.query.filter(Error.error_id == 17).all()[0].error_name)
+        raise ErrorMessage(Error.query.filter(Error.error_id == 17).first().error_name)
 
-    target_user_cart = Cart.query.filter(Cart.user_id==u_id, Cart.cart_id==cart_id).all()[0]
+    target_user_cart = Cart.query.filter(Cart.user_id==u_id, Cart.cart_id==cart_id).first()
+
+    # check quantity valid
+    target_product = Product.query.filter(Product.product_id==target_user_cart.product_id).first()
+    if target_product.stock < int(new_quantity):
+        raise ErrorMessage(Error.query.filter(Error.error_id==21).first().error_name)
+
     target_user_cart.quantity = int(new_quantity)
     db.session.commit()
     return

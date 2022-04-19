@@ -30,7 +30,7 @@ import datetime as dt
 
 def search(str):
     '''search product with given str, match in product name and description'''
-    #print(str)
+    # find product which contain key str in its name or description
     task_filter = {or_(Product.name.contains(str),Product.description.contains(str))}
     search_result = Product.query.filter(*task_filter).all()
     result = []
@@ -67,19 +67,37 @@ def buy_now(token, product_id, quantity):
     users = User.query.filter(User.user_id==u_id).all()
     if len(users) == 0:
         raise ErrorMessage(Error.query.filter(Error.error_id == 17).first().error_name)
+    target_user = users[0]
 
+    # get target product
     target_product = Product.query.filter(Product.product_id==product_id).first()
+
+
+    # check quantity valid
+    if target_product.stock < int(quantity):
+        raise ErrorMessage(Error.query.filter(Error.error_id==21).all()[0].error_name)
+
     cover = ast.literal_eval(target_product.main_image)
+
+    if target_product.product_id in ast.literal_eval(target_user.surprise_product):
+        price = float(target_product.price) * float(100 - target_product.discount) * (0.0001) * float(100 - target_user.surprise_discount)
+    else:
+        price = float(target_product.price) * float(100 - target_product.discount) * (0.01)
+
+    # collect product information
     target_product_info = {
         'product_id': target_product.product_id,
         'name': target_product.name,
         'description': target_product.description,
         'main_image': cover[0]['thumbUrl'],
-        'current_price': format(float(target_product.price) * float(100 - target_product.discount) * (0.01), '.2f'),
+        'current_price': format(price, '.2f'),
         'quantity': quantity,
     }
     original_price = float(target_product.price) * float(quantity)
-    total_discount = float(target_product.discount * (0.01) * original_price)
+    if target_product.product_id in ast.literal_eval(target_user.surprise_product):
+        total_discount = float(target_product.discount * (0.0001) * original_price * target_user.surprise_discount)
+    else:
+        total_discount = float(target_product.discount * (0.01) * original_price)
     actual_transaction = float(original_price - total_discount)
     output = {
         'checkout_product': target_product_info,
@@ -96,6 +114,7 @@ def show_product_rate_comment(product_id):
         raise ErrorMessage(Error.query.filter(Error.error_id==16).first().error_name)
     target_product = products[0]
 
+    # find order and collect comment and rate information
     orders = Order_detail.query.filter(Order_detail.product_id==product_id).all()
     rate_comment_details = []
     for i in orders:
@@ -119,8 +138,8 @@ def customized_homepage(token):
     output_game = []
     output_peripheral = []
 
-    # 拿到折扣的游戏 id list
-    # 拿到折扣的周边 id list
+    # get discount product id list
+    # get discount peripheral id list
     game_on_promote = []
     peripheral_on_promote = []
     promote = Product.query.filter(Product.status==1).all()
@@ -130,14 +149,14 @@ def customized_homepage(token):
         else:
             peripheral_on_promote.append(i.product_id)
 
-    # 添加折扣的游戏
-    # 添加折扣的周边
+    # add discount game
+    # add discount peripheral
     random.shuffle(game_on_promote)
     random.shuffle(peripheral_on_promote)
     output_game_id.extend(game_on_promote)
     output_peripheral_id.extend(peripheral_on_promote)
 
-    # 兴趣 type id list
+    # interests type id list
     interests_list = []
     for interest_type in target_user.interest:
         interests_list.append(interest_type.type_id)
@@ -145,32 +164,32 @@ def customized_homepage(token):
     game_interest = []
     peripheral_interest = []
     for i in interests_list:
-        #拿到兴趣的游戏 id list （没有促销）
+        #get interest games id list （not promote）
         if i <= 7:
             interest_games = Product.query.join(Type, Product.genre).filter(Product.status==0, Type.type_id==i).all()
             for product in interest_games:
                 if (product.product_id not in game_interest) and (product.product_id not in output_game_id):
                     game_interest.append(product.product_id)
-        #拿到兴趣的周边 id list （没有促销）
+        #get interest peripheral id list （not promote）
         else:
             interest_peripherals = Product.query.join(Type, Product.genre).filter(Product.status==0, Type.type_id==i).all()
             for product in interest_peripherals:
                 if (product.product_id not in peripheral_interest) and (product.product_id not in output_peripheral_id):
                     peripheral_interest.append(product.product_id)
 
-    # 随机选取 1/4个感兴趣的游戏和周边
+    # random choose 1/4 intersted game and peripheral
     random_game_interest = random.sample(game_interest, int(len(game_interest)/4))
     random_peripheral_interest = random.sample(peripheral_interest, int(len(peripheral_interest)/4))
-    # 添加折扣的游戏
-    # 添加折扣的周边
+    # add discount game
+    # add discount peripheral
     output_game_id.extend(random_game_interest)
     output_peripheral_id.extend(random_peripheral_interest)
 
 
     rest_game = []
     rest_peripheral = []
-    #拿到所有未添加的游戏（没有促销）
-    #拿到所有未添加的周边（没有促销）
+    #get all game haven't added（not promot）
+    #get all peripheral haven't added（not promot）
     all_gam_per = Product.query.filter(Product.status==0).all()
     for product in all_gam_per:
         if product.category == 0:
@@ -180,8 +199,8 @@ def customized_homepage(token):
             if product.product_id not in output_peripheral_id:
                 rest_peripheral.append(product.product_id)
 
-    # 添加剩余的游戏
-    # 添加剩余的周边
+    # add left games
+    # add left peripheral
     random.shuffle(rest_game)
     random.shuffle(rest_peripheral)
     output_game_id.extend(rest_game)
@@ -206,14 +225,14 @@ def surprise_store(token):
 
     check = 0
     output = []
-    # 专属折扣
+    # vip discount
     if target_user.surprise_discount == 0:
         target_user.surprise_discount = random.randint(1, 40)
         target_user.surprise_timer = time.strftime('%Y-%m-%d', time.localtime())
         db.session.commit()
         check = 1
     else:
-        # 折扣时效，惊喜商品时效
+        # time limit discount and surprise
         current_time = time.strftime('%Y-%m-%d', time.localtime())
         date1 = dt.datetime.strptime(current_time, '%Y-%m-%d').date()
         date2 = dt.datetime.strptime(target_user.surprise_timer, '%Y-%m-%d').date()
@@ -228,13 +247,13 @@ def surprise_store(token):
                 product = Product.query.filter(Product.product_id==i).first()
                 output.append(product_dict_form(product))
 
-    # 生成折扣商品
-    # 促销
+    # create discount products
+    # promot
     if check == 1:
         output_id_list = []
         game_on_promote = []
         peripheral_on_promote = []
-        promote = Product.query.filter(Product.status==1).all()
+        promote = Product.query.filter(Product.status==1, Product.stock>=1).all()
         for i in promote:
             if i.category == 0:
                 game_on_promote.append(i.product_id)
@@ -252,7 +271,7 @@ def surprise_store(token):
         output_id_list.extend(double_discount_game)
         output_id_list.extend(double_discount_peripheral)
 
-        # 购物车
+        # cart
         cart_list = []
         target_cart = Cart.query.filter(Cart.user_id==target_user.user_id).all()
         for i in target_cart:
@@ -263,27 +282,27 @@ def surprise_store(token):
             discount_cart_product = random.sample(cart_list, len(cart_list))
         output_id_list.extend(discount_cart_product)
 
-        # 兴趣
+        # interest
         interests_list = []
         for interest_type in target_user.interest:
             interests_list.append(interest_type.type_id)
 
         interest = []
         for i in interests_list:
-            interest_products = Product.query.join(Type, Product.genre).filter(Product.status==0, Type.type_id==i).all()
+            interest_products = Product.query.join(Type, Product.genre).filter(Product.status==0, Type.type_id==i, Product.stock>=1).all()
             for product in interest_products:
                 if product.product_id not in interest:
                     interest.append(product.product_id)
 
         rest= []
-        #拿到所有未添加的游戏（没有促销）
-        all_gam_per = Product.query.filter(Product.status==0).all()
+        #get all game haven't added（no promote）
+        all_gam_per = Product.query.filter(Product.status==0, Product.stock>=1).all()
         for product in all_gam_per:
             if product.product_id not in output_id_list:
                 rest.append(product.product_id)
 
 
-        # 随机选取 感兴趣的游戏和周边
+        # random choose intersted game and peripheral
         if len(output_id_list) == 0 and len(interest) >= 8:
             random_game_interest = random.sample(interest, 8)
         elif len(output_id_list) != 0 and len(interest) > 8:
@@ -295,31 +314,14 @@ def surprise_store(token):
             random_game_interest = random.sample(rest, 8 - len(output_id_list))
         output_id_list.extend(random_game_interest)
 
-        # 生成输出
+        # output
         for i in output_id_list:
             product = Product.query.filter(Product.product_id==i).first()
             output.append(product_dict_form(product))
 
-        # 存储用户 折扣商品 id
+        # store users and it's discount product id
         target_user.surprise_product = '[' + ','.join(list(map(str, output_id_list))) + ']'
         db.session.commit()
 
     return {'surprise_discount': target_user.surprise_discount, 'surprise_product': output}
 
-
-if __name__ == "__main__":
-    #     #db.create_all()
-    token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjE3fQ.12Gqt0B29VWffPR7Fp6qjWhNa2jsgU21Ns6uZh6Ihto"
-    # print(res)
-    #a= time.strftime('%Y-%m-%d', time.localtime())
-    # output_id_list = [1,2,3,4,5,6,7,8]
-    # a = '[' + ','.join(list(map(str, output_id_list))) + ']'
-    # print(a)
-    # b=ast.literal_eval(a)
-    # print(type(b))
-    res = surprise_store(token)
-    #res = customized_homepage(token)
-    #all_product = Product.query.order_by(Product.rate.desc()).all()
-    # for i in all_product:
-    #     print(i.product_id)
-    print(res)

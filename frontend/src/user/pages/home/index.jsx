@@ -1,7 +1,7 @@
 import styles from './index.less';
 import { Button, Carousel, Tabs, Row, Col } from 'antd';
 import GameCard from '../../components/GameCard';
-import { useHistory } from 'umi';
+import { useHistory,Link } from 'umi';
 import { useSelector } from 'dva';
 import { get } from '@/user/utils/request';
 import { useState, useEffect } from 'react';
@@ -31,16 +31,30 @@ export default function Home() {
       setState({ cart: res ?? 0 });
     });
   }, []);
+  if(!token){
+    return <div>
+      <div className="center shadow mt" style={{height:140,background:'white',borderRadius: 8}}>
+        <h1>Welcome to Gazzar! Your new option for game shopping!!!</h1>
+      </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <div className="center">
+        <h3>
+          Want to browse more? Try <Link to='/user/login'>&nbsp;login&nbsp;</Link>!
+        </h3>
+      </div>
+    </div>
+  }
   return (
     <>
       <div className={styles.top + ' fr'}>
         <div className={styles.left + ' shadow'}>
           <Carousel autoplay>
-            <div onClick={()=>history.push('/user/discount')}>
-              <img
-                src={bannerImg}
-                alt=""
-              />
+            <div onClick={() => history.push('/user/discount')}>
+              <img src={bannerImg} alt="" />
             </div>
           </Carousel>
         </div>
@@ -50,6 +64,8 @@ export default function Home() {
               <img
                 src={[maleImg, femaleImg, mysteriousImg][profile.gender]}
                 alt=""
+                style={{cursor:'pointer'}}
+                onClick={()=>history.push('/user/profile')}
               />
               <div>
                 <h4>{profile.name}</h4>
