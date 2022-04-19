@@ -125,9 +125,10 @@ def checkout(token):
             target_product = Product.query.join(Cart).filter(Product.product_id==item.product_id).first()
              # convert main_image string to list
             cover = ast.literal_eval(target_product.main_image)
-            price = float(target_product.price) * float(100 - target_product.discount) * (0.01)
-            if target_product in ast.literal_eval(target_user.surprise_product):
+            if target_product.product_id in ast.literal_eval(target_user.surprise_product):
                 price = float(target_product.price) * float(100 - target_product.discount) * (0.0001) * float(100 - target_user.surprise_discount)
+            else:
+                price = float(target_product.price) * float(100 - target_product.discount) * (0.01)
             target_product_info = {
                 'cart_id': item.cart_id,
                 'product_id': target_product.product_id,
@@ -139,7 +140,7 @@ def checkout(token):
             }
             cur_price = float(target_product.price) * float(item.quantity)
             original_price = original_price + cur_price
-            if target_product in ast.literal_eval(target_user.surprise_product):
+            if target_product.product_id in ast.literal_eval(target_user.surprise_product):
                 total_discount = total_discount + float(target_product.discount * (0.0001) * cur_price * target_user.surprise_discount)
             else:
                 total_discount = total_discount + float(target_product.discount * (0.01) * cur_price)
