@@ -95,7 +95,8 @@ def buy_now(token, product_id, quantity):
     }
     original_price = float(target_product.price) * float(quantity)
     if target_product.product_id in ast.literal_eval(target_user.surprise_product):
-        total_discount = float(target_product.discount * (0.0001) * original_price * target_user.surprise_discount)
+        tmp_discount = float(target_product.discount * (0.01) * original_price)
+        total_discount = tmp_discount + float(tmp_discount * target_user.surprise_discount * (0.01))
     else:
         total_discount = float(target_product.discount * (0.01) * original_price)
     actual_transaction = float(original_price - total_discount)
