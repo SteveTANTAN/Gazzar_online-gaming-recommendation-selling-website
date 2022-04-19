@@ -44,4 +44,30 @@ def get_overview(token):
 
     all_users = User.query.all()
     ou = len(all_users)
-    return [round(gmv), round(mgmv), round(atv), round(count), ou]
+    data = [
+        {
+            "title": "Gross Merchandise Volume (GMV)",
+            "result": str(int(gmv)),
+        },
+        {
+            "title": 'Monthly Gross Merchandise Volume (MGMV)',
+            "result": str(int(mgmv)),
+
+        },
+        {
+            "title": 'Average Transaction Value',
+            "result": str(int(atv)),
+
+        },
+        {
+            "title": 'Best Seller',
+            "result": str(int(count)),
+
+        },
+        {
+            "title": 'Overall Users',
+            "result": str(ou),
+
+        }
+        ]
+    return data
