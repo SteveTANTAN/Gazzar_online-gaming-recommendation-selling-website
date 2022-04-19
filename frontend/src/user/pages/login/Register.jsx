@@ -19,13 +19,25 @@ import {
 } from '@ant-design/icons';
 import { useState } from 'react';
 import { Link, useHistory } from 'umi';
+import {useDispatch} from 'dva'
 import { post } from '@/user/utils/request';
-import { useDispatch } from 'dva';
+const all={
+  "Action & Adventure": 0,
+    "Casual": 0,
+    "FPS": 0,
+    "RPG": 0,
+    "Simulation": 0,
+    "Sports & Racing": 0,
+    "Strategy": 0,
+    "Game Props": 0,
+    "Costume": 0
+}
 export default function Register() {
   const [state, setState] = useState({});
   const [step, setStep] = useState(1);
   const [interest, setInterest] = useState([]);
   const history = useHistory();
+  const dispatch = useDispatch();
   const onFinish = (values) => {
     setStep(2);
     setState(values)
@@ -76,7 +88,7 @@ export default function Register() {
           <h4 style={{ marginTop: 22 }}>Peripherals</h4>
           <Checkbox.Group style={{ width: '100%' }}>
             <Row>
-              {['Costume', 'Game props'].map((item) => (
+              {['Costume', 'Game Props'].map((item) => (
                 <Col span={12}>
                   <Checkbox
                     value={item}
@@ -99,15 +111,23 @@ export default function Register() {
               style={{ width: 140 }}
               type="primary"
               onClick={() => {
-                const interest_dict = {};
-                interest.forEach((i) => {
-                  interest_dict[i] = 1;
-                });
+                const interest_dict = JSON.parse(JSON.stringify(all));
+                Object.keys(interest_dict).forEach(k=>{
+                  if(interest.some(i=>k.startsWith(i))){
+                    interest_dict[k]=1
+                  }
+                })
+                
                 post('/api/user/register', {
                   interest_dict,
                   ...state
-                }).then(() => {
+                }).then((res) => {
                   message.success('success');
+                     dispatch({
+                      type: 'app/setState',
+                      payload: { token: res.token },
+                    });
+                    sessionStorage.setItem('token', res.token);
                   history.push('/');
                 });
               }}

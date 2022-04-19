@@ -35,7 +35,7 @@ export default function Profile() {
     getData();
     get(`/api/user/customized/homepage/${sessionStorage.getItem('token')}`).then((res) => {
       const l = res?.game??[]
-      if(l.length>3)length=3
+      if(l.length>3)l.length=3
       setLike(l);
     });
   }, []);
