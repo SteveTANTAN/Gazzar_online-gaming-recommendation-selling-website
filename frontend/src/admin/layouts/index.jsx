@@ -78,7 +78,9 @@ export default (props) => {
             <Menu theme="light" mode="inline" defaultSelectedKeys={['1']} >
             <Header className="site-layout-sub-header-background" style={{ padding: 0 }} />
               <Menu.Item key="1" icon={<PieChartOutlined />}>
-                overview
+              <Link to="/admin/manage/overView">
+                Overview
+              </Link>
               </Menu.Item>
 
               <Menu.Item key="2" icon={<CarOutlined/>}>
