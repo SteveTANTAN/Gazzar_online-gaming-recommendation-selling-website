@@ -25,6 +25,7 @@ const place = [
   { x: 0, y: 2 },
   { x: 0, y: 1 },
 ];
+// 抽奖页面
 export default function Profile() {
   const history = useHistory();
   const [prize, setPrize] = useState();
@@ -97,6 +98,7 @@ export default function Profile() {
                     if (!ref.current) return;
                     ref.current.play();
                     setTimeout(() => {
+                      // 随机中奖 0.98越大也不容易中奖（不超过1）
                       const index = Math.random() < 0.98 ? 7 : 0;
                       ref.current.stop(index);
                       ref.current = null;

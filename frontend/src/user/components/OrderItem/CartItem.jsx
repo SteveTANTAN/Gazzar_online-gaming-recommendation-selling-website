@@ -4,6 +4,7 @@ import styles from './index.less';
 import { EditOutlined, PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 
 import { put, del } from '@/user/utils/request';
+// 购物车卡片组件封装
 export default function GameCard(props) {
   const history = useHistory();
   return (

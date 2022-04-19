@@ -15,6 +15,8 @@ import { useHistory } from 'umi';
 import CartItem from '../../components/OrderItem/CartItem';
 import { get, put } from '@/user/utils/request';
 import { useEffect, useState } from 'react';
+import img from '@/assets/cart.jpg';
+// 购物车页面
 export default function Profile() {
   const history = useHistory();
   const [data, setData] = useState([]);
@@ -78,7 +80,7 @@ export default function Profile() {
         </div>
         <div className={styles.right}>
           <img
-            src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.jj20.com%2Fup%2Fallimg%2F1113%2F052420105424%2F200524105424-8-1200.jpg&refer=http%3A%2F%2Fimg.jj20.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1649384798&t=f7a0a0bff022f75ffe30557d7cb5d60e"
+            src={img}
             alt=""
           />
         </div>

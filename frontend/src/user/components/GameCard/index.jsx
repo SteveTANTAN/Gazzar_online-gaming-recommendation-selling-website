@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useHistory } from 'umi';
 import styles from './index.less';
 import img from '@/assets/w.png';
+// 游戏卡片组件封装
 export default function GameCard({ id, name, ...props }) {
   const history = useHistory();
   const [init, setInit] = useState(false);

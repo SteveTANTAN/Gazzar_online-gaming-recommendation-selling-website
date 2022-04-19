@@ -1,5 +1,5 @@
 import { message } from 'antd';
-
+// 请求方法封装
 export const get = (url, data = {}) => {
   return new Promise((resolve) => {
     fetch(
