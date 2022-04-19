@@ -3,6 +3,7 @@ import {
   Button,
   Space,
   Modal,
+  PageHeader,
   Input,
   Form,
   DatePicker,
@@ -18,8 +19,11 @@ import { useEffect, useState } from 'react';
 import maleImg from '@/assets/Male.png';
 import femaleImg from '@/assets/Female.png';
 import mysteriousImg from '@/assets/Mysterious.png';
+import { Link, useHistory } from 'umi';
+
 // 个人资料页面
 export default function Profile() {
+  const history = useHistory();
   const [password, setPassword] = useSetState({ visible: false });
   const [info, setInfo] = useSetState({ visible: false });
   const [card, setCard] = useSetState({ visible: false });
@@ -44,6 +48,12 @@ export default function Profile() {
   }, []);
   return (
     <div className="bg">
+        <PageHeader
+
+      onBack={() => history.goBack()}
+      title="Go Back"
+      
+      ></PageHeader>
       <div className={styles.wrap}>
         <div className={styles.info + ' fr'}>
           <img src={[maleImg, femaleImg, mysteriousImg][data.gender]} alt="" />
