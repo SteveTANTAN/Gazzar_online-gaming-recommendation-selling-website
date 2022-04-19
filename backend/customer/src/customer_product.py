@@ -80,6 +80,7 @@ def buy_now(token, product_id, quantity):
     cover = ast.literal_eval(target_product.main_image)
 
     price = float(target_product.price) * float(100 - target_product.discount) * (0.01)
+    
     if target_product in ast.literal_eval(target_user.surprise_product):
         price = float(target_product.price) * float(100 - target_product.discount) * (0.0001) * float(100 - target_user.surprise_discount)
     # collect product information
