@@ -79,10 +79,11 @@ def buy_now(token, product_id, quantity):
 
     cover = ast.literal_eval(target_product.main_image)
 
-    price = float(target_product.price) * float(100 - target_product.discount) * (0.01)
-    
-    if target_product in ast.literal_eval(target_user.surprise_product):
+    if target_product.product_id in ast.literal_eval(target_user.surprise_product):
         price = float(target_product.price) * float(100 - target_product.discount) * (0.0001) * float(100 - target_user.surprise_discount)
+    else:
+        price = float(target_product.price) * float(100 - target_product.discount) * (0.01)
+
     # collect product information
     target_product_info = {
         'product_id': target_product.product_id,
@@ -93,7 +94,7 @@ def buy_now(token, product_id, quantity):
         'quantity': quantity,
     }
     original_price = float(target_product.price) * float(quantity)
-    if target_product in ast.literal_eval(target_user.surprise_product):
+    if target_product.product_id in ast.literal_eval(target_user.surprise_product):
         total_discount = float(target_product.discount * (0.0001) * original_price * target_user.surprise_discount)
     else:
         total_discount = float(target_product.discount * (0.01) * original_price)
@@ -324,20 +325,3 @@ def surprise_store(token):
 
     return {'surprise_discount': target_user.surprise_discount, 'surprise_product': output}
 
-
-if __name__ == "__main__":
-    #     #db.create_all()
-    token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOjE3fQ.12Gqt0B29VWffPR7Fp6qjWhNa2jsgU21Ns6uZh6Ihto"
-    # print(res)
-    #a= time.strftime('%Y-%m-%d', time.localtime())
-    # output_id_list = [1,2,3,4,5,6,7,8]
-    # a = '[' + ','.join(list(map(str, output_id_list))) + ']'
-    # print(a)
-    # b=ast.literal_eval(a)
-    # print(type(b))
-    res = surprise_store(token)
-    #res = customized_homepage(token)
-    #all_product = Product.query.order_by(Product.rate.desc()).all()
-    # for i in all_product:
-    #     print(i.product_id)
-    print(res)

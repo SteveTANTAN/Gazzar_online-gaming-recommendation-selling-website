@@ -31,4 +31,4 @@ class User(db.Model):
         self.password = password
         self.surprise_discount = 0
         self.surprise_timer  = ''
-        self.surprise_product = ''
+        self.surprise_product = '[]'
