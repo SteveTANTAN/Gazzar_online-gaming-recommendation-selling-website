@@ -13,7 +13,7 @@ import {
 import { useHistory, useParams } from 'umi';
 import { useEffect, useState, useRef } from 'react';
 import { get, post } from '@/user/utils/request';
-import { OmitProps } from 'antd/lib/transfer/ListBody';
+// 商品详情页面
 export default function Profile() {
   const history = useHistory();
   const param = useParams();

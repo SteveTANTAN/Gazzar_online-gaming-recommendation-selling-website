@@ -18,6 +18,7 @@ import { useEffect, useState } from 'react';
 import maleImg from '@/assets/Male.png';
 import femaleImg from '@/assets/Female.png';
 import mysteriousImg from '@/assets/Mysterious.png';
+// 个人资料页面
 export default function Profile() {
   const [password, setPassword] = useSetState({ visible: false });
   const [info, setInfo] = useSetState({ visible: false });

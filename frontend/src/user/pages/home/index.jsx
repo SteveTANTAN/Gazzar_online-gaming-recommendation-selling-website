@@ -8,8 +8,14 @@ import { useState, useEffect } from 'react';
 import maleImg from '@/assets/Male.png';
 import femaleImg from '@/assets/Female.png';
 import mysteriousImg from '@/assets/Mysterious.png';
-import bannerImg from '@/assets/banner1.png';
+import bannerImg1 from '@/assets/1.jpg';
+import bannerImg2 from '@/assets/2.jpg';
+import bannerImg3 from '@/assets/3.jpg';
+import bannerImg1l from '@/assets/1.jpg';
+import bannerImg2l from '@/assets/2.jpg';
+import bannerImg3l from '@/assets/3.jpg';
 import { useSetState } from 'ahooks';
+// 首页
 export default function Home() {
   const history = useHistory();
   const [profile, setProfile] = useState({});
@@ -31,10 +37,21 @@ export default function Home() {
       setState({ cart: res ?? 0 });
     });
   }, []);
+  // 未登录时的视图
   if(!token){
-    return <div>
-      <div className="center shadow mt" style={{height:140,background:'white',borderRadius: 8}}>
-        <h1>Welcome to Gazzar! Your new option for game shopping!!!</h1>
+    return <div className={styles.top}>
+      <div className={styles.left + ' shadow'}>
+          <Carousel autoplay>
+            <div>
+              <img src={bannerImg1l} alt="" />
+            </div>
+            <div onClick={() => history.push('/user/discount')}>
+              <img src={bannerImg2l} alt="" />
+            </div>
+            <div>
+              <img src={bannerImg3l} alt="" />
+            </div>
+          </Carousel>
       </div>
       <br />
       <br />
@@ -48,13 +65,20 @@ export default function Home() {
       </div>
     </div>
   }
+  // 登录时的视图
   return (
     <>
       <div className={styles.top + ' fr'}>
         <div className={styles.left + ' shadow'}>
           <Carousel autoplay>
+            <div>
+              <img src={bannerImg1} alt="" />
+            </div>
             <div onClick={() => history.push('/user/discount')}>
-              <img src={bannerImg} alt="" />
+              <img src={bannerImg2} alt="" />
+            </div>
+            <div>
+              <img src={bannerImg3} alt="" />
             </div>
           </Carousel>
         </div>

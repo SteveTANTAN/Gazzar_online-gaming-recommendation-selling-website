@@ -110,7 +110,7 @@ export default function PaymentPage() {
           <hr />
           <div className="center">
             <Button
-              disabled={!data.checkout_products?.length}
+              disabled={!data.checkout_products?.length||!payment?.length}
               type="primary"
               onClick={() => {
                 post('/api/user/addorder', {
