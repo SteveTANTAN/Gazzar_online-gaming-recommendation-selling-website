@@ -142,7 +142,8 @@ def checkout(token):
             original_price = original_price + cur_price
             if target_product.product_id in ast.literal_eval(target_user.surprise_product):
                 tmp_discount = float(target_product.discount * (0.01) * original_price)
-                total_discount = total_discount + tmp_discount + float(tmp_discount * target_user.surprise_discount * (0.01))
+                tmp_price = float((100 - target_product.discount) * (0.01) * original_price)
+                total_discount = total_discount + tmp_discount + float(tmp_price * target_user.surprise_discount * (0.01))
             else:
                 total_discount = total_discount + float(target_product.discount * (0.01) * cur_price)
             checkout_products.append(target_product_info)
