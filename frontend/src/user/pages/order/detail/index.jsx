@@ -71,7 +71,7 @@ export default function Profile() {
             { k: 'Discount', v: data.product_discount },
             { k: 'Quantity', v: data.quantity },
             { k: 'Unit Price', v: data.product_price },
-            { k: 'Actual transaction price', v: data.product_price },
+            { k: 'Actual transaction price', v: data.product_discount_price },
           ]}
         ></Table>
         <br />

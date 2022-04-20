@@ -62,7 +62,7 @@ export default function Profile() {
             <p className="mt">
               According to your personal preferences, search records and other
               data, we have selected some products that may be of interest to
-              you as the prizes of the lottery. Thank you !!!
+              you as the prizes of the lottery. Gazzar thank you for your
             </p>
 
             <p className={styles.small + ' mt'}>
@@ -99,7 +99,7 @@ export default function Profile() {
                     ref.current.play();
                     setTimeout(() => {
                       // 随机中奖 0.98越大也不容易中奖（不超过1）
-                      const index = Math.random() < 0.20 ? 7 : 0;
+                      const index = Math.random() < 0.98 ? 7 : 0;
                       ref.current.stop(index);
                       ref.current = null;
                     }, 5000);
