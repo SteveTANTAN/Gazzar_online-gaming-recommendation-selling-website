@@ -147,6 +147,7 @@ def show_user_order_detail(token):
 
     # order details
     target_user_order = Order.query.filter(Order.user_id==user_id).all()
+    target_user = User.query.filter(User.user_id == user_id).all()[0]
     output = []
     for i in target_user_order:
         target_order_detail = Order_detail.query.filter(Order_detail.order_id==i.order_id).all()
@@ -162,10 +163,15 @@ def show_user_order_detail(token):
             order_info['product_id'] = product.product_id
             order_info['product_name'] = product.product_name
             order_info['product_description'] = product.product_description
-            order_info['product_price'] = float(format(product.product_price, '.2f'))
-            order_info['product_discount'] = product.product_discount
+            order_info['product_price'] = format(float(product.product_price), '.2f')
+            if (product.product_id in ast.literal_eval(target_user.surprise_product)):
+                order_info['product_discount_price'] = format(float(product.product_price) * float(1 - float(product.product_discount) * float(0.01)) * float(1-float(target_user.surprise_discount)*float(0.01)), '.2f')
+            else:order_info['product_discount_price'] = format(float(product.product_price) * (1 - float(product.product_discount) * float(0.01)), '.2f')
+            if (product.product_id in ast.literal_eval(target_user.surprise_product)):
+                order_info['product_discount'] = float(product.product_price) - float(product.product_price) * float(100 - product.product_discount) * float(100 - target_user.surprise_discount) * float(0.0001)
+            else:order_info['product_discount'] = format(float(product.product_price) - float(product.product_price) * (100 - float(product.product_discount)) * float(0.01), '.2f')
             order_info['product_main_image'] = ast.literal_eval(product.product_main_image)
-            order_info['product_rate'] = float(format(product.product_rate, '.1f'))
+            order_info['product_rate'] = format(float(product.product_rate), '.1f')
             order_info['product_comment'] = product.product_comment
 
             # add orders to list
