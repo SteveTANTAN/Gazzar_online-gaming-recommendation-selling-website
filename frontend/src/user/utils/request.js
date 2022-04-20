@@ -13,8 +13,7 @@ export const get = (url, data = {}) => {
         });
       } else {
         response.json().then((res) => {
-          // message.error(res.message || 'error');
-          message.error((res.message.replace("<p>","")).replace("</p>",""));
+          message.error(res.message?.replace('<p>','').replace('</p>','') || 'error');
         });
       }
     });
@@ -37,8 +36,7 @@ export const post = (url, data) => {
         });
       } else {
         response.json().then((res) => {
-          //message.error(res.message || 'error');
-          message.error((res.message.replace("<p>","")).replace("</p>",""));
+          message.error(res.message?.replace('<p>','').replace('</p>','') || 'error');
         });
       }
     });
@@ -61,8 +59,7 @@ export const put = (url, data) => {
         });
       } else {
         response.json().then((res) => {
-          //message.error(res.message || 'error');
-          message.error((res.message.replace("<p>","")).replace("</p>",""));
+          message.error(res.message?.replace('<p>','').replace('</p>','') || 'error');
         });
       }
     });
@@ -84,8 +81,7 @@ export const del = (url, data) => {
         });
       } else {
         response.json().then((res) => {
-          //message.error(res.message || 'error');
-          message.error((res.message.replace("<p>","")).replace("</p>",""));
+          message.error(res.message?.replace('<p>','').replace('</p>','') || 'error');
         });
       }
     });
