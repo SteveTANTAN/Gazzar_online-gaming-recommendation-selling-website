@@ -26,7 +26,6 @@ and email to the teacher on the weekend.
 next week we will focus on completed and submitted proposals in Jira
 
 
-
 Week 3
 Sprints were reorganized and the setting up of base files is to be made to prepare for our first sprint. Work was carried out to finish the report. 
 Current feedback from the lab demonstrator indicated the report was on track. discussed and start to establish the database. 
@@ -41,3 +40,47 @@ we are finishing the sprint1 related details features for both frontend and back
  Individual tasks: modification and design the fronted interfaces, coding with admin frontend feature for admin management.
 but we found the connection between frontend and backend has a few error, spent plenty of time to fix it.
 next week will focus on sprint 2 working
+
+week5
+- planned for admin frontend code and preparation of demo A
+    Individual tasks: double check the final version frontend code for demo a, and doing more code and realize more sprint 3 
+    features.
+- finished database establishment
+- Question: Use of flask and arc, solve problems by reviewing the knowledge of comp1531
+- next week will focuse on sprint 2 working
+
+week6
+- doing more with admin frontend game and perpherals uploading 
+    realize photo uploading photo Current
+    realize localstorage recorded, and fresh unlog out
+question:  huge volume of data about games and peripherals photos, the selction of base64 and url decision
+next week will focus on how to collobrate with database storage.
+
+week7
+- all most finished all features for the admin game management and peripherals management 
+    including games adding, games deleting, and games editing
+    realzied when games editing all the infor would not clears, which is esay for admins editing games
+next week, I am going to do more further jobs which is included in the sprints 3 Order management
+
+week8
+- doing more jobs on order managements and perpare for demo B.
+    realized all orders information display
+    realized all orders searched result
+all most finshed half jobs for sprint 3
+next weeking, i will focus on overview pages. and associate with user frontend stuff.
+
+week9
+- coding for overview pages.
+    relazied showing  overview pages for digital information including (mothly purchurse amount)
+    finshed all the user stories for all sprints
+    participated in noval functions discussion
+    collobrate to fix a few error with data base, fix some bugs for user frontend
+
+week10
+    perpare for fianal demo, helo memebers to deal with their bugs
+    fix order and cart bugs for frontend and backend
+    doing the final report wrinting
+    finally finish all parts
+
+
+
