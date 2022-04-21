@@ -1,0 +1,42 @@
+Week 1
+- planned for topic decision and user story brainstorming
+    Individual tasks: user story brainstorming
+- Question: Product determination of e-commerce recommendation system
+    After many discussions the final decision for the game and periphery
+- next week will focuse on proposal writing
+
+
+Week 2
+- planned for proposal writing
+    Individual tasks: Writing user stories, scenarios and descriptions
+- finished topic decision and part of user stories
+- Question: In terms of the design and decision of noval user stories,
+    the final decision was made through email contact with the teacher
+- next week will focuse on completed and submitted proposal in jira
+
+
+Week 3
+- planned for proposal integration, modification and submit
+    Individual tasks: modification use stories with the front-design interface
+- finished user stories, scenarios and descriptions
+- Question: Conflict with the front-end design,
+    modify according to the suggestions of all team members
+- next week will focuse on sprint 1 working
+    (User account front-end and back-end, database establishment)
+
+
+Week 4
+- planned for back-end, database establishment
+    Individual tasks: database establishment and part of back-end code
+- finished proposal
+- Question: The writing method of the database is not proficient in
+    the operation of the flash-sqlalchemy package, through document and online video teaching
+- next week will keep working database and finish all sprint 1 functions
+
+
+Week 5
+- planned for user account back-end code and preparation of demo A
+    Individual tasks: part of user account back-end code
+- finished database establishment
+- Question: Use of flask and arc, solve problems by reviewing the knowledge of comp1531
+- next week will focuse on sprint 2 working
