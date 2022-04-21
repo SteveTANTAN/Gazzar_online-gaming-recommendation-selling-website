@@ -1,0 +1,79 @@
+Week 1
+- The group formed and we named it 3900-w14b-three-days-to-see. This also means we will show our project via three milestone.
+- All teams planned for topic decision and user story brainstorming. Finally we decide to develop the ecommerce system with recommandation.
+    Individual tasks:  As the scrum master, I created the Jira & GitHub accounts. 
+- Question: Product determination of e-commerce recommendation system
+    After many discussions the final decision for the selling games and relavent peripherals as our products.
+- next week will focuse on proposal writing, and I have already atart to use Axure to make our prototype.
+
+
+Week 2
+- planned for proposal writing
+    Individual tasks: Finish the first version of the prototype in low fidelity of customer & admin without the novel features.
+- finished topic decision and part of user stories
+- Question: In terms of the design and decision of noval user stories, 
+    the final decision was made through email contact with the Professor Rachid. One is a lottery feature and another is a surprise store with recommanded products in discount.
+- next week will focuse on completed and submitted proposal with all the user stories and sprints finished in jira
+
+
+Week 3
+- planned for proposal integration, modification and submission
+    Individual tasks: adjust the design of prototype according to the suggestion prposed by team members,and modified the interface and flow description in the proposal.
+- finished prototype design, interfaces & flow descriptions
+- Question: Still need more modification to improve our logic ad design, 
+    modify according to the suggestions of all team members
+- next week will focuse on sprint 1 working
+    (User account front-end and back-end, database establishment)
+
+
+Week 4
+- planned for frontend, API document
+    Individual tasks: API settings and part of back-end code, frontend pages and functions related to the customer
+- finished proposal and technology selection
+- Question: Try to find the most efficient way to build whole frontend pages.
+- next week will keep working on the frontend and finish all sprint 1 functions
+
+
+Week 5
+- planned for user account back-end code and preparation of demo A
+    Individual tasks: customer(user) related fuctions, for login, logout, register, forget password and user profile
+- finished database establishment
+- Question: solve problems by react, try smtp by my account
+- next week will focus on sprint 2 working
+
+Week 6
+- planned for user cart fronend code and preparation of demo B
+    Individual tasks: user cart frontend code, try to deploy backend into cloud sever, and move database with it together
+- finished Retrospective draft and most of the pages without functions, and complete search, , checkout, home page, product detail related functions
+- The backend cloud works, but the database is too slow. Trying to fix it.
+- next week will focus on sprint 2 working and demo B
+
+
+Week 7
+- planned for payment frontend code and demo B
+    Individual tasks: payment forntend code
+- finished database establishment, user accountfrontend(add payment, delete payment, show payment), user cart back-end(add cart, delete cart) etc.
+- Question: The front-end input and back-end storage of payment card exp date,.
+	  Still cannot solve the database slow connection, let Foster and Charles move back to the AWS.
+- next week will focus on sprint 3 and final demo
+
+Week 8
+- planned for surprise store (novel) back-end code and retro B
+    Individual tasks: surprise store (novel) frontend
+- finished all the user functions except order, surprise store and lottery functions
+- Question: Find the bug that backend occurs before, and try to cimmunicate for fixing the bugs
+- next week will focus on focus on sprint 3
+
+
+Week 9
+- planned for lottery (novel) back-end code and final report, final pre
+    Individual tasks: lottery (novel) backend code
+- finisheduser functions inculding order, surprise store and lottery functions
+- Question: Find the place order and lottery are more difficult than we thought, try to bulid more edge cases
+- next week will focus on final report and final demo
+
+
+Week 10
+- planned for final report and final demo
+    Individual tasks: part of final demo (purchase flow and interact with all teamates as the host) and final report writing
+- fix some edge cases to make the frontend more comsistent from the customer's perspective.
