@@ -16,29 +16,54 @@ import { useSetState } from 'ahooks';
 import { useHistory, useParams } from 'umi';
 import OrderItem from '@/user/components//OrderItem';
 import { get, post } from '@/user/utils/request';
-// 订单详情页面
+// Order detail page
 export default function Profile() {
   const history = useHistory();
   const params = useParams();
   const [submit, setSubmit] = useSetState({ rate: 0, comment: '' });
   const [data, setData] = useState({});
-  const getData = () => {
-    get(`/api/user/show_order/${sessionStorage.getItem('token')}`).then(
+  const [update, setupdata] = useState(true);
+  const [alloder, setalloder] = useState({});
+  const updateData = () => {
+    get(`/api/user/show_order/${localStorage.getItem('utoken')}`).then(
       (res) => {
-        setData(res?.filter((i) => i.order_detail_id == params.id)?.[0] ?? {});
+        setData(res);
+        var d=JSON.stringify(res);
+        localStorage.setItem("uorder",d);
       },
     );
   };
+  const getData = () => {
+    var json=localStorage.getItem("uorder");
+    var jsonObj=JSON.parse(json);
+    setalloder(jsonObj);
+    console.log("123");
+    console.log(alloder);
+    for (let i = 0; i < jsonObj.length;i++) {
+      if (jsonObj[i].order_detail_id == params.id) {
+        console.log(i);
+        setData(jsonObj[i]);
+        break;
+      }
+    }
+    
+  };
   const save = () => {
     post('/api/user/order_rate&comment', {
-      token: sessionStorage.getItem('token'),
+      token: localStorage.getItem('utoken'),
       order_detail_id: params.id,
       ...submit,
     }).then(() => {
-      getData();
+      updateData();
       message.success('success');
     });
   };
+  if (update) {
+    
+    getData();
+
+    setupdata(false);
+  }
 
   useEffect(() => {
     getData();

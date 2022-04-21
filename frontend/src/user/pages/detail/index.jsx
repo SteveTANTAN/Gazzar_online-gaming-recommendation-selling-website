@@ -13,7 +13,7 @@ import {
 import { useHistory, useParams } from 'umi';
 import { useEffect, useState, useRef } from 'react';
 import { get, post } from '@/user/utils/request';
-// 商品详情页面
+// Product Detail Page
 export default function Profile() {
   const history = useHistory();
   const param = useParams();
@@ -22,7 +22,7 @@ export default function Profile() {
   const [comment, setComment] = useState({});
   const [quantity, setQuantity] = useState(1);
   useEffect(() => {
-    get(`/api/user/show/${param.id}/${sessionStorage.getItem('token')}`).then(
+    get(`/api/user/show/${param.id}/${localStorage.getItem('utoken')}`).then(
       (res) => {
         setData(res);
       },
@@ -128,7 +128,7 @@ export default function Profile() {
                 type="primary"
                 onClick={() => {
                   post(`/api/user/add/cart`, {
-                    token: sessionStorage.getItem('token'),
+                    token: localStorage.getItem('utoken'),
                     product_id: param.id,
                     quantity,
                   }).then(() => {

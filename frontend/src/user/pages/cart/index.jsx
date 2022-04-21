@@ -16,13 +16,13 @@ import CartItem from '../../components/OrderItem/CartItem';
 import { get, put } from '@/user/utils/request';
 import { useEffect, useState } from 'react';
 import img from '@/assets/cart.jpg';
-// 购物车页面
+// Cart Page
 export default function Profile() {
   const history = useHistory();
   const [data, setData] = useState([]);
   const [page, setPage] = useSetState({ current: 1, total: 0, size: 5 });
   const getData = () => {
-    get(`/api/user/show/cart/${sessionStorage.getItem('token')}`).then(
+    get(`/api/user/show/cart/${localStorage.getItem('utoken')}`).then(
       (res) => {
         setData(res);
         setPage({ current: 1, total: res.length ?? 0 });
@@ -52,7 +52,7 @@ export default function Profile() {
                       defaultChecked={item.checked !== 0}
                       onChange={(e) => {
                         put(`/api/user/edit/checked`, {
-                          token: sessionStorage.getItem('token'),
+                          token: localStorage.getItem('utoken'),
                           cart_id: item.cart_id,
                           checked: e.target.checked ? 1 : 0,
                         }).then(getData);

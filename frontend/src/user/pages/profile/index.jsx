@@ -21,17 +21,17 @@ import femaleImg from '@/assets/Female.png';
 import mysteriousImg from '@/assets/Mysterious.png';
 import { Link, useHistory } from 'umi';
 
-// 个人资料页面
+// User Profile Page
 export default function Profile() {
   const history = useHistory();
   const [password, setPassword] = useSetState({ visible: false });
   const [info, setInfo] = useSetState({ visible: false });
   const [card, setCard] = useSetState({ visible: false });
   const [data, setData] = useSetState({});
-  const { token } = useSelector((state) => state.app);
+  const  token  = localStorage.getItem('utoken');
   const [payment, setPayment] = useState([]);
   const getPayment = () => {
-    get(`/api/user/show/payment/${sessionStorage.getItem('token')}`).then(
+    get(`/api/user/show/payment/${localStorage.getItem('utoken')}`).then(
       (res) => {
         setPayment(res);
       },
@@ -44,7 +44,7 @@ export default function Profile() {
   };
   useEffect(() => {
     getData();
-    getPayment();
+    // getPayment();
   }, []);
   return (
     <div className="bg">
@@ -89,7 +89,7 @@ export default function Profile() {
             Change My Password
           </Button>
         </div>
-        <hr style={{ margin: '30px 0' }} />
+        {/* <hr style={{ margin: '30px 0' }} />
         <div className="fr">
           <h3>My Payment Option</h3>
           <div className="blank"></div>
@@ -98,8 +98,8 @@ export default function Profile() {
             icon={<PlusOutlined />}
             onClick={() => setCard({ visible: true })}
           ></Button>
-        </div>
-        <div className={styles.items}>
+        </div> */}
+        {/* <div className={styles.items}>
           {payment?.map((item) => (
             <Payment
               key={item.payment_detail_id}
@@ -107,7 +107,7 @@ export default function Profile() {
               onDelete={() => getPayment()}
             ></Payment>
           ))}
-        </div>
+        </div> */}
         <Modal
           visible={password.visible}
           title={null}

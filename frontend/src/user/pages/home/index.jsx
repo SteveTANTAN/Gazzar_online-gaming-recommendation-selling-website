@@ -15,13 +15,13 @@ import bannerImg1l from '@/assets/1.jpg';
 import bannerImg2l from '@/assets/2.jpg';
 import bannerImg3l from '@/assets/3.jpg';
 import { useSetState } from 'ahooks';
-// 首页
+// Home Page
 export default function Home() {
   const history = useHistory();
   const [profile, setProfile] = useState({});
   const [data, setData] = useState({});
   const [state, setState] = useSetState({ cart: 0, order: 0 });
-  const { token } = useSelector((state) => state.app);
+  const  token  = localStorage.getItem('utoken');
   useEffect(() => {
     if (!token) return;
     get(`/api/user/customized/homepage/${token}`).then((res) => {
@@ -30,14 +30,14 @@ export default function Home() {
     get(`/api/user/profile/${token}`).then((res) => {
       setProfile((res.user_info && res.user_info[0]) || {});
     });
-    get(`/api/user/order/${token}`).then((res) => {
-      setState({ order: res ?? 0 });
-    });
-    get(`/api/user/cart/${token}`).then((res) => {
-      setState({ cart: res ?? 0 });
-    });
+    // get(`/api/user/order/${token}`).then((res) => {
+    //   setState({ order: res ?? 0 });
+    // });
+    // get(`/api/user/cart/${token}`).then((res) => {
+    //   setState({ cart: res ?? 0 });
+    // });
   }, []);
-  // 未登录时的视图
+  // Before Login
   if(!token){
     return <div className={styles.top}>
       <div className={styles.left + ' shadow'}>
@@ -65,7 +65,7 @@ export default function Home() {
       </div>
     </div>
   }
-  // 登录时的视图
+  // After Login
   return (
     <>
       <div className={styles.top + ' fr'}>
@@ -102,14 +102,12 @@ export default function Home() {
                 onClick={() => history.push('/user/cart')}
               >
                 <h2>Cart</h2>
-                <div>{state.cart ?? 0}</div>
               </div>
               <div
                 className="pointer"
                 onClick={() => history.push('/user/order')}
               >
                 <h2>Order</h2>
-                <div>{state.order ?? 0}</div>
               </div>
             </div>
           </div>

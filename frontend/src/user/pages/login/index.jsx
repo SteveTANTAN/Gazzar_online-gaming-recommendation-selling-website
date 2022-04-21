@@ -9,7 +9,7 @@ import {
 import { Link, useHistory } from 'umi';
 import { useDispatch } from 'dva';
 import { post } from '@/user/utils/request';
-// 登录页面
+// Login Page
 export default function Login() {
   const history = useHistory();
   const dispatch = useDispatch();
@@ -17,6 +17,7 @@ export default function Login() {
     post('/api/user/login', values).then((res) => {
       dispatch({ type: 'app/setState', payload: { token: res.token } });
       sessionStorage.setItem('token', res.token);
+      localStorage.setItem('utoken', res.token);
       history.push('/');
     });
   };

@@ -4,12 +4,12 @@ import GameCard from '../../components/GameCard';
 import { useHistory, useParams } from 'umi';
 import { useEffect, useState } from 'react';
 import { get } from '@/user/utils/request';
-// 打折商品页面
+// Surprise Store Page
 export default function SearchResult() {
   const history = useHistory();
   const [data, setData] = useState([]);
   useEffect(() => {
-    get('/api/user/surprise/store/' + sessionStorage.getItem('token')).then(
+    get('/api/user/surprise/store/' + localStorage.getItem('utoken')).then(
       (res) => {
         setData(res);
       },

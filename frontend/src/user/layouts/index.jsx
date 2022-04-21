@@ -9,12 +9,18 @@ import { Link, useHistory } from 'umi';
 import { useSelector, useDispatch } from 'dva';
 import logoImg from '@/assets/logo.png';
 import { post } from '@/user/utils/request';
-// 公共布局渲染
+// public layout rendering
 export default (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  // 通过token判断是否登录
-  const { token } = useSelector((state) => state.app);
+  // Determine whether to log in by token
+
+  const token = localStorage.getItem('utoken');
+  if (localStorage.getItem('utoken') == null) {
+    // localStorage.getItem('token')
+    console.log("aaaaaaaaaaaaaaaaa");
+   // history.push("/");
+  }
   return (
     <div className={styles.wrap}>
       <div className={styles.header}>
@@ -49,10 +55,14 @@ export default (props) => {
                 ></UserOutlined>
               </>
             )}
-            {token ? (
+            {localStorage.getItem('utoken') ? (
               <Link
                 className={styles.button}
                 onClick={() => {
+                  history.push('');
+                  localStorage.removeItem('utoken');
+                  localStorage.removeItem('uorder');
+                  
                   post('/api/user/logout', { token }).then(() => {
                     dispatch({ type: 'app/setState', payload: { token: '' } });
                   });

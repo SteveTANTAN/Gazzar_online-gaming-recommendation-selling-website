@@ -3,7 +3,7 @@ import { Form, Input, Button, Checkbox, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { Link, useHistory } from 'umi';
 import { post } from '@/user/utils/request';
-// 修改密码页面
+// Forget Password
 export default function Password() {
   const history = useHistory();
   const onFinish = (values) => {

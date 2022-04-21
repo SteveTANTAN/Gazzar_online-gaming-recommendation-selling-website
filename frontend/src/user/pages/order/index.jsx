@@ -16,16 +16,33 @@ import { Link, useHistory } from 'umi';
 import GameCard from '../../components/GameCard';
 import OrderItem from '../../components/OrderItem';
 import { get, post } from '@/user/utils/request';
-// 订单页面
+// Order Page
 export default function Profile() {
   const history = useHistory();
   const [data, setData] = useState([]);
   const [like, setLike] = useState([]);
   const [page, setPage] = useSetState({ current: 1, total: 0, size: 5 });
   const getData = () => {
-    get(`/api/user/show_order/${sessionStorage.getItem('token')}`).then(
+    get(`/api/user/show_order/${localStorage.getItem('utoken')}`).then(
       (res) => {
-        setData(res ?? []);
+        if (localStorage.getItem("uorder") != null) {
+          var json=localStorage.getItem("uorder");
+          var jsonObj=JSON.parse(json);
+          if (res.length > jsonObj.length){
+            setData(res);
+            var d=JSON.stringify(res);
+            localStorage.setItem("uorder",d);
+  
+          } else {
+            setData(jsonObj);
+          }
+        } else{
+          setData(res);
+          var d=JSON.stringify(res);
+          localStorage.setItem("uorder",d);
+
+        }
+
         setPage({ current: 1, total: res.length ?? 0 });
       },
     );
@@ -33,7 +50,7 @@ export default function Profile() {
 
   useEffect(() => {
     getData();
-    get(`/api/user/customized/homepage/${sessionStorage.getItem('token')}`).then((res) => {
+    get(`/api/user/customized/homepage/${localStorage.getItem('utoken')}`).then((res) => {
       const l = res?.game??[]
       if(l.length>3)l.length=3
       setLike(l);

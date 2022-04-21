@@ -96,13 +96,13 @@ export default defineConfig({
   ],
   proxy: {
     '/api': {
-      target: 'http://localhost:55467',//后端实际api地址 用运行server
-      //target: 'http://114.55.74.30:55467',//后端为云端 不用运行server
-      //target: 'https://bkdapp.herokuapp.com/',//后端为云端 不用运行server
+      target: 'http://localhost:55467',//The actual api address of the backend, you need to run the server
+      //target: 'http://114.55.74.30:55467',//The backend is in the cloud, no need to run the server
+      //target: 'https://bkdapp.herokuapp.com/',//The backend is in the cloud, no need to run the server
       
             changeOrigin: true,
-      //pathRewrite会对前端的请求地址截取 如前端访问地址
-      //http://localhost:8888/api/esbapi/manager/cm0004 截取/api/esbapi后再重新定位到 后端 http://127.0.0.1:56668/manager
+      //pathRewrite will intercept the front-end request address, such as the front-end access address
+      //http://localhost:8888/api/esbapi/manager/cm0004 Intercept /api/esbapi and then relocate to the backend http://127.0.0.1:56668/manager
     }
   },
   nodeModulesTransform: {

@@ -3,6 +3,7 @@ import styles from './index.less';
 import { DeleteOutlined } from '@ant-design/icons';
 import { del } from '@/user/utils/request';
 export default function Payment(props) {
+  // About the payment
   const history = useHistory();
   return (
     <div className={styles.card + ' fr'}>
@@ -15,7 +16,7 @@ export default function Payment(props) {
           className={styles.del}
           onClick={() => {
             del('/api/user/delete/payment', {
-              token: sessionStorage.getItem('token'),
+              token: localStorage.getItem('utoken'),
               payment_detail_id: props.payment_detail_id,
             }).then(() => {
               props.onDelete();
