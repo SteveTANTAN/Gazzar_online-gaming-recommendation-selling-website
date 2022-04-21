@@ -30,12 +30,12 @@ export default function Home() {
     get(`/api/user/profile/${token}`).then((res) => {
       setProfile((res.user_info && res.user_info[0]) || {});
     });
-    get(`/api/user/order/${token}`).then((res) => {
-      setState({ order: res ?? 0 });
-    });
-    get(`/api/user/cart/${token}`).then((res) => {
-      setState({ cart: res ?? 0 });
-    });
+    // get(`/api/user/order/${token}`).then((res) => {
+    //   setState({ order: res ?? 0 });
+    // });
+    // get(`/api/user/cart/${token}`).then((res) => {
+    //   setState({ cart: res ?? 0 });
+    // });
   }, []);
   // 未登录时的视图
   if(!token){
@@ -102,14 +102,12 @@ export default function Home() {
                 onClick={() => history.push('/user/cart')}
               >
                 <h2>Cart</h2>
-                <div>{state.cart ?? 0}</div>
               </div>
               <div
                 className="pointer"
                 onClick={() => history.push('/user/order')}
               >
                 <h2>Order</h2>
-                <div>{state.order ?? 0}</div>
               </div>
             </div>
           </div>

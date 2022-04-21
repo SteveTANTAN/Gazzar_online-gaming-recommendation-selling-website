@@ -130,6 +130,7 @@ export default function Register() {
                       payload: { token: res.token },
                     });
                     sessionStorage.setItem('token', res.token);
+                    localStorage.setItem('utoken', res.token);
                   history.push('/');
                 });
               }}

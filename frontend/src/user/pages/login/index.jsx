@@ -17,6 +17,7 @@ export default function Login() {
     post('/api/user/login', values).then((res) => {
       dispatch({ type: 'app/setState', payload: { token: res.token } });
       sessionStorage.setItem('token', res.token);
+      localStorage.setItem('utoken', res.token);
       history.push('/');
     });
   };
