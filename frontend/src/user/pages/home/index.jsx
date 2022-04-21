@@ -21,7 +21,7 @@ export default function Home() {
   const [profile, setProfile] = useState({});
   const [data, setData] = useState({});
   const [state, setState] = useSetState({ cart: 0, order: 0 });
-  const { token } = useSelector((state) => state.app);
+  const  token  = localStorage.getItem('utoken');
   useEffect(() => {
     if (!token) return;
     get(`/api/user/customized/homepage/${token}`).then((res) => {

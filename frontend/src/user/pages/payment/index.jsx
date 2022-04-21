@@ -29,12 +29,12 @@ export default function PaymentPage() {
       get(
         `/api/user/buynow/${param.id}/${
           param.quantity
-        }/${sessionStorage.getItem('token')}`,
+        }/${localStorage.getItem('utoken')}`,
       ).then((res) => {
         setData({ ...res, checkout_products: [res.checkout_product || {}] });
       });
     } else {
-      get(`/api/user/checkout/cart/${sessionStorage.getItem('token')}`).then(
+      get(`/api/user/checkout/cart/${localStorage.getItem('utoken')}`).then(
         (res) => {
           setData(res);
         },
@@ -116,7 +116,7 @@ export default function PaymentPage() {
               type="primary"
               onClick={() => {
                 post('/api/user/addorder', {
-                  token: sessionStorage.getItem('token'),
+                  token: localStorage.getItem('utoken'),
                   product_list: data.checkout_products?.map((i) => ({
                     product_id: i.product_id,
                     quantity: i.quantity,

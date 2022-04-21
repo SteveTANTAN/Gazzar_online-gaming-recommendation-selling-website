@@ -9,7 +9,7 @@ export default function SearchResult() {
   const history = useHistory();
   const [data, setData] = useState([]);
   useEffect(() => {
-    get('/api/user/surprise/store/' + sessionStorage.getItem('token')).then(
+    get('/api/user/surprise/store/' + localStorage.getItem('utoken')).then(
       (res) => {
         setData(res);
       },

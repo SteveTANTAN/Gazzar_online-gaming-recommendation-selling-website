@@ -23,7 +23,7 @@ export default function GameCard(props) {
             min={1}
             onChange={(v) => {
               put(`/api/user/notify/quantity`, {
-                token: sessionStorage.getItem('token'),
+                token: localStorage.getItem('utoken'),
                 cart_id: props.cart_id,
                 quantity: v,
               });
@@ -38,7 +38,7 @@ export default function GameCard(props) {
           className={styles.del}
           onClick={() => {
             del('/api/user/delete/cart', {
-              token: sessionStorage.getItem('token'),
+              token: localStorage.getItem('utoken'),
               cart_id: props.cart_id,
               quantity: props.quantity,
             }).then(() => {

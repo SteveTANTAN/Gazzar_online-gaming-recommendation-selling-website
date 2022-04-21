@@ -32,7 +32,7 @@ export default function Profile() {
   const [prizes, setPrizes] = useState([]);
   const ref = useRef();
   useEffect(() => {
-    get(`/api/user/lottery/${sessionStorage.getItem('token')}`).then((res) => {
+    get(`/api/user/lottery/${localStorage.getItem('utoken')}`).then((res) => {
       res.length = 7;
       setPrizes([
         ...res.map((item, index) => ({
@@ -114,11 +114,11 @@ export default function Profile() {
             <br />
             {prize?.imgs && (
               <h2 className="center">
-                Congrats! You Have Won the xxxxx！Click{' '}
+                Congrats! You Have Won the Prize！Click{' '}
                 <a
                   onClick={() => {
                     post('/api/user/lottery/order', {
-                      token: sessionStorage.getItem('token'),
+                      token: localStorage.getItem('utoken'),
                       product_id: prize?.imgs[0]?.id,
                     }).then(() => {
                       history.push('/user/order');

@@ -16,7 +16,7 @@ export default function Payment(props) {
           className={styles.del}
           onClick={() => {
             del('/api/user/delete/payment', {
-              token: sessionStorage.getItem('token'),
+              token: localStorage.getItem('utoken'),
               payment_detail_id: props.payment_detail_id,
             }).then(() => {
               props.onDelete();

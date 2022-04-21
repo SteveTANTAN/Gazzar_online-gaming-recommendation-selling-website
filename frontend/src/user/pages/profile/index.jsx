@@ -28,10 +28,10 @@ export default function Profile() {
   const [info, setInfo] = useSetState({ visible: false });
   const [card, setCard] = useSetState({ visible: false });
   const [data, setData] = useSetState({});
-  const { token } = useSelector((state) => state.app);
+  const  token  = localStorage.getItem('utoken');
   const [payment, setPayment] = useState([]);
   const getPayment = () => {
-    get(`/api/user/show/payment/${sessionStorage.getItem('token')}`).then(
+    get(`/api/user/show/payment/${localStorage.getItem('utoken')}`).then(
       (res) => {
         setPayment(res);
       },

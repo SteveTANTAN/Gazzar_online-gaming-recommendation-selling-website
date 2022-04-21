@@ -14,7 +14,13 @@ export default (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
   // Determine whether to log in by token
-  const { token } = useSelector((state) => state.app);
+
+  const token = localStorage.getItem('utoken');
+  if (localStorage.getItem('utoken') == null) {
+    // localStorage.getItem('token')
+    console.log("aaaaaaaaaaaaaaaaa");
+   // history.push("/");
+  }
   return (
     <div className={styles.wrap}>
       <div className={styles.header}>
@@ -49,10 +55,14 @@ export default (props) => {
                 ></UserOutlined>
               </>
             )}
-            {token ? (
+            {localStorage.getItem('utoken') ? (
               <Link
                 className={styles.button}
                 onClick={() => {
+                  history.push('');
+                  localStorage.removeItem('utoken');
+                  localStorage.removeItem('uorder');
+                  
                   post('/api/user/logout', { token }).then(() => {
                     dispatch({ type: 'app/setState', payload: { token: '' } });
                   });
