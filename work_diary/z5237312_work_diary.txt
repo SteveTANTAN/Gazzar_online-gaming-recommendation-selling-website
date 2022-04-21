@@ -3,7 +3,7 @@ Week 1
     Individual tasks: user story brainstorming
 - Question: Product determination of e-commerce recommendation system
     After many discussions the final decision for the game and periphery
-- next week will focuse on proposal writing
+- next week will focus on proposal writing
 
 
 Week 2
@@ -12,7 +12,7 @@ Week 2
 - finished topic decision and part of user stories
 - Question: In terms of the design and decision of noval user stories,
     the final decision was made through email contact with the teacher
-- next week will focuse on completed and submitted proposal in jira
+- next week will focus on completed and submitted proposal in jira
 
 
 Week 3
@@ -21,7 +21,7 @@ Week 3
 - finished user stories, scenarios and descriptions
 - Question: Conflict with the front-end design,
     modify according to the suggestions of all team members
-- next week will focuse on sprint 1 working
+- next week will focus on sprint 1 working
     (User account front-end and back-end, database establishment)
 
 
@@ -39,4 +39,45 @@ Week 5
     Individual tasks: part of user account back-end code
 - finished database establishment
 - Question: Use of flask and arc, solve problems by reviewing the knowledge of comp1531
-- next week will focuse on sprint 2 working
+- next week will focus on sprint 2 working
+
+
+Week 6
+- planned for user cart back-end code and preparation of demo B
+    Individual tasks: user cart back-end code
+- finished database establishment, user account back-end
+- next week will focus on sprint 2 working and demo B
+
+
+Week 7
+- planned for payment back-end code and demo B
+    Individual tasks: payment back-end code
+- finished database establishment, user account back-end, user cart back-end
+- Question: The front-end input and back-end storage of payment card exp date,
+    finally solved through datetime library, string type retention and front-end and back-end transmission.
+- next week will focus on sprint 3 and final demo
+
+
+Week 8
+- planned for surprise store (novel) back-end code and retro B
+    Individual tasks: surprise store (novel) back-end
+- finished database establishment, user account back-end, user cart back-end, user payment back-end (all sprint 1/2)
+- Question: surprise discount calculation, sometime will discount twice with Promotional discount,
+    Finally, we solve the problem through meeting discussion and calculation of mathematical model
+- next week will focus on focus on sprint 3
+
+
+Week 9
+- planned for lottery (novel) back-end code and final report
+    Individual tasks: lottery (novel) back-end code
+- finished database establishment, surprise store (novel) back-end and all sprint 1/2
+- Question: During the lottery, the winning order needs to be automatically generated
+    and the transaction price needs to be displayed as 0. It cannot be realized through the function of add order.
+    Finally, we realized by rewriting the function.
+- next week will focus on final report and final demo
+
+
+Week 10
+- planned for final report and final demo
+    Individual tasks: part of final demo (user cart, recommendation system and surprise store) and final report writing
+- finished database establishment and all sprint 1/2/3

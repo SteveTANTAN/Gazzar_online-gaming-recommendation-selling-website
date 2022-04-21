@@ -1,0 +1,59 @@
+Week1
+		Chat about what project we choose
+		Finally, we choose e-commerce
+		User story brainstorm
+		Problem we met is what products recommendation system use, we finally choose 
+game and periphery
+Next week, we focus on proposal writing
+Week2
+		Plan for Proposal writing:
+			Collect other same topic websites
+Background.
+		Finish background writing and part of user story
+		Problem we met is design and decision of novel. We email to teacher
+		Next week, we will finish and submit proposal
+Week3
+		Plan: modify and submit proposal
+		Finish modifying background writing and part of user story.
+		Problem I met is difficulty to find pros and cons of the same topic websites. Finally,
+		I chat with teammates, then solve this.
+		Next week, we will focus on sprint 1 work
+Week4
+		Plan: backend code
+			Individual task: users’ code
+		Finished: proposal
+		Question: token of users creates and decode token
+		Next week: keep working on sprint 1 work
+Week5
+		Plan: backend code and demo A
+			Individual task: users’ code
+		Finished: customs code
+		Question: use of flask and arc test
+		Next week: working on sprint 2 work
+Week6
+		Plan: backend code and demo B
+			Individual task: order’ code
+		Finished: sprint 1 code
+		Question: relation between order and users
+		Next week: keep working on sprint 2 work
+Week7
+		Plan: backend code and demo B
+			Individual task: order’ code
+		Finished: relation between users and order, database change
+		Question: order id problem
+		Next week: working on sprint 3 and final demo
+Week8
+		Plan: backend code and retro B
+			Individual task: order’ code
+		Finished: order backend code
+		Next week: keep working on sprint 3 work
+Week9
+		Plan: backend code test and final report
+			Individual task: order’ code test
+		Finished: test
+		Next week: final report and demo
+Week10
+		Plan: backend code
+			Individual task: final demo and report
+		Finished: all sprint test
+
