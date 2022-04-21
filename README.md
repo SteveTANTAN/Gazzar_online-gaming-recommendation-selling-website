@@ -1,10 +1,8 @@
 # capstone-project-3900-w14b-three-days-to-see
-## Installation of prerequisite environments and packages
-  
-  
-  
 
-## Getting Start for front-end
+**You are free to use any user, but if an error occurs, we recommand you to use Mia to have another try. Details for Mia (*email: Miamin2000@163.com, password:Test@1234*)**
+
+## Installation of prerequisite environments and packages
 ### Backend
 
 If you are in not in CSE Vlab environment, please go to https://www.python.org/downloads/ and peoperly install the 3.7.8 version python3 if needed. If your are in CSE Vlab envirnoment, then change to the directory `capstone-project-3900-w14b-three-days-to-see`
