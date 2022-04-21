@@ -147,7 +147,7 @@ export default function PaymentPage() {
                 message.success('success')
                 setPayment([values])
                 setCard({visible:false})
-              }}
+              }} // add card
             >
               <Form.Item
                 name={'card_type'}

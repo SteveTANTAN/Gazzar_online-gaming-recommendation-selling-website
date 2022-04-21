@@ -4,7 +4,7 @@ import GameCard from '../../components/GameCard';
 import { useHistory, useParams } from 'umi';
 import { useEffect, useState } from 'react';
 import { get } from '@/user/utils/request';
-// 搜索结果页
+// Search Result Page
 export default function SearchResult() {
   const history = useHistory();
   const param = useParams();

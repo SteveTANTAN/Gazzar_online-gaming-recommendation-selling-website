@@ -16,7 +16,7 @@ import { useSetState } from 'ahooks';
 import { useHistory, useParams } from 'umi';
 import OrderItem from '@/user/components//OrderItem';
 import { get, post } from '@/user/utils/request';
-// 订单详情页面
+// Order detail page
 export default function Profile() {
   const history = useHistory();
   const params = useParams();

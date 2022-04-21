@@ -9,11 +9,11 @@ import { Link, useHistory } from 'umi';
 import { useSelector, useDispatch } from 'dva';
 import logoImg from '@/assets/logo.png';
 import { post } from '@/user/utils/request';
-// 公共布局渲染
+// public layout rendering
 export default (props) => {
   const history = useHistory();
   const dispatch = useDispatch();
-  // 通过token判断是否登录
+  // Determine whether to log in by token
   const { token } = useSelector((state) => state.app);
   return (
     <div className={styles.wrap}>

@@ -21,7 +21,7 @@ import femaleImg from '@/assets/Female.png';
 import mysteriousImg from '@/assets/Mysterious.png';
 import { Link, useHistory } from 'umi';
 
-// 个人资料页面
+// User Profile Page
 export default function Profile() {
   const history = useHistory();
   const [password, setPassword] = useSetState({ visible: false });

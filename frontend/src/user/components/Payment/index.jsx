@@ -3,6 +3,7 @@ import styles from './index.less';
 import { DeleteOutlined } from '@ant-design/icons';
 import { del } from '@/user/utils/request';
 export default function Payment(props) {
+  // About the payment
   const history = useHistory();
   return (
     <div className={styles.card + ' fr'}>

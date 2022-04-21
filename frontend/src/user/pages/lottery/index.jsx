@@ -25,7 +25,7 @@ const place = [
   { x: 0, y: 2 },
   { x: 0, y: 1 },
 ];
-// 抽奖页面
+// Lottery Page
 export default function Profile() {
   const history = useHistory();
   const [prize, setPrize] = useState();
@@ -62,7 +62,7 @@ export default function Profile() {
             <p className="mt">
               According to your personal preferences, search records and other
               data, we have selected some products that may be of interest to
-              you as the prizes of the lottery. Gazzar thank you for your
+              you as the prizes of the lottery.
             </p>
 
             <p className={styles.small + ' mt'}>
@@ -98,8 +98,9 @@ export default function Profile() {
                     if (!ref.current) return;
                     ref.current.play();
                     setTimeout(() => {
-                      // 随机中奖 0.98越大也不容易中奖（不超过1）
-                      const index = Math.random() < 0.98 ? 7 : 0;
+                      // Randomly won the lottery, the recommended value is 0.98 
+                      // The larger the value, the harder it is to win the lottery, and cannot exceed 1
+                      const index = Math.random() < 0.20 ? 7 : 0;
                       ref.current.stop(index);
                       ref.current = null;
                     }, 5000);

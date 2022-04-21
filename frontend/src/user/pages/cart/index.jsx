@@ -16,7 +16,7 @@ import CartItem from '../../components/OrderItem/CartItem';
 import { get, put } from '@/user/utils/request';
 import { useEffect, useState } from 'react';
 import img from '@/assets/cart.jpg';
-// 购物车页面
+// Cart Page
 export default function Profile() {
   const history = useHistory();
   const [data, setData] = useState([]);

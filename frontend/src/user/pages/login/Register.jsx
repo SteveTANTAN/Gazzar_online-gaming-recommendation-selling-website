@@ -32,10 +32,10 @@ const all={
     "Game Props": 0,
     "Costume": 0
 }
-// 注册页面
+// Login Page
 export default function Register() {
   const [state, setState] = useState({});
-  // 表示当前处于第几步
+  // Show which step it is
   const [step, setStep] = useState(1);
   const [interest, setInterest] = useState([]);
   const history = useHistory();

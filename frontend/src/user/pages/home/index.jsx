@@ -15,7 +15,7 @@ import bannerImg1l from '@/assets/1.jpg';
 import bannerImg2l from '@/assets/2.jpg';
 import bannerImg3l from '@/assets/3.jpg';
 import { useSetState } from 'ahooks';
-// 首页
+// Home Page
 export default function Home() {
   const history = useHistory();
   const [profile, setProfile] = useState({});
@@ -37,7 +37,7 @@ export default function Home() {
     //   setState({ cart: res ?? 0 });
     // });
   }, []);
-  // 未登录时的视图
+  // Before Login
   if(!token){
     return <div className={styles.top}>
       <div className={styles.left + ' shadow'}>
@@ -65,7 +65,7 @@ export default function Home() {
       </div>
     </div>
   }
-  // 登录时的视图
+  // After Login
   return (
     <>
       <div className={styles.top + ' fr'}>
