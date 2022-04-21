@@ -93,7 +93,7 @@ def user_logout(token):
     if (len(users) == 0):
         raise ErrorMessage(Error.query.filter(Error.error_id == 2).all()[0].error_name)
     target_user = users[0]
-    target_user.token = create_token(0)
+    #target_user.token = create_token(0)
     db.session.commit()
     return {'is_success': True}
 
@@ -147,7 +147,7 @@ def show_user_profile(token):
     return: user profile
     """
     user_id = token_to_id(token)
-    #print("-------------")
+    print(user_id)
     # user details
     target_user = User.query.filter(User.user_id==user_id).all()[0]
     user_info = {"token": target_user.token, "user_id": target_user.user_id,
