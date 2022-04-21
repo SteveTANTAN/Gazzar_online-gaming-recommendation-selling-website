@@ -16,3 +16,26 @@ finish the manager.py and help_admin.py in sprint 1
 The two files is about the admin_register, login, logout, and show all admins for super-admin.
 
 fix the error about the token with jeffery, know more about the AWS and set the database to AWS.
+
+week5
+doing admin_register, admin_login and try to fix the forget_password_auth error in sprint1
+
+week6
+finish the manage.py include admin_register, admin_login, forget_password
+fix some errors in these functions.
+
+week7
+studying how to put the code into the cloud.
+doing the managing_product, so that the product can be searched by the name
+doing the managing_order, so that the order can be searched by the id
+
+week8
+start writing the report(database part and backend part)
+fix the error in auth_foeget_password
+
+week9
+add the overview function
+fix some errors in the order and cart function
+
+week10
+demo and finish the report(database part and backend part)
